@@ -132,7 +132,7 @@
 
 当前定位：
 
-> 独立支线储备，不并入湍流—抖动联合主项目。
+> 独立支线储备，不并入湍流—抖动联合主项目。详细保留说明见 `docs/research_reserve/FROZEN_WAVE_LONGITUDINAL_ENVELOPE.md`。
 
 ## 5. 第一阶段真正的学术核心
 
