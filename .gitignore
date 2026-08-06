@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local data and generated outputs
+results/**
+!results/.gitkeep
+artifacts/
+cache/
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.mat
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+~$*
