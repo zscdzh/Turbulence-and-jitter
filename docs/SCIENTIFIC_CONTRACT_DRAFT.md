@@ -1,8 +1,8 @@
 # SCIENTIFIC_CONTRACT_DRAFT
 
-**状态：Scientific Contract v0.3.2 candidate — CONTRACT FREEZE GATE；最终极短复核通过前保持 code gate CLOSED。**  
+**状态：Scientific Contract v0.3.2 — PASS FOR GAUSSIAN-ONLY IMPLEMENTATION；structured-field code gate 仍 CLOSED。**  
 **日期：2026-08-07**  
-**外部审查链：** `docs/review/EXTERNAL_REVIEW_DECISION_2026-08-07.md` → `docs/review/SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md` → `docs/review/SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md`  
+**外部审查链：** `docs/review/EXTERNAL_REVIEW_DECISION_2026-08-07.md` → `docs/review/SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md` → `docs/review/SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md` → `docs/review/SCIENTIFIC_CONTRACT_V032_FINAL_REVIEW_DECISION.md`  
 **阶段边界：** `docs/RESEARCH_STAGE_BOUNDARY.md`
 
 ---
@@ -548,9 +548,9 @@ point irradiance、peak intensity、scintillation、shape fidelity 不得单独�
 
 ---
 
-## 10. Gaussian production numerical-validation table — v0.3.2 CANDIDATE
+## 10. Gaussian production numerical-validation table — FROZEN FOR AUTHORIZED IMPLEMENTATION
 
-任何 structured-field multi-screen production run 前，Gaussian chain 必须通过以下 gates。
+Gaussian implementation 进入任何 structured-field production 前必须通过以下 gates。
 
 | Gate | 验证量 | acceptance |
 |---|---|---|
@@ -668,21 +668,25 @@ flat-top + turbulence + pointing/bias + average irradiance/received power 已存
 
 ## 14. code authorization gate
 
-当前：
+当前最终复核决定：
 
-> **REVISE — KEEP CODE GATE CLOSED.**
+> **PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION.**
 
-v0.3.2 candidate 只剩一次极短复核，唯一重点是确认：
+现在授权且仅授权以下顺序：
 
-1. `Phi_n^(atm)`、`Phi_phi^(atm)` 与 `Phi_phi^(math)` 的 `(2pi)` conversion 自洽；
-2. Kolmogorov limit 正确恢复 `D_phi=6.88(rho/r0_screen)^(5/3)`；
-3. V4/V5 不再可能因 reference 与 generator 共用同一错误 normalization 而假通过。
+1. Gaussian free-space propagation；
+2. finite-aperture displacement / capture；
+3. analytic jitter benchmark；
+4. Gaussian phase-screen / multi-screen numerical validation V0–V12。
 
-若极短复核 PASS，则只授权：
+Gaussian implementation 的目标是建立可信的共同传播/接收/统计底座，不是提前生成 structured-beam performance claims。
 
-1. Gaussian free-space；
-2. finite-aperture displacement；
-3. analytic jitter；
-4. Gaussian phase-screen / multi-screen validation。
+### 仍未授权
 
-**即使 v0.3.2 PASS，也不立即授权 Bessel / OPB / flat-top production comparison。** 只有 Gaussian numerical chain 完成并通过 V0–V12 后，才进入 structured-field implementation。
+- Bessel production implementation / comparison；
+- OPB production implementation / comparison；
+- flat-top production implementation / comparison；
+- structured-field Monte Carlo；
+- Paper-2 joint beam optimization。
+
+只有 Gaussian numerical chain 完成并通过全部 V0–V12 后，才允许重新打开 structured-field implementation gate。
