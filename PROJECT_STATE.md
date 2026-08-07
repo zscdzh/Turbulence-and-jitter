@@ -2,11 +2,11 @@
 
 **更新日期：2026-08-07**  
 **当前主分支：main**  
-**当前阶段：Paper 1 / CONTRACT FREEZE GATE**  
-**最新外部短审：REVISE — KEEP CODE GATE CLOSED**  
-**Scientific Contract：v0.3.2 candidate，等待最终极短复核**  
-**正式科学代码：未建立**  
-**正式数值结果：无**
+**当前阶段：Paper 1 / GAUSSIAN NUMERICAL QUALIFICATION**  
+**最新外部短审：PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION**  
+**Scientific Contract：v0.3.2，Gaussian-only code gate OPEN**  
+**structured-field implementation：未授权**  
+**正式 structured-beam 数值结果：无**
 
 ## 1. 当前科学问题
 
@@ -46,11 +46,9 @@ Paper 2 才是条件性的 turbulence–jitter co-design。
 - `N_eval=1024` 与 optimization 完全 disjoint；
 - near-boundary evaluation 可扩至 4096。
 
-### phase-spectrum `2pi` normalization — v0.3.2 已修，等待最终复核
+### phase-spectrum / Fourier normalization — PASS
 
-v0.3.1 的确定问题是：`0.033 Cn2` / `Phi_phi^(atm)=2pi k^2 Delta-z Phi_n^(atm)` 与带 `(2pi)^-2` 的 mathematical Fourier measure 被直接混用，导致 structure-function variance 缩小 `(2pi)^2`。
-
-v0.3.2 已显式分开：
+v0.3.2 显式分开：
 
 \[
 \Phi_\phi^{(atm)}=2\pi k^2\Delta z\,\Phi_n^{(atm)},
@@ -64,19 +62,17 @@ v0.3.2 已显式分开：
 }.
 \]
 
-并冻结 mathematical Fourier convention：
+在 mathematical Fourier measure `d^2kappa/(2pi)^2` 下，两种 structure-function integral 完全等价。
 
-\[
-\phi(r)=\int\frac{d^2\kappa}{(2\pi)^2}\tilde\phi(\kappa)e^{i\kappa\cdot r}.
-\]
-
-V5 新增 absolute Kolmogorov gate：
+Kolmogorov absolute gate：
 
 \[
 D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3},
 \qquad
 r_{0,screen}=[0.423k^2C_n^2\Delta z]^{-3/5}.
 \]
+
+最终复核确认 V4 / V5 / V6 / V7 构成闭合的 screen-level + propagation-level validation chain。
 
 ## 4. primary physical scene
 
@@ -132,18 +128,26 @@ Stage A broad search 已关闭。三条定向链已完成：Nelson 2014、Jiang 
 
 当前决定：
 
-> **REVISE — KEEP CODE GATE CLOSED.**
+> **PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION.**
 
-下一步只对 v0.3.2 的 spectrum/Fourier normalization 做一次最终极短复核。
-
-若 PASS，只授权 Gaussian-only 顺序：
+现在允许且仅允许按以下顺序实施：
 
 1. Gaussian free-space；
-2. finite-aperture displacement；
+2. finite-aperture displacement / capture；
 3. analytic jitter benchmark；
 4. Gaussian phase-screen / multi-screen validation V0–V12。
 
-只有 Gaussian chain 通过全部 numerical gates 后，才允许实现 Bessel / OPB / flat-top common comparison。
+该阶段的目标是验证共同传播链和数值归一化，不产生 structured-beam 优劣结论。
+
+### 仍未授权
+
+- Bessel implementation / production comparison；
+- OPB implementation / production comparison；
+- flat-top implementation / production comparison；
+- structured-field Monte Carlo；
+- Paper-2 joint beam optimization。
+
+只有 Gaussian chain 通过全部 V0–V12 后，才允许重新打开 structured-field implementation gate。
 
 ## 9. 禁止表述
 
@@ -157,3 +161,10 @@ Stage A broad search 已关闭。三条定向链已完成：Nelson 2014、Jiang 
 - “multi-screen / subharmonic 本身是创新”；
 - “低 scintillation 等于高低分位 received power”；
 - “omega_OPB=0.55 / chi_B=10 / N=4 是文献证明 optimum”。
+
+## 10. 当前权威审查链
+
+- `docs/review/EXTERNAL_REVIEW_DECISION_2026-08-07.md`
+- `docs/review/SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md`
+- `docs/review/SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md`
+- `docs/review/SCIENTIFIC_CONTRACT_V032_FINAL_REVIEW_DECISION.md`
