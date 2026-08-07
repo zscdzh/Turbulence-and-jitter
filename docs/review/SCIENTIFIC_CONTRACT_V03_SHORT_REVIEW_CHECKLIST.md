@@ -1,97 +1,98 @@
-# Scientific Contract v0.3 Candidate — Short Review Checklist
+# Scientific Contract v0.3.1 Candidate — Short Review Checklist
 
-**用途：** 这是 code gate 前的短审，不是重新进行 Stage-A broad literature review。
+**用途：** 这是 code gate 前的最终短复核，不重新开启 Stage-A broad literature review。  
+**待审合同：** `../SCIENTIFIC_CONTRACT_DRAFT.md`  
+**上一轮决定：** `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md`
 
-**待审合同：** `../SCIENTIFIC_CONTRACT_DRAFT.md`
+请只检查以下四组问题。
 
-请只回答以下五组问题。
+## 1. OPB finite-aperture feasibility
 
-## 1. scope / field formulas
+检查合同中：
 
-- coherent deterministic single-aperture + direct-detection finite-aperture scope 是否足够清楚？
-- Gaussian / circular `J0` / OPB / flat-top 四场是否属于机制足够不同、且同一 receiver task 下可比的最小集合？
-- OPB corrected `W(z)=1/(4 k beta z)`、`A(r)=Gaussian`、`W(L)/a_T=0.35` 是否 dimensionally / physically self-consistent？
-- flat-top canonical nested multi-Gaussian expression 是否自洽，`N=1` 是否正确退化到 Gaussian？
+\[
+W(L)=1/(4k\beta L),
+\qquad
+\rho_s=4\beta L^2,
+\qquad
+\omega=W(L)/a_T.
+\]
+
+以及：
+
+- `A(r)=exp(-r^2/w_A^2)`, `w_A=0.65a_T`；
+- aperture 后 `r95_T≈0.775a_T`；
+- primary `omega_OPB=0.55`；
+- `beta≈4.49e-9 m^-1`；
+- `rho_s≈17.94 mm < r95_T≈19.37 mm`；
+- Level-B `omega in [0.55,0.90]` 且继续要求 `rho_s<=r95_T`。
+
+问题：这些关系在量纲、数值与 Zhang 2019 的 stationary-phase interpretation 上是否自洽？
 
 输出：`PASS / REVISE`，只列真正阻塞实现的问题。
 
-## 2. primary physical scene
+## 2. G1 lower-tail optimization
 
 检查：
 
-- `lambda=1550 nm`；
-- `L=1 km`；
-- `D_T=D_R=50 mm`；
-- constant-`Cn2` primary horizontal path；
-- `Cn2=3e-15,1e-14,3e-14 m^-2/3`；
-- `L0=10 m`, `l0=5 mm` baseline，5/20 m 与 3/10 mm sensitivity。
+- 35 个候选全部共享同一组 256 common random realizations；
+- Top-5 再共享额外 768 realizations；
+- finalist 的最终 `N_opt=1024`；
+- winner 只由完整 1024 optimization set 决定；
+- `N_eval=1024` 与 optimization 完全 disjoint；
+- near-boundary evaluation 扩展至 4096。
 
-问题：
+问题：这一 staged CRN design 是否足以避免 5% quantile winner 被小样本噪声支配，同时不过度增加计算？
 
-- 是否足以作为“representative mechanism scene”，同时没有冒充 universal UAV terminal？
-- 是否有一个数值明显不合理到会让第一轮结果失去物理意义？
+## 3. exact turbulence spectrum / absolute references
 
-不要因为存在其他可选 UAV 场景而要求重新做广泛场景调研。
+检查 exact convention：
 
-## 3. fairness / optimized Gaussian
+\[
+\Phi_n(\kappa)=0.033C_n^2
+\frac{\exp[-(\kappa/\kappa_m)^2]}
+{(\kappa^2+\kappa_0^2)^{11/6}},
+\]
 
-检查：
+\[
+\kappa_0=2\pi/L_0,
+\qquad
+\kappa_m=5.92/l_0,
+\]
 
-- Level A common resource；
-- Level B no-disturbance `r80_R`-matched one-scale retuning；
-- G1 `w_G/a_T in [0.35,0.95]`；
-- `L/f_G in {0,0.5,1,1.5,2}`；
-- G1 objective = `Q5%(H)`；
-- per `(tau,j,alpha_R)` optimization；
-- `N_opt=256`, `N_eval=1024`, disjoint ensembles；
-- `N_confirm=4096` only near unresolved claimed boundaries。
+\[
+\Phi_\phi(\kappa)=2\pi k^2\Delta z\,\Phi_n(\kappa),
+\]
 
-请判断是否：
+以及合同中明确写出的 continuous Fourier convention 和 `D_phi` integral。
 
-- 对 Gaussian 足够强；
-- 对 structured fields 没有隐性多自由度；
-- 不会明显产生 selection bias。
+再检查：
 
-## 4. Gaussian numerical-validation table
+- V6a independent beam-wander spectral quadrature；
+- V7a weak-Kolmogorov Gaussian `W_LT` absolute reference；
+- V10a fixed-window grid-resolution refinement；
+- V10b fixed-`Delta x` physical-window enlargement；
+- V11 maximum-tilt wrap-around / aliasing。
 
-检查 V0–V12：
+问题：这些定义是否已经足以防止 FFT normalization 错误或“自收敛到错误答案”？若仍缺一项，请只指出最小必须补的绝对 benchmark。
 
-- free-space power / Gaussian analytic propagation；
-- finite-aperture displacement；
-- analytic jitter；
-- phase PSD / structure function；
-- low-frequency beam wander；
-- long-term radius / scintillation；
-- screen number；
-- grid/window；
-- propagation sampling；
-- maximum-tilt wrap-around / aliasing。
+## 4. final code-gate decision
 
-只指出：
+若 1–3 均无 blocker，请输出：
 
-- 缺失的必要 observable；
-- 明显过松或不现实的 tolerance；
-- 会导致假收敛的验收方式。
+> **PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION**
 
-不要增加与 Paper 1 科学结论无关的工程 CI / exhaustive audit。
-
-## 5. final code-gate decision
-
-请给一个且仅一个：
-
-- `PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION`；
-- `REVISE — KEEP CODE GATE CLOSED`；
-- `STOP — SCIENTIFIC CONTRACT FUNDAMENTALLY INVALID`。
-
-如果是 `REVISE`，最多列 **3 个**必须修改的 blocker。
-
-即使 PASS，也只授权按顺序：
+该 PASS 只授权：
 
 1. Gaussian free-space；
 2. finite-aperture displacement；
 3. analytic jitter；
-4. Gaussian multi-screen validation；
-5. Bessel literature reproduction sanity；
-6. 最后才 structured-field common comparison。
+4. Gaussian phase-screen / multi-screen validation V0–V12。
 
-**PASS 不等于授权直接运行 structured-beam Monte Carlo。**
+不授权 Bessel / OPB / flat-top production comparison。structured fields 只有 Gaussian chain 全部通过后才进入。
+
+若仍有 blocker，请输出：
+
+> **REVISE — KEEP CODE GATE CLOSED**
+
+并限制为最多 1–3 个真正阻塞实现的问题。
