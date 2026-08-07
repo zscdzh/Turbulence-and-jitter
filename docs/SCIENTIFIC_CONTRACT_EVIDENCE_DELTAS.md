@@ -119,3 +119,82 @@ UAV residual jitter 必须由 airborne/UAV/PAT 实测或系统级文献单独建
 - Gaussian 基线必须针对同一目标认真优化；
 - 正交偏振首先是避免相干干涉的实现方式，不能未经验证宣称带来独立 turbulence diversity；
 - 该文献服务于第二篇联合设计的前序边界，不应反过来把第一篇改写成 Gaussian–LG joint optimization。
+
+## Delta 008 — production turbulence model 必须验证低频 beam-wander 精度
+
+**状态：ACCEPTED**  
+**来源：** Chen et al., Applied Optics 2020, DOI `10.1364/AO.389121`  
+**证据角色：** numerical-validation anchor
+
+正式 multi-phase-screen implementation 不得只验证 phase RMS、screen appearance、short-term radius 或单一 scintillation。低空间频率欠采样会系统性低估 beam-wander variance 与 long-term beam radius，而这两项直接影响本项目对 turbulence-induced wander 与 mechanical jitter 相对重要性的判断。
+
+因此 production turbulence module 至少需要：
+
+- 明确 low-frequency treatment；
+- 验证 turbulence-induced beam-wander variance；
+- 验证 long-term beam radius；
+- 再辅以 short-term radius / scintillation 等诊断。
+
+具体使用 DFT-SH、sparse spectrum、randomized spectral sampling 或其他生成算法尚未冻结。
+
+## Delta 009 — UAV raw attitude jitter 与 post-PAT residual LOS jitter 分层
+
+**状态：ACCEPTED**  
+**来源：** Moon et al., IEEE TWC 2025, DOI `10.1109/TWC.2025.3549062`  
+**证据角色：** UAV pointing-geometry model anchor
+
+raw roll/pitch/yaw jitter 经过 UAV position/posture geometry 后形成 LOS pointing error，可能具有明显各向异性。Moon 文中的 `0.1–1 mrad` 级 roll/pitch/yaw standard deviations 是 trajectory-simulation assumptions，不是实测 post-PAT residual。
+
+Paper 1 仍允许采用二维 Gaussian transmitter-angle reduced model，但必须把它解释为 **PAT/FSM 闭环之后的 residual LOS angular error**，而不是 raw UAV attitude jitter。第一版可用 isotropic baseline，并保留少量 anisotropic sensitivity case。
+
+## Delta 010 — `O(10 microrad)` airborne closed-loop residual 获得实飞数量级锚点，但单一 `sigma_theta` 仍不冻结
+
+**状态：ACCEPTED AS RANGE EVIDENCE / NOT DIRECT PARAMETER INHERITANCE**  
+**来源：** Lei, Li, Zhang, Photonic Sensors 2019, DOI `10.1007/s13320-018-0522-9`
+
+两架 fixed-wing Y12 的真实飞行 laser-communication PAT 实验报告：
+
+- aircraft speed约 `300 km/h`；
+- acquisition/tracking range `10–144 km`；
+- coarse tracking error约 `8.68 microrad (1sigma)`；
+- fine tracking error约 `8.19 microrad (1sigma)`；
+- 144 km 稳定通信；
+- 2.5 Gbit/s，BER约 `1e-7`。
+
+这足以支持：真实 airborne closed-loop optical tracking residual 达到 `O(10 microrad)` 是有同行评审实飞证据的。
+
+但该值来自大型 fixed-wing Y12 composite PAT，不等价于小型 rotary-wing low-SWaP terminal 的 per-axis Gaussian `sigma_theta`。因此当前继续：
+
+- 用 dimensionless jitter 作为 Paper 1 主扫描变量；
+- 把 `~8–10 microrad` 作为真实 fixed-wing airborne order-of-magnitude anchor；
+- `sigma_theta` 的唯一物理 baseline 仍保持 **UNFROZEN**；
+- 不把 Ke 2021 的 `2.42 microrad (3sigma)` 室内 realignment 或 Moon 2025 的 mrad 级 raw attitude values 与该实飞 residual混用。
+
+## Delta 011 — 多旋翼真实悬停为 `O(30–40 microrad)` fine-tracking residual 提供工程锚点
+
+**状态：ACCEPTED AS MULTIROTOR ENGINEERING RANGE EVIDENCE / NOT DIRECT TRANSMITTER PARAMETER**  
+**来源：** Trinh et al., IEEE Access 2021, DOI `10.1109/ACCESS.2021.3117266`  
+**证据角色：** actual multirotor hover / retro-FSO fine-tracking / temporal-statistics anchor
+
+DJI Matrice 600 Pro 六旋翼 + Ronin MX 云台 + corner-cube retro-reflector 的真实悬停实验，在约 `101–102 m` one-way LoS、`202–204 m` roundtrip 下使用地面 FSM + QD + PID fine tracker。
+
+实验显示：
+
+- fine tracking 前 telescope-entrance incoming AoA standard deviations 约 `1.17–2.67 mrad`；
+- fine tracking 后 PM-plane residual Gaussian-fit standard deviations 约 `27–42 microrad` per axis；
+- x/y Gaussian fits 的 `R^2` 约 `0.999`；
+- hover-related AoA 主要频谱能量位于 `<50 Hz`，少量延伸至约 `200 Hz`；
+- beam-centroid displacement coherence time约 `700 ms`。
+
+这足以支持：
+
+> 小/中型多旋翼实际悬停、紧凑 optical fine-tracking architecture 下，`O(30–40 microrad)` residual AoA 是现实工程量级之一。
+
+但该系统为 double-pass retro-reflected architecture，fine tracker 位于地面，CCR/gimbal 改变 attitude-to-LOS mapping，因此这些数值不能直接等价于本项目 one-way active-transmitter per-axis `sigma_theta`。
+
+加入该证据后，Paper 1 继续采用：
+
+- dimensionless jitter 作为主科学坐标；
+- `~8–10 microrad` 作为 high-performance fixed-wing real-flight anchor；
+- `~30–40 microrad` 作为 multirotor compact-tracker engineering / stress anchor；
+- 单一 universal UAV physical baseline 仍保持 **UNFROZEN**。
