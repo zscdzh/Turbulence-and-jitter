@@ -50,11 +50,11 @@ Round 1 机制筛选详见：`docs/literature/PAPER1_MECHANISM_SCREEN_ROUND1.md`
 
 关键锚点：
 
-- Gu & Gbur, *Optics Letters* 2010, DOI `10.1364/OL.35.003456`：**ANCHOR_TO_READ / MECHANISM**。Airy array 的抗 scintillation 主张来自 self-bending 带来的 path diversity，不应简单归为 self-healing。
-- Zhu et al., *Optics Express* 2021, DOI `10.1364/OE.435863`：**ANCHOR_TO_READ / FINITE-APERTURE EXPERIMENT**。包含 limited receiver aperture、turbulence、received power 和 BER；需分离 Airy radial shaping 与 OAM/协议因素。
+- Gu & Gbur, *Optics Letters* 2010, DOI `10.1364/OL.35.003456`：**READ / PATH-DIVERSITY MECHANISM ANCHOR**。四个空间分离 Airy beamlets 依靠 self-bending 走过弱相关 turbulence paths，再在指定接收距离重新汇合；其 cross-scintillation 接近零、array scintillation 接近独立分量的 `1/N` 极限。该工作更应归类为 Airy-trajectory-enabled spatial/path diversity，而非普通“self-healing”。它依赖 multi-beamlet source footprint 和 distance-specific recombination，因此未必进入最终 monolithic-beam common-evaluation set。详见 `docs/literature/GU_GBUR_2010_AIRY_PATH_DIVERSITY_ANCHOR.md`。
+- Zhu et al., *Optics Express* 2021, DOI `10.1364/OE.435863`：**ANCHOR_TO_READ / FINITE-APERTURE EXPERIMENT**。包含 limited receiver aperture、turbulence、received power 和 BER；需分离 Airy radial shaping 与 OAM/协议因素。该文将决定最终是否选 single/ring Airy 作为共同评价代表。
 - Nelson et al. 2013/2014：同时作为 Airy failure-boundary 文献。
 
-当前 jitter 工作假设：independent tilt 可能整体移动/转动设计 caustic trajectory；需要检查 trajectory robustness 是否真的转化为固定孔径功率鲁棒性。
+当前 jitter 工作假设：common-mode mechanical tilt 可能在保留 path-decorrelation 机制的同时整体移动 beamlet recombination region；因此低 scintillation 不保证固定接收孔径功率仍高。该判断是待验证机制先验，不是 Gu & Gbur 已证明结果。
 
 ### C. self-focusing / pin-like / longitudinal concentration
 
@@ -71,13 +71,18 @@ Round 1 机制筛选详见：`docs/literature/PAPER1_MECHANISM_SCREEN_ROUND1.md`
 
 代表：Gaussian Schell-model / partially coherent transmitter。
 
-关键锚点：
+当前状态：**READ AS A MECHANISM CHAIN / MATURE JOINT-OPTIMIZATION CONTROL**。
 
-- Borah & Voelz, *Optics Express* 2010, DOI `10.1364/OE.18.020746`：**ANCHOR_TO_READ / OPTIMIZATION BASELINE**。优化 coherence length，并与 outage、beamwidth、curvature 等连接。
-- Liu et al., *Optics Letters* 2014, DOI `10.1364/OL.39.003336`：**ANCHOR_TO_READ / EXPERIMENTAL MECHANISM**。实验显示降低 coherence 可减小 turbulence-induced beam wander 与 deformation。
-- Drexler, Roggemann, Voelz, *Optical Engineering* 2011, DOI `10.1117/1.3533737`：**ANCHOR_TO_READ / RECEIVED-POWER EXPERIMENT**。直接连接 partially coherent transmitter 与 received-power dropout statistics。
+关键链条：
 
-当前 jitter 工作假设：partial coherence 的 robustness 可能伴随 beam spreading，因此对 jitter 的潜在改善必须与 aligned received power / long-term spot / transmitter resource 一起解释。
+- Borah & Voelz, *Optics Express* 2010, DOI `10.1364/OE.18.020746`：已建立 coherence-length optimization，并直接以 outage 处理 scintillation reduction 与 mean-signal reduction 的 trade-off；
+- Lee et al., *Optics Letters* 2013, DOI `10.1364/OL.38.000350`：已在 turbulence + pointing + aperture averaging 条件下联合优化 beam width 与 spatial coherence length；weak turbulence optimum 偏低 coherence，very strong turbulence optimum 可向 coherent limit 回落；
+- Liu et al., *Optics Letters* 2014, DOI `10.1364/OL.39.003336`：实验确认降低 spatial coherence 可减小 **turbulence-induced** beam wander 与 deformation；
+- Lee et al., *Applied Optics* 2016, DOI `10.1364/AO.55.000001`：进一步研究 partially coherent Gaussian 在 turbulence、beam wander、pointing errors、receiver aperture averaging 下的 beam-width optimization 与 average capacity。
+
+详见 `docs/literature/PARTIAL_COHERENCE_2010_2016_MECHANISM_CHAIN.md`。
+
+当前裁决：partial coherence 是重要成熟对照，但不宜作为 Paper 1 的核心“过去只抗 turbulence、现在首次加 jitter”的代表，因为这一家族的 joint turbulence–pointing optimization 已经相当成熟。若最终需要 positive control / validation case，可以保留；否则优先留在文献和讨论层。
 
 ### E. flat-top / flattened / super-Gaussian
 
@@ -197,8 +202,8 @@ DOI: `10.1364/OE.533250`
 
 1. ~~Eyyuboğlu et al. 2013 — Bessel / resource fairness~~ **READ**；
 2. ~~Zhang et al. 2019 — OPB / self-focusing~~ **READ**；
-3. Gu & Gbur 2010 — Airy array / path diversity；
-4. Borah & Voelz 2010 + Liu et al. 2014 — partial coherence；
+3. ~~Gu & Gbur 2010 — Airy array / path diversity~~ **READ**；
+4. ~~Borah & Voelz 2010 + Lee 2013 + Liu 2014 + Lee 2016 — partial coherence chain~~ **READ / MATURE CONTROL**；
 5. Alavinejad et al. 2008 — flat-top turbulence origin；
 6. Liu et al. 2022 HG — direct competitor。
 
