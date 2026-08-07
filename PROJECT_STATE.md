@@ -200,10 +200,10 @@ P_R
 
 **未建立。** `results/` 仍无已接受科学结果。
 
-## 八、当前开放 PR 状态
+## 八、当前 PR 状态
 
 - PR #1：当前统一路线纠正、治理、项目状态、科学契约和文献证据的 Draft PR；
-- PR #2：Liu/Jiang 2021 单篇文献证据 Draft，其有效内容已经迁入 PR #1，应关闭为 superseded，避免并行维护不同状态。
+- PR #2：已关闭为 **superseded**；其 Liu/Jiang 2021 有效证据已迁入 PR #1，没有作为独立科学结果丢弃。
 
 在 PR #1 合并前，`main@16c02105...` 仍是已接受主分支基线；本文件中的新路线纠正属于 Draft 待合并内容。
 
@@ -220,7 +220,7 @@ P_R
 7. finite-aperture received power 作为主链有文献依据，但不是本项目创新本身；
 8. single-screen 0.36L 仅可作 weak-turbulence benchmark；
 9. Liu/Jiang 2021 的 5–15 microrad 等仿真值不能作为 UAV residual-jitter 场景参数；
-10. Frozen Wave 保持独立纵向包络支线，不并入当前 Paper 1/2 主线。
+10. Frozen Wave 保持独立 longitudinal-envelope 支线，不并入当前 Paper 1/2 主线。
 
 ## 十、工作假设
 
