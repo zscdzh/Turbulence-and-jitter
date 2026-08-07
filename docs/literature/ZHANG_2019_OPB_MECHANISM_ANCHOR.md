@@ -1,4 +1,4 @@
-# Zhang et al. 2019：Optical Pin Beam 的 turbulence mechanism 与 Paper-1 jitter 假设
+# Zhang et al. 2019：Optical Pin Beam turbulence mechanism 与 Paper-1 jitter 假设
 
 ## 文献身份
 
@@ -7,251 +7,191 @@
 - APL Photonics 4, 076103 (2019)
 - DOI: `10.1063/1.5095996`
 - CC BY 4.0
-- 证据角色：**Paper 1 的 self-focusing / pin-like turbulence-resistance 机制锚点与实验锚点**；不是 quantitative UAV-jitter 文献，也不是正式 turbulence-model 锚点。
+- 证据角色：**Paper 1 的 radial-autofocusing / inward-energy-flow mechanism + real-atmosphere experiment anchor**；不是 UAV-jitter 参数来源，也不是 production turbulence-model anchor。
 
-## 1. 为什么这篇对 Paper 1 特别重要
+## 1. 机制定位
 
-这篇论文提出 optical pin beam (OPB)，其主要卖点不是普通 Bessel self-healing，而是：
+OPB 的主要机制不是普通 Bessel self-healing，而是：
 
-- 通过方向截断的 Airy-like fragments 组成径向相位结构；
-- 成对的相反 transverse wavevectors 在传播过程中逐步抵消；
-- side-lobe energy 持续向 central main lobe 汇聚；
-- 光束表现为无非线性的 autofocusing / self-focusing；
-- 在长距离传播中形成窄的 Bessel-like central structure。
+- 方向截断的 Airy-like radial fragments；
+- 成对 opposite transverse wavevectors；
+- side-lobe / peripheral energy 持续向 central region 输运；
+- free-space autofocusing / self-focusing；
+- 在设计传播区间形成窄的 Bessel-like pin。
 
-因此它代表一种与普通 Bessel angular-spectrum redundancy 不同的 turbulence-resistant 机制。
+因此 Paper 1 将 OPB 与 Bessel-like angular-spectrum redundancy 分开处理。
 
-更重要的是，该机制天然给出 Paper 1 的一个可证伪问题：
+## 2. 实验资源
 
-> 内部 transverse-wavevector cancellation 能否抵抗一个施加给整个发射场的 common-mode mechanical tilt？
+原论文主实验包括：
 
-原论文没有研究该问题。
-
-## 2. 实验发射与实现资源
-
-主实验使用：
-
-- CW laser：`lambda = 532 nm`；
-- laser output power：约 `2 W`；
+- `lambda = 532 nm` CW laser；
+- output power约 `2 W`；
 - engineered photoetched phase mask；
-- mask diameter：约 `5 cm`；
-- mask measured modulation efficiency：约 `90%`，作者定义为 10 m 处生成 OPB 的功率与 incident Gaussian beam 功率之比。
+- mask diameter约 `5 cm`；
+- measured modulation efficiency约 `90%`。
 
-phase mask 由同心环形台阶构成，沿任意 radial direction 实现近似 Airy-type cubic phase。作者指出，当 phase fragments 数量超过约 32 时，生成场接近 radially symmetric Airy / autofocusing field。
+原论文真实 mask / wavelength / aperture 只作为实验实现背景，不直接继承到 1550-nm UAV-FSO primary scene。
 
-这说明 OPB 不是“零代价的新光束”：它使用明确的 phase mask、有限 transmitter diameter，并把相当多能量放在 side-lobe / inward-flow reservoir 中。Paper 1 必须记录这些资源。
+## 3. continuum radial representation
 
-## 3. 机制：不是静态窄光斑，而是纵向能量汇聚
+外部审查后，Paper 1 第一版冻结使用 continuum radial phase，不实现真实 32-filament 或 etched-mask discretization。
 
-作者的物理图像是：
-
-1. 每对 Airy-like fragment 从相反方向向中心弯曲；
-2. 不同 fragment 在不同 z 位置逐步汇聚；
-3. side-lobe energy 向 central lobe 输运；
-4. main lobe 的 inward / outward transverse energy flow 最终趋于平衡。
-
-论文通过 Poynting-vector 分布说明：在其实验设计中，大约 60 m 后 central lobe 已出现较好的 inward/outward flow balance，90 m 时 main-lobe transverse energy flow 更接近 quasi-steady。
-
-因此 OPB 的“稳定”不是简单的静态 Gaussian narrow spot，而是一种持续的 distributed transverse-energy replenishment。
-
-## 4. 理论尺度关系
-
-在 radial-continuum 极限，作者写出 Fresnel/Hankel propagation，并取 Airy-type radial phase：
+source field 表示为：
 
 \[
-\psi_0(\rho)=A(\rho)\exp\left[-i\frac{4}{3}k\beta^{1/2}\rho^{3/2}\right],
+U_{OPB}(r)=C_{OPB}A(r)
+\exp\left[-i\frac{4}{3}k\sqrt{\beta}\,r^{3/2}\right]
+\Pi(r/a_T).
 \]
 
-其中 `beta` 是带 inverse-length dimension 的 phase-frequency 参数。
+其中：
 
-stationary-phase 近似得到 Bessel-like propagation form，并给出其 characteristic width 随传播距离近似：
+- `A(r)`：待 v0.3 physical-scene freeze 给出明确 amplitude envelope；
+- `beta`：inverse-length parameter，控制 radial phase / target pin scale；
+- `C_OPB`：common aperture 后 equal-`P_T` normalization；
+- `a_T`：common circular transmitter aperture radius。
+
+## 4. 重要更正：pin-width scaling
+
+原论文 Eq. (5) 对 characteristic pin width 的关系为：
 
 \[
-W(z)\propto \frac{1}{4k\beta^2 z}.
+\boxed{W(z)=\frac{1}{4k\beta z}}.
 \]
 
-核心物理含义是：在其设计区间内 OPB 不像普通 Gaussian 那样随 z 扩展，反而可以随传播逐渐变窄 / autofocusing。
+**此前本文件错误写成 `1/(4 k beta^2 z)`，现已更正。**
 
-这也是为什么 OPB 可能同时具有很高 aligned peak intensity 和非常窄的 capture core。
+错误版本量纲不成立，也会错误地改变 `beta` 与 target pin width 的映射。
 
-## 5. turbulence 实验结果到底证明了什么
-
-### 5.1 kilometer-scale outdoor experiment
-
-作者在 open-country real atmosphere 中比较 OPB 与没有 phase mask 的 Gaussian：
-
-- OPB main-lobe width 从 mask 附近约 `6 mm` 变到 1 km 后约 `9 mm`；
-- 对照 Gaussian 在 1 km 后扩展到约 `17 cm`，并明显起伏；
-- 作者称 Gaussian 与 OPB 来自同一 laser output size/power condition。
-
-这是很强的**真实大气传播展示**，证明 OPB 在该设置下能保持窄 central structure。
-
-但它没有给出：
-
-- `Cn2` / `r0` / Rytov variance；
-- finite receiver aperture power；
-- received-power ECDF；
-- outage / BER；
-- turbulence-induced beam-wander statistics；
-- independent mechanical jitter。
-
-因此它不能直接作为我们最终 quantitative channel benchmark。
-
-### 5.2 45 m indoor turbulent-air stability experiment
-
-作者用 central air conditioner 产生 turbulent air，记录 45 m 后图样：
-
-- 290 frames；
-- observation time：20 s；
-- 定义一个 integrated relative intensity-variation metric：
+参数映射必须使用：
 
 \[
-\Delta I_t=
-\frac{\int |I(x,y,t)-I_{mean}(x,y)|dxdy}
-{\int I_{mean}(x,y)dxdy}.
+\beta=\frac{1}{4kzW(z)}.
 \]
 
-OPB 的该指标明显低于 Gaussian。
-
-但图中 intensity 使用 arbitrary units，并明确用于 stability analysis，不是 absolute-power measurement。
-
-因此本实验支持：
-
-> OPB spatial-pattern / temporal-intensity stability 在该人工 turbulence 条件下优于其 Gaussian 对照。
-
-不能直接升级为：
-
-> OPB finite-aperture communication reliability 更高。
-
-## 6. 一个非常重要的 Gaussian baseline 问题
-
-原论文中的 Gaussian 对照是**没有 phase mask 的 normal Gaussian beam**。
-
-OPB phase mask 本身同时执行了强烈的 radial phase engineering / autofocusing；作者在 60 m 实验中报告 OPB FWHM 小于 3 mm，而 Gaussian 仍约 17 mm 宽，OPB peak intensity 超过 Gaussian 约一个数量级。
-
-因此这并不是“针对同一 receiver-distance objective 优化过的 focused Gaussian”与 OPB 的严格公平比较。
-
-Paper 1 必须避免复制这种 baseline：
-
-- Gaussian 应允许合理 quadratic phase / focusing；
-- 至少匹配相同 transmitter clear aperture 和 total power；
-- 报告 no-turbulence receiver-plane spot / encircled-energy / collected power；
-- 再判断 OPB turbulence benefit 有多少来自结构机制，有多少来自其本身的 autofocus design。
-
-这一点是该论文对我们非常重要的**竞争基线警告**。
-
-## 7. 作者自己承认 turbulence 理论并不严格
-
-论文在结论前明确说明：
-
-- 本文重点是 OPB experimental generation 与 robust free-space propagation；
-- **没有给出 rigorous numerical/theoretical modeling of Kolmogorov turbulence**；
-- phase-screen turbulence simulations 被放在 supplementary material；
-- 更严格的 statistical-turbulence dependence 需要 future studies。
-
-因此本论文是机制 / 实验锚点，而不是我们 formal multi-screen model 的参数依据。
-
-## 8. 原论文对 turbulence robustness 的机制解释
-
-作者提出一个定性解释：
-
-- turbulence 会给 beam 引入 random transverse wavevectors；
-- OPB 内部设计存在成对 opposite transverse wavevectors；
-- 这些横向成分在不同 propagation distances 上持续 cancellation；
-- 因此 central intensity distribution 能保持稳定。
-
-这是合理的 mechanism hypothesis，但原文没有用严谨的 stochastic-wave-optics decomposition 证明“随机 turbulence k-vector cancellation”是 observed robustness 的唯一原因。
-
-Paper 1 应把它视为**待检验机制主张**，而不是先验事实。
-
-## 9. Paper 1 的关键新推论：common-mode mechanical tilt 不会被内部 cancellation 消掉
-
-这是本项目基于原论文机制做出的**理论先验，不是原文结论**。
-
-若 OPB 内部一对 transverse wavevectors 近似为
+如在 primary range `L` 定义 target scale：
 
 \[
-+\mathbf q,\qquad -\mathbf q,
+\omega_{OPB}=\frac{W(L)}{a_T},
 \]
 
-则 ideal pairing 的 common transverse component 为零。
+则
 
-但 independent platform pointing tilt 等价于在整个 source field 上乘
+\[
+\beta=\frac{1}{4kLa_T\omega_{OPB}}.
+\]
+
+可选的 aperture-edge phase-strength descriptor 为：
+
+\[
+\chi_{OPB}=\frac{4}{3}k\sqrt{\beta}\,a_T^{3/2}.
+\]
+
+Paper 1 只选择 `omega_OPB` 或 `chi_OPB` 中一个作为实现自由度，避免重复参数化。
+
+## 5. 原论文 real-atmosphere evidence
+
+原论文在 open-country atmosphere 中展示约 kilometer-scale propagation：
+
+- OPB central main-lobe width 从 source 附近约 `6 mm` 到 1 km 后约 `9 mm`；
+- 原文 ordinary Gaussian comparison 在 1 km 后扩展到约 `17 cm`。
+
+这支持 OPB 在该实验设置下维持 narrow central structure，但不能直接继承其 effect size，因为原 Gaussian 没有针对相同 receiver-distance objective 做 optimized focusing。
+
+原论文还用 laboratory turbulent air 做 temporal intensity-stability comparison，但主指标不是本项目的 finite-aperture low-tail received power。
+
+## 6. Gaussian baseline warning
+
+OPB phase engineering 本身包含很强的 autofocusing / radial phase design，而原论文 Gaussian 是没有对应优化的普通 Gaussian。
+
+因此 Paper 1 必须使用：
+
+- common-resource G0；
+- 预注册 `w_G/f_G` 搜索的 optimized G1；
+- common aperture / equal transmitted power；
+- no-disturbance `H0` 和 `r80_R` resource ledger。
+
+不得直接引用原文 OPB-vs-Gaussian 光斑或峰值差作为本项目预期 structural gain。
+
+## 7. turbulence-model evidence boundary
+
+Zhang 2019 是 mechanism / experiment anchor，不是 production distributed-turbulence numerical anchor。
+
+它不提供本项目所需的：
+
+- validated low-frequency beam-wander statistics；
+- formal multi-screen convergence；
+- realization-level finite-aperture ECDF / `Q5%`；
+- independent mechanical residual jitter。
+
+因此 production turbulence contract 仍由 Lane 1992、Chen 2020、Chahine 2020 等数值方法链约束。
+
+## 8. Paper-1 jitter hypothesis
+
+以下是本项目机制推论，不是 Zhang 2019 已验证结论。
+
+若 OPB 内部一对 transverse wavevectors 近似为：
+
+\[
++\mathbf q,\qquad-\mathbf q,
+\]
+
+而 transmitter common mechanical tilt 使整个 source field 乘以：
 
 \[
 \exp(i k\boldsymbol\theta\cdot\mathbf r),
 \]
 
-从 angular-spectrum 角度，它给**所有**组成分量加入相同 common shift `k theta`：
+则 angular spectrum 中两分量变成：
 
 \[
-+\mathbf q\rightarrow +\mathbf q+k\boldsymbol\theta,
++\mathbf q+k\boldsymbol\theta,
+\qquad
+-\mathbf q+k\boldsymbol\theta.
 \]
+
+内部 `±q` pairing 仍可能支持 pin formation，但共同的 `k theta` 不会被抵消。
+
+因此待验证假设是：
+
+> **OPB 可以保持 propagation-side pin formation，同时整个 useful pin region 围绕 tilted axis 偏移，从而对固定 receiver aperture 产生明显 pointing loss。**
+
+这正是 Paper 1 要区分的：
 
 \[
--\mathbf q\rightarrow -\mathbf q+k\boldsymbol\theta.
+\text{propagation robustness}
+\neq
+\text{receiver pointing robustness}.
 \]
 
-因此内部 ±q 可以相互抵消，但 common-mode tilt 不会消失。两分量的 common component 仍指向同一个 tilted axis。
+## 9. v0.3 field freeze
 
-物理上更直观地说：
+### 已冻结
 
-> OPB 可能仍然围绕“被机械倾斜后的传播轴”完成 autofocusing / pin formation，但固定在名义轴上的 receiver aperture 并不会被 OPB 的内部 self-focusing 自动拉回。
+- OPB 进入第一轮 core set；
+- 使用 continuum radial phase；
+- 不实现 32-filament / etched-mask details；
+- 使用正确关系 `W(z)=1/(4 k beta z)`；
+- common circular aperture 后 equal-`P_T` normalization；
+- Level B 只允许一个 scale parameter 做 receiver-plane `r80_R` matching。
 
-这正是 Paper 1 要验证的：
+### 仍需在 v0.3 physical-scene table 中给出
 
-- **propagation robustness**：光束自身是否仍形成稳定 pin；
-- **receiver robustness**：这个 pin 是否仍落在固定接收孔径里。
+- `A(r)` 的具体 canonical choice；
+- representative `omega_OPB=W(L)/a_T` 或等价 phase strength；
+- 允许的 one-scale retuning interval。
 
-两者不能混为一谈。
+## 10. 禁止表述
 
-## 10. 为什么 OPB 可能是最强的 Paper-1 机制对照之一
+- OPB self-focusing 会自动把 common pointing error 拉回 nominal receiver；
+- Zhang 2019 已证明 OPB 抗 UAV residual jitter；
+- 原论文 ordinary Gaussian comparison 等价于 optimized Gaussian；
+- 2019 实验已证明 finite-aperture low-tail reliability 增益；
+- 错误公式 `W(z) ~ 1/(4 k beta^2 z)`。
 
-OPB 在原论文中呈现：
+## 当前状态
 
-- turbulence-only 下很强的 narrow-core / shape stability；
-- real-atmosphere kilometer-scale demonstration；
-- 明确的 inward-energy-flow 与 transverse-wavevector mechanism；
-- 高 phase-mask efficiency；
+**READ / CORRECTED MECHANISM ANCHOR / CORE-SET REPRESENTATIVE。**
 
-同时它的 aligned core 很窄，这恰好意味着：如果 global pointing displacement 不被内部机制抵消，则 fixed-aperture capture 可能对 jitter 很敏感。
-
-因此它可能成为 Paper 1 最典型的命题：
-
-> **一种对 turbulence propagation 很强的结构，并不自动对 independent LOS jitter 强。**
-
-注意：当前仍只是高价值待证伪假设，尚无联合模拟支持。
-
-## 11. 当前接受与不接受
-
-### ACCEPTED AS LITERATURE EVIDENCE
-
-- OPB 代表 self-focusing / inward-energy-flow 类 turbulence-resistant mechanism；
-- 2019 论文提供真实大气 kilometer-scale qualitative/experimental robustness evidence；
-- Gaussian baseline 未针对相同 receiver objective 做充分优化，因此不能直接继承 reported OPB-vs-Gaussian effect size；
-- 原文 turbulence modeling 不是 formal numerical anchor；
-- intensity stability / narrow spot 不等价于 finite-aperture low-tail communication reliability。
-
-### PAPER-1 HYPOTHESIS, NOT YET EVIDENCE
-
-- common-mode mechanical tilt 不会被 OPB 内部 opposite-wavevector cancellation 自动消除；
-- OPB 可能在保持自身 pin structure 的同时整体偏离 receiver；
-- narrow pin core 可能使其出现明显 turbulence–jitter trade-off。
-
-### NOT FROZEN
-
-- Paper 1 最终采用哪一种 OPB phase parameter；
-- mask/aperture 尺度；
-- 与 optimized Gaussian 的 exact matching protocol；
-- jitter sensitivity threshold；
-- OPB 是否最终优于或劣于 Bessel / Airy / flat-top。
-
-## 12. 对后续精读的影响
-
-读完本论文后，OPB 应继续保留为 Paper 1 高优先级代表机制。
-
-下一步需要用 Airy / path-diversity 文献判断：
-
-> OPB 的 inward-flow / opposite-wavevector cancellation 与 Airy self-bending/path-diversity 到底是同一机制的径向变体，还是在 Paper 1 中值得保留为两个独立机制。
-
-这将直接决定 Paper 1 最终是否保留 Bessel、Airy、OPB 三个 separate families，还是将 Airy/OPB 合并成一个 broader caustic/autofocusing mechanism family。
+OPB 文献机制链对 Scientific Contract v0.3 已足够；下一步不继续横向扩展 OPB 文献，而是冻结 `A(r)` 与 representative pin scale 后进入合同短审。
