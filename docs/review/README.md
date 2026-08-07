@@ -1,33 +1,37 @@
 # Review Entry Point
 
-Stage-A broad review 已结束。v0.3 第一次短审结论为：
+Stage-A broad review 已结束。v0.3.1 最新短复核结论为：
 
 > **REVISE — KEEP CODE GATE CLOSED**
 
-当前只审 Scientific Contract v0.3.1 candidate 对三个 blocker 的修订，不重新开启 broad literature search。
+OPB finite-aperture feasibility 与 G1 lower-tail optimization 已 PASS；当前只剩一个确定 blocker：phase-spectrum / Fourier `2pi` normalization。
 
 ## 当前最短阅读路径
 
-1. `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md` —— v0.3 短审的三个 blocker；
-2. `../SCIENTIFIC_CONTRACT_DRAFT.md` —— v0.3.1 candidate；
-3. `../PAPER1_PARAMETER_MAPPING_MATRIX.md` —— 更新后的 field/resource mapping；
-4. `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_CHECKLIST.md` —— 最终短复核问题。
+1. `SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md` —— 最新短复核与唯一 remaining blocker；
+2. `../SCIENTIFIC_CONTRACT_DRAFT.md` —— v0.3.2 candidate；
+3. `../literature/MODIFIED_VON_KARMAN_PSD_CONVENTION_ANCHOR.md` —— 唯一 spectrum/Fourier normalization anchor；
+4. `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_CHECKLIST.md` —— final ultra-short normalization review。
 
 背景材料按需读取：
 
+- `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md`；
 - `EXTERNAL_REVIEW_DECISION_2026-08-07.md`；
-- `../RESEARCH_STAGE_BOUNDARY.md`；
-- `../literature/ZHANG_2019_OPB_MECHANISM_ANCHOR.md`；
-- `../literature/NELSON_2014_BESSEL_AIRY_FAILURE_BOUNDARY_ANCHOR.md`；
-- `../literature/JIANG_2022_2026_FLAT_TOP_DIRECT_COMPETITOR_AUDIT.md`；
-- `../literature/LANE_1992_SUBHARMONIC_LOW_FREQUENCY_ANCHOR.md`。
+- `../RESEARCH_STAGE_BOUNDARY.md`。
 
-## v0.3.1 本轮只检查
+## v0.3.2 本轮只检查
 
-1. OPB finite-aperture stationary-radius feasibility；
-2. G1 common-random-number staged `Q5%` optimization；
-3. exact modified-von-Karman PSD/Fourier normalization；
-4. absolute Gaussian turbulence references 与 split grid/window convergence。
+1. `Phi_n^(atm)` / `Phi_phi^(atm)` / `Phi_phi^(math)` 的 `(2pi)` conversion；
+2. mathematical Fourier measure `d^2kappa/(2pi)^2` 是否与 phase PSD 完全匹配；
+3. Kolmogorov limit 是否恢复 `D_phi=6.88(rho/r0_screen)^(5/3)`；
+4. V4/V5 是否能发现 absolute normalization 错误。
+
+不要重新审查已经 PASS 的：
+
+- OPB `omega_OPB=0.55` finite-aperture feasibility；
+- G1 CRN staged `Q5%` optimization；
+- primary scene；
+- mechanism set / novelty route。
 
 ## 当前状态
 
@@ -35,10 +39,10 @@ Stage-A broad review 已结束。v0.3 第一次短审结论为：
 - Paper 1 scope: coherent deterministic single-aperture direct-detection；
 - core set: Gaussian + Bessel + OPB + flat-top；
 - latest decision: `REVISE — KEEP CODE GATE CLOSED`；
-- scientific contract: `v0.3.1 CANDIDATE / NEED SHORT RE-REVIEW`；
+- scientific contract: `v0.3.2 CANDIDATE / FINAL ULTRA-SHORT REVIEW`；
 - scientific code: none；
 - formal numerical results: none。
 
-若 v0.3.1 短审通过，只打开 **Gaussian-only implementation gate**。structured fields 仍需等待 Gaussian V0–V12 全部通过。
+若 v0.3.2 极短复核通过，只打开 **Gaussian-only implementation gate**。structured fields 仍需等待 Gaussian V0–V12 全部通过。
 
-旧 `PAPER1_EXTERNAL_REVIEW_PACKAGE.md` / `PAPER1_EXTERNAL_REVIEW_QUESTIONS.md` 仅保留为审查历史。
+旧 review package / questions 仅保留为审查历史。
