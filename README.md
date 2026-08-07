@@ -12,7 +12,7 @@ Paper 2 才是条件性的 turbulence–jitter co-design。
 
 ## 第一轮 core fields
 
-Scientific Contract v0.3.2 candidate：
+Scientific Contract v0.3.2：
 
 - Gaussian G0 / optimized G1；
 - circular-truncated zeroth-order Bessel `J0`；
@@ -62,29 +62,15 @@ W(L)=\frac{1}{4k\beta L},
 - `rho_s≈17.94 mm < r95_T≈19.37 mm`；
 - Level-B `omega_OPB in [0.55,0.90]`。
 
-该项已通过 v0.3.1 短复核。
+该项已通过短复核。
 
-## Turbulence spectrum normalization — v0.3.2
+## Turbulence spectrum normalization
 
-v0.3.1 发现 atmospheric spectrum 与 mathematical Fourier measure 存在确定的 `(2pi)^2` 冲突。v0.3.2 已显式分开：
-
-\[
-\Phi_n^{(atm)}(\kappa)=0.033C_n^2
-\frac{\exp[-(\kappa/\kappa_m)^2]}
-{(\kappa^2+\kappa_0^2)^{11/6}},
-\]
+v0.3.2 显式区分 atmospheric 与 mathematical Fourier PSD：
 
 \[
 \Phi_\phi^{(atm)}=2\pi k^2\Delta z\,\Phi_n^{(atm)},
 \]
-
-而对
-
-\[
-\phi(r)=\int\frac{d^2\kappa}{(2\pi)^2}\tilde\phi(\kappa)e^{i\kappa\cdot r}
-\]
-
-使用：
 
 \[
 \boxed{
@@ -93,30 +79,30 @@ v0.3.1 发现 atmospheric spectrum 与 mathematical Fourier measure 存在确定
 }.
 \]
 
-V5 必须直接恢复：
+在 mathematical measure `d^2kappa/(2pi)^2` 下必须恢复：
 
 \[
-D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3}
+D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3}.
 \]
 
-的绝对幅值，而不只检查 `5/3` slope。
+最终复核已 PASS。
 
 ## 当前状态
 
 **Stage A broad literature search: CLOSED**  
-**Latest short review: REVISE — KEEP CODE GATE CLOSED**  
-**Scientific Contract: v0.3.2 CANDIDATE / FINAL ULTRA-SHORT REVIEW**  
-**Scientific code: NONE**  
-**Formal numerical results: NONE**
+**Scientific Contract: v0.3.2 PASS**  
+**Gaussian-only implementation gate: OPEN**  
+**Structured-field implementation gate: CLOSED**  
+**Formal structured-beam numerical results: NONE**
 
-下一步只复核 phase-spectrum/Fourier normalization。若 PASS，只授权 Gaussian-only implementation：
+当前只授权 Gaussian numerical qualification：
 
-1. free-space；
-2. finite-aperture displacement；
+1. Gaussian free-space；
+2. finite-aperture displacement / capture；
 3. analytic jitter；
 4. Gaussian phase-screen / multi-screen V0–V12 validation。
 
-只有 Gaussian chain 全部通过后，才允许 Bessel / OPB / flat-top production comparison。
+只有 Gaussian chain 全部通过后，才允许 Bessel / OPB / flat-top implementation / production comparison。
 
 ## 关键入口
 
@@ -124,5 +110,4 @@ D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3}
 - `docs/RESEARCH_STAGE_BOUNDARY.md`
 - `docs/SCIENTIFIC_CONTRACT_DRAFT.md`
 - `docs/literature/MODIFIED_VON_KARMAN_PSD_CONVENTION_ANCHOR.md`
-- `docs/review/SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md`
-- `docs/review/SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_CHECKLIST.md`
+- `docs/review/SCIENTIFIC_CONTRACT_V032_FINAL_REVIEW_DECISION.md`
