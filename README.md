@@ -1,70 +1,100 @@
 # Turbulence-and-jitter
 
-面向无人机自由空间光通信（UAV-FSO）的发射光场湍流—抖动联合鲁棒性研究。
+面向无人机自由空间光通信（UAV-FSO）的抗湍流光束抖动敏感性与后续湍流—抖动联合鲁棒设计研究。
 
 ## 研究动机
 
 近地面无人机动中通链路同时受到两类核心扰动：
 
-1. 大气湍流引起的波前畸变、闪烁、光束扩展、散斑和 beam wander；
-2. 无人机平台振动、云台误差及 PAT/FSM 闭环残差引起的独立机械指向抖动和慢偏置。
+1. 大气湍流引起的波前畸变、闪烁、光束扩展、散斑和 turbulence-induced beam wander；
+2. 无人机平台振动、云台误差及 PAT/FSM 闭环残差引起的独立机械 pointing jitter 和慢 boresight bias。
 
-现有研究通常分别处理这两类问题：抗湍流光束主要关注闪烁、模式串扰、平均光强或有限孔径功率；抗抖动光束主要关注发散角、平顶程度和功率—偏移曲线。联合信道模型和 Gaussian 束宽优化已经成熟，但“结构化发射光场在多相位屏湍流与独立机械残余抖动共同作用下的有限孔径低尾可靠性”仍缺少统一回答。
+现有文献已经提出多类所谓“抗湍流”发射光场，包括 self-healing、caustic/self-accelerating、self-focusing/pin-like、flat-top、partially coherent/statistically shaped 等机制。这些方案大多围绕 atmospheric turbulence 本身设计和评价，并不等价于已经针对独立机械 jitter 优化。
 
-本项目的核心问题不是“第一次同时考虑湍流和指向误差”，也不是寻找一种在所有条件下普适最优的新光束，而是：
+因此，本项目首先问的不是“怎样直接设计一个 joint optimum beam”，而是：
 
-> 在给定发射/接收口径、链路距离、湍流强度和 PAT 残余抖动后，湍流最优、抖动最优与联合最优发射光场是否发生分离；不同光场的性能排序、适用域和资源交换规律是什么？
+> 现有不同抗湍流机制在加入 UAV/PAT residual jitter 后，哪些优势能够保持，哪些会明显退化或发生排序反转？这种差异能否形成可解释的 sensitivity map、applicability regime 或 failure boundary？
+
+只有在这个问题得到稳定机制认识后，才进入第二篇论文的 turbulence–jitter co-robust beam design。
+
+详细阶段边界见 `docs/RESEARCH_STAGE_BOUNDARY.md`。
 
 ## 当前研究结构
 
-### 阶段一：统一评价与适用域
+### Paper 1 / Stage A：关键文献与机制地图
 
-目标是建立一个机制驱动的统一评价框架，区分：
+**当前正在进行。**
 
-- turbulence-induced beam wander；
-- independent residual pointing jitter；
-- static boresight bias。
+目标不是马上实现候选光束，而是从关键文献中提取：
 
-以有限接收孔径功率为基础，研究不同发射光场在仅湍流、仅抖动和联合扰动下的：
+- 发射场定义与关键参数；
+- 作者声称的抗湍流机制；
+- turbulence model 与评价指标；
+- 发射/接收口径和资源假设；
+- 与 Gaussian 的比较方式；
+- 是否包含 beam wander 或 independent pointing jitter；
+- 对整体 lateral displacement 的潜在敏感性。
 
-- 接收功率分布与 ECDF；
-- 5% 分位功率；
-- outage probability；
-- 捕获函数、中心曲率和阈值覆盖面积；
-- 模式排序反转与无量纲适用域。
+文献按机制组织，而不是按模式名称堆积。当前计划先初筛约 30–40 篇，精读约 15–20 篇关键锚点，达到证据饱和后再冻结 Paper 1 的代表机制集合。当前入口见 `docs/KEY_LITERATURE_MAP.md`。
 
-第一阶段本身可能形成一篇共性评价论文，但前提不是“多种光束跑曲线”，而是得到稳定的排名反转、机制分区或可复用设计规律。
+### Paper 1 / Stage B：代表性抗湍流机制统一评价
 
-### 阶段二：低维联合设计
+从文献地图中选择少量、机制真正不同的代表光束，在共同的 turbulence–jitter–finite-aperture 框架下比较：
 
-仅在第一阶段发现明确的非平凡结构效应后推进。当前保留两个候选：
+- turbulence only；
+- jitter only；
+- turbulence + independent jitter。
 
-1. **flattened-Gaussian / super-Gaussian 家族**：Gaussian 作为嵌套零阶基线，研究最优平顶阶数与尺度如何随湍流、抖动和接收口径变化；
-2. **正交偏振 Gaussian–LG 双模复合光场**：中心 Gaussian 维持对准功率，径向 LG 提供外围覆盖和潜在散斑分集，检验联合最优权重是否位于内部参数区域。
+第一层优先保持文献原方案或明确有依据的代表参数，回答“原有抗湍流设计在加入 jitter 后还剩多少优势”。第二层仅在必要时做透明的尺度 retuning 与 optimized Gaussian 对照，用来区分结构机制和资源交换。
 
-Bessel/OPB 等自愈或焦散类光束优先作为机制对照，用于检验“自愈不等于抗整体偏移”。Frozen Wave 保留为独立小论文支线，不并入本项目主线。
+Paper 1 不以为每种 structured beam 寻找完整 joint optimum 为任务，也不允许为了让某一光束获胜而不断增加自由参数。
+
+主输出应是：
+
+- 抗湍流优势的保持、压缩、反转或失效；
+- 不同机制对 independent jitter 的敏感性；
+- finite-aperture received-power ECDF、低分位功率和必要的 outage；
+- 资源匹配后仍保留的结构收益；
+- 机制化适用域或失效边界。
+
+### Paper 2：低维 turbulence–jitter 联合鲁棒光束设计
+
+**状态：CONDITIONAL GO。**
+
+只有 Paper 1 得到稳定、可解释且不能由普通 Gaussian beam-width optimization 完全解释的 trade-off 后才推进。
+
+flattened-/super-Gaussian、Gaussian–LG/annular-like 目前只是可能的设计种子，不是已经冻结的候选。最终设计应由 Paper 1 的机制结果决定。
+
+Paper 2 才允许定义 joint objective、优化少量结构参数，并研究 turbulence-only、jitter-only 与 joint optimum 的迁移与内部最优。
 
 ## 当前裁决
 
-- 第一阶段统一评价：**GO**；
-- 第二阶段联合新光场设计：**CONDITIONAL GO**；
+- Paper 1 文献机制地图：**GO / 当前任务**；
+- Paper 1 统一评价：**GO，但等待文献集合与评价协议冻结**；
+- Paper 2 联合新光场设计：**CONDITIONAL GO**；
+- 当前代码执行：**尚未授权**；
 - 高维像素级逆设计、神经网络、完整无人机动力学和复杂通信协议：当前 **NO-GO / 不在范围内**。
-
-最现实的产出预期是一篇统一评价论文；第二篇只有在出现稳定的内部最优和可解释增益后才成立。
 
 ## 仓库原则
 
 - 这是科研项目，不以 CI、工程化完备性或大规模软件审计作为验收目标；
 - 每轮工作必须先说明科学问题、变量、测试内容、关键结果和结论边界；
-- 不以轴上峰值、单幅光斑或闪烁指数单指标证明通信优势；
-- 不要求新方案在所有归一条件下普适优于 Gaussian，但必须明确资源代价、适用场景和比较边界；
-- 优先用少量参数、可解释、可实现的光场家族进行证伪。
+- 不把“同时考虑 turbulence 与 pointing error”本身当作创新；
+- 区分 turbulence-induced beam wander、independent mechanical jitter 和 boresight bias；
+- 不以轴上峰值、单幅光斑或 scintillation 单指标证明通信优势；
+- Gaussian 基线必须针对同一比较任务认真处理；
+- 新方案不要求普适最优，但资源代价、适用场景和比较边界必须透明；
+- Paper 1 优先研究已有抗湍流机制的 jitter sensitivity；Paper 2 才允许联合设计。
 
-## 初始目录
+## 关键文档
 
 - `PROJECT_STATE.md`：当前权威项目状态；
 - `AI_RESEARCH_GOVERNANCE.md`：ChatGPT/Codex 协作与结果说明要求；
-- `docs/SCIENTIFIC_CONTRACT_DRAFT.md`：科学问题、模型、变量和最小验收契约；
-- `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`：前序调研综合与路线判断；
-- `docs/CODEX_HANDOFF.md`：Codex 启动交接与第一轮任务；
-- `.gitignore`：基础忽略规则。
+- `docs/RESEARCH_STAGE_BOUNDARY.md`：Paper 1 与 Paper 2 的权威边界；
+- `docs/KEY_LITERATURE_MAP.md`：当前 Paper 1 Stage A 文献机制地图；
+- `docs/SCIENTIFIC_CONTRACT_DRAFT.md`：当前 Draft 科学契约；
+- `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`：逐篇文献接受后的证据增量；
+- `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`：文献结构与路线综合；
+- `docs/literature/`：逐篇关键文献锚点；
+- `docs/CHATGPT_HANDOFF.md`：新 ChatGPT 对话交接；
+- `docs/CODEX_HANDOFF.md`：当前 Codex 状态说明；旧实现任务已暂停。

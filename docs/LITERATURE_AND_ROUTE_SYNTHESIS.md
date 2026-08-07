@@ -1,198 +1,256 @@
 # LITERATURE_AND_ROUTE_SYNTHESIS
 
-日期：2026-08-06
+**更新日期：** 2026-08-07  
+**状态：** 路线纠正版。本文用于组织当前文献调研，不替代逐篇文献锚点和最终科学契约。  
+**阶段边界：** `docs/RESEARCH_STAGE_BOUNDARY.md`
 
-本文件综合两份前序深度调研和后续讨论，用于说明当前路线为什么成立、哪些空间已经被覆盖、哪些候选应优先或暂缓。
+## 1. 当前领域结构
 
-## 1. 调研共识
+当前文献至少包含四条相邻研究线：
 
-当前领域存在四条相邻研究线：
+1. turbulence + pointing error 的联合信道或 wave-optics 建模；
+2. Gaussian beam width / divergence / aperture 等常规 pointing-robust optimization；
+3. Bessel、Airy、pin-like、flat-top、partially coherent、statistical beam shaping 等 turbulence-resistant structured beams；
+4. flat-top、super-Gaussian、Gaussian–LG、annular-like irradiance 等 jitter-oriented beam shaping。
 
-1. 湍流与 pointing error 联合信道建模；
-2. Gaussian 束宽、发散角、接收口径和部分相干参数优化；
-3. Bessel、Airy、pin-like、矢量、部分相干和统计匹配模式等抗湍流结构光；
-4. flat-top、super-Gaussian、Gaussian–LG 和环形光束等抗指向抖动整形。
+前两条说明“联合 turbulence 与 pointing”本身不构成创新。第四条主要约束未来 Paper 2 的 jitter-only 零假设。
 
-前两条已经成熟，后两条分别活跃，但它们尚未在以下条件下形成统一回答：
+Paper 1 的真正入口在第三条：
 
-- 多相位屏大气传播；
-- 独立于湍流的机械 residual jitter；
-- 有限接收孔径；
-- 低分位接收功率或 outage；
-- 结构化发射场的共同评价和联合优化。
+> 多类 turbulence-resistant beams 的提出与评价主要围绕湍流机制，但这些机制并不天然等价于对 independent mechanical pointing jitter 鲁棒。
 
-因此，不能声称“首次考虑湍流与指向误差”，但可以研究：
+因此 Paper 1 首先研究“抗湍流机制遇到 jitter 后会怎样”，而不是直接研究 joint optimum beam。
 
-> 独立机械抖动如何改写抗湍流光场的排序、最优参数和适用域。
+## 2. Paper 1 的机制主线
 
-## 2. 为什么研究动机真实
+当前文献调研应按机制建立地图，而不是先选某两个设计家族。
 
-近地面无人机动中通中，大气湍流和平台抖动都是一阶问题。实际接收功率由二者共同决定：
+### 2.1 self-healing / angular-spectrum redundancy
 
-- 湍流改变波前、幅度、散斑、质心和长期光斑；
-- 机械 residual jitter 使整个光场相对固定接收孔径发生倾斜或平移；
-- 有限接收口径把两类扰动转化为随机截获功率。
+代表：Bessel / Bessel–Gaussian 等。
 
-二者并非同一机制：
+需要核对：
 
-- 抗 turbulence-induced beam wander 不等于抗机械 jitter；
-- self-healing 不等于把整体偏移的光束拉回固定孔径；
-- 降低 scintillation 不保证提高绝对低尾功率；
-- 平顶提高偏移容差，但可能降低对准效率或增加衍射/halo。
+- 作者所谓 self-healing 在 turbulence 下具体恢复什么；
+- 是否评价 finite-aperture power 还是只看主瓣/结构相似度；
+- peripheral energy 和 transmitter aperture 付出了什么代价；
+- 对整体 lateral shift 是否仍然敏感。
 
-因此，寻求联合最优或适用域是自然问题，不是人为拼接。
+关键假设：局部扰动后的结构恢复不自动等于固定接收孔径对整体偏移不敏感。
 
-## 3. 已有覆盖与创新边界
+### 2.2 caustic / self-accelerating propagation
 
-### 3.1 已明显覆盖
+代表：Airy 或其他 caustic-like beams。
 
-- Gaussian 在随机 jitter 下的最优发散角和束宽；
-- 湍流、pointing error、有限探测器和 outage 的联合模型；
-- 部分相干 Gaussian 的束宽—相干长度联合优化；
-- UAV/HAP 链路的姿态、位置、FoV 和 beam width 优化；
-- flat-top / super-Gaussian 在 jitter-only 条件下的优势；
-- Gaussian–LG 或 Gaussian–annular 远场整形用于指向抖动；
-- 统计匹配模式和 adaptive-waist modes 用于湍流统计优化。
+需要核对：
 
-### 3.2 当前可保留的窄缺口
+- 抗 turbulence 的机制是轨迹、焦散重建、主瓣保持还是 beam wander reduction；
+- 其曲线传播或非对称结构怎样影响固定 circular aperture；
+- 对 independent jitter 的横向容差是否真正优于 matched Gaussian。
 
-- 非 Gaussian 径向结构或低阶模态权重，在多相位屏湍流和独立机械 jitter 下的联合统计最优性；
-- turbulence-only、jitter-only 和 joint optimum 的系统差异；
-- 模式排序反转和退化边界；
-- 用捕获函数曲率、阈值覆盖面积、halo 和模态相关性解释低尾功率；
-- 代表性机制的无量纲适用域。
+### 2.3 self-focusing / pin-like / longitudinal energy concentration
 
-## 4. 两份调研报告的候选差异
+代表：optical pin beam、self-focusing / abruptly autofocusing 类中的合适代表。
 
-### 4.1 Flattened-Gaussian / super-Gaussian
+需要核对：
 
-优点：
+- 优势是否主要来自维持轴上能量或抑制 beam spreading；
+- 更窄的局部热点是否反而提高 jitter sensitivity；
+- 轴向鲁棒性与横向有限孔径鲁棒性是否被混用。
 
-- Gaussian 是内嵌零阶基线；
-- 参数少，理论结构干净；
-- 容易判断联合最优是否退化；
-- 很适合研究湍流如何改变 jitter-only 的 flat-top 结论。
+### 2.4 flat-top / flattened / super-Gaussian
 
-风险：
+这类结构同时出现在 turbulence-resistant 和 jitter-oriented 文献中，因此是连接 Paper 1 与 Paper 2 的重要桥梁。
 
-- 近邻文献很接近；
-- 结果可能只是“湍流越强，最优阶数越低”；
-- 论文增量依赖是否形成稳定适用域和机制规律。
+Paper 1 关心的是：已有 flat-top/flattened turbulence claims 加入 independent jitter 后的保持或退化。
 
-当前定位：
+Paper 2 若最终采用该家族，才研究 joint design / optimum order / scale migration。
 
-> 最干净的第一阶段嵌套候选和关键基线。
+Jiang 2022/2026 等 joint pointing+turbulence 工作属于必须审计的直接竞争边界，不能再宣称“首次研究 flat-top 在 turbulence + pointing 下的性能”。
 
-### 4.2 正交偏振 Gaussian–LG 双模
+### 2.5 partial coherence / statistical beam shaping
 
-优点：
+需要核对：
 
-- Gaussian core 维持对准功率；
-- LG 环形分量提供外围覆盖；
-- 正交偏振强度相加，可能提供散斑分集；
-- 更可能出现明显低尾收益。
+- turbulence robustness 是否主要体现为 scintillation reduction；
+- beam spreading、source complexity 与 finite-aperture power 是否被同时计入；
+- 加入 independent jitter 后，较宽长期光斑带来的容差究竟是结构机制还是资源交换。
 
-风险：
+### 2.6 vector / mode-diversity 类
 
-- Gaussian–LG 已用于 jitter 鲁棒整形；
-- 正交偏振空间模式已用于湍流散斑多样性；
-- 容易被理解为两条已有路线的组合；
-- 必须证明内部权重最优和低相关机制，而不只是更宽光斑。
+暂不默认纳入 Paper 1。
 
-当前定位：
+只有在文献证明其提供与上述机制不同、且能在当前计算复杂度下公平评价的物理机制时，才作为补充代表。不得为了扩大论文内容机械增加模式、偏振和高维自由度。
 
-> 最有希望产生明显效果的预注册设计候选。
+## 3. Paper 1 的文献选择原则
 
-### 4.3 Bessel–Gaussian / OPB
+每个机制优先寻找：
 
-优点：
+1. 定义/奠基或明确阐释抗湍流机制的论文；
+2. 性能较强、与 Gaussian 有清楚比较的论文；
+3. 必要时一篇实验或外场论文。
 
-- 代表自愈、角谱冗余和外围能量供给机制；
-- 有利于验证“自愈不等于抗整体偏移”。
+总目标：初筛约 30–40 篇，逐篇精读约 15–20 篇锚点。
 
-风险：
+不是每篇都进入仿真。Paper 1 最终只选约 3–5 个机制真正不同、定义清楚、资源可比且计算上可实现的代表光束。
 
-- 文献拥挤；
-- 旁瓣储能和大发射口径可能主导结果；
-- 窄主瓣可能增加 jitter 敏感性。
+## 4. 每篇文献统一提取字段
 
-当前定位：
+### 4.1 文献与证据角色
 
-> 机制对照，不作为第一设计候选。
+- 题目、作者、年份、期刊/会议、DOI；
+- 理论、数值、室内实验或外场；
+- 模型来源、参数来源、机制锚点、直接竞争或 Paper 2 背景。
 
-### 4.4 Frozen Wave
+### 4.2 光场与资源
 
-上一轮调研认为 Frozen Wave 的纵向包络设计在有限孔径、距离不确定和湍流下可能形成一篇小论文。但其核心优势更接近：
+- 发射场公式；
+- waist / scale / order / mode parameters；
+- transmitter aperture 与硬截断；
+- total power normalization；
+- peripheral / halo energy；
+- generation efficiency、无用级次或额外器件（若相关）。
 
-- 纵向能量维持；
-- 接收距离变化；
-- 用静态光场替代部分动态调焦。
+### 4.3 turbulence
 
-它并不天然解决横向机械 jitter，因此与当前主问题联系较弱。
+- spectrum / phase-screen / analytical model；
+- `Cn2`、`r0`、Rytov 等强度定义；
+- beam wander 是否包含；
+- single-screen / multi-screen；
+- low-frequency treatment；
+- weak/strong turbulence 适用边界。
 
-当前定位：
+### 4.4 pointing / jitter
 
-> 独立支线储备，不并入湍流—抖动联合主项目。
+- angular or lateral displacement；
+- per-axis std、radial RMS、bias；
+- distribution / PSD / correlation time；
+- platform attitude、PAT error 还是 post-loop residual；
+- 是否独立于 turbulence；
+- 是否可能重复计入 beam wander。
 
-## 5. 第一阶段真正的学术核心
+### 4.5 receiver and metric
 
-第一阶段不能退化为“几种光束谁更好”。更有价值的表达是：
+- receiver aperture / detector type；
+- mean irradiance / scintillation / beam wander / power / outage / BER / capacity；
+- finite-aperture received power 是否真正计算；
+- Gaussian baseline 是否优化；
+- 结论依赖什么 normalization。
 
-> 湍流把每种光束的有限孔径捕获函数变成随机对象；机械 jitter 再对该捕获函数进行随机采样。不同光束的联合可靠性是否能够由捕获函数中心曲率、阈值覆盖面积、长期光斑尺度和外围能量比例统一解释？
+### 4.6 参数来源等级
 
-可检验结果包括：
+每个重要数字标记为：
 
-- turbulence-only 排名在加入 jitter 后反转；
-- 自愈类优势在整体偏移下消失；
-- flat-top 的最优阶数随湍流变化；
-- Gaussian–LG 的最优权重随湍流和 jitter 连续迁移；
-- 强湍流或大接收孔径使复杂结构退化为 Gaussian；
-- 多类结果可在少数无量纲参数下坍缩。
+- theoretical definition；
+- measured / experimental；
+- cited external value；
+- engineering hardware parameter；
+- simulation assumption；
+- plotting / stress-test parameter。
 
-形成其中一到两条稳定规律，第一阶段就可能独立成文。
+## 5. 已经确认的共用方法锚点
 
-## 6. 对“公平比较”的最终立场
+### Liu / Jiang 2021
 
-新方案不必在所有归一化条件下普适优于现有方案。很多光场的价值来自明确资源交换，例如：
+作用：joint wave-optics 方法定义与 weak-turbulence benchmark。
 
-- 更多外围能量换取位移覆盖；
-- 更低峰值换取更高低尾功率；
-- 复杂静态整形换取更低 PAT 精度；
-- 更大口径换取更长传播区间。
+已接受：
 
-合理要求是：
+- independent jitter 主链优先用 transmitter angular tilt；
+- `sigma_theta` 是 per-axis angular standard deviation；
+- finite-aperture received power 为主观测；
+- single-screen `0.36 L` 仅作 weak-turbulence benchmark；
+- 文中 `5–15 microrad` 等数字不得继承为 UAV residual-jitter 实测参数。
 
-- 代价透明；
-- 场景合理；
-- Gaussian 基线认真优化；
-- 结论不越界；
-- 说明收益中有多少来自尺度变化，有多少来自独立结构机制。
+详见 `docs/literature/LIU_JIANG_2021_METHOD_ANCHOR.md`。
 
-两套比较口径是解释工具，不是要求候选在每套口径下都获胜的硬门槛。
+## 6. Paper 2 的前序边界
 
-## 7. 当前产出判断
+### Badás 2024
 
-### 论文 1
+作用：jitter-only beam-shaping 零假设。
 
-主题：代表性抗湍流机制在独立残余抖动下的排序反转、适用域和统一解释。
+已确认：
 
-判断：相对乐观。只要形成稳定机制相图或失效边界，不依赖先发明强新光束。
+- Gaussian 本身也应认真优化 beam width；
+- Gaussian + LG / annular-like irradiance 的 jitter-only 权重与尺度优化已经有较成熟前序；
+- 不同通信目标对应不同最优 irradiance distribution；
+- 正交偏振首先实现非相干强度叠加，不能未经验证宣称 atmospheric diversity。
 
-### 论文 2
+因此这篇文献主要约束 Paper 2，而不应把 Paper 1 改造成 Gaussian–LG joint optimization。
 
-主题：flattened-Gaussian 或 Gaussian–LG 的低维联合设计。
+详见 `docs/literature/BADAS_2024_JITTER_OPTIMIZATION_ANCHOR.md`。
 
-判断：有希望但不能预支。需要非退化内部最优、连续适用区域和可解释效果量。
+## 7. 直接竞争工作的审计方向
 
-### 现实预期
+必须系统搜索并记录：
 
-当前已找到一条有较高概率形成一篇论文、并有条件衍生第二篇的路线，而不是已经得到两篇论文结论。
+- structured beam + turbulence + pointing error；
+- flat-top / flattened beam + turbulence + jitter / boresight；
+- Bessel / Airy / HG / other structured beam + pointing error；
+- aircraft/UAV platform + structured beam + turbulence + pointing；
+- finite-aperture low-tail/outage 与 structured beam 的已有工作。
 
-## 8. 初始执行原则
+这些工作用于划定 Paper 1 的创新边界。
 
-- 不再扩展文献清单和模式种类；
-- 先实现 Gaussian 基准与捕获函数；
-- 先验证 jitter-only 和 turbulence-only 模块；
-- 再运行四族最小机制集；
-- 先粗相图，后高样本尾部统计；
-- 一旦联合最优普遍回到 Gaussian，应及时停止第二阶段。
+Paper 1 不能声称：
+
+- 首次联合 turbulence 与 pointing；
+- 首次在 phase-screen 中加入 pointing error；
+- 首次计算 turbulence + pointing 下 finite-aperture received power；
+- 首次研究任意 structured beam 在 turbulence + pointing 下的性能。
+
+Paper 1 更窄的潜在贡献是：
+
+> 按抗湍流**机制**而非模式名称，对现有 turbulence-resistant beams 在 independent residual jitter 下的保持、退化和失效进行统一比较，并形成可解释的机制敏感性与适用域。
+
+## 8. Paper 1 的统一评价原则
+
+Paper 1 不是 joint design paper。
+
+第一层：保留文献代表参数，复现/确认原 turbulence claim 后加入 independent jitter。
+
+第二层：必要时做有限尺度 retuning 与 optimized Gaussian 对照。
+
+禁止：
+
+- 为每种 structured beam 做多参数 joint optimization；
+- 先预注册 flattened-Gaussian/Gaussian–LG 再反过来组织 Paper 1；
+- 为得到正结果不断增加模式、偏振、相干性和自由度。
+
+主输出应是：
+
+- turbulence advantage retention ratio / degradation；
+- ranking compression or reversal；
+- jitter sensitivity；
+- finite-aperture low-tail reliability；
+- resource-normalized mechanism effect；
+- applicability / failure regime。
+
+## 9. Paper 2 的逻辑入口
+
+只有 Paper 1 形成稳定 trade-off，才把机制结论转化为设计原则，例如：
+
+- central capture efficiency 与 lateral coverage 的矛盾；
+- turbulence redistribution 与 peripheral energy reservoir 的矛盾；
+- narrow-core turbulence robustness 与 jitter tolerance 的矛盾。
+
+然后再寻找少参数 co-robust field。
+
+flattened-/super-Gaussian、Gaussian–LG/annular-like 只是可能种子。最终是否采用它们由 Paper 1 决定。
+
+## 10. 当前执行原则
+
+当前首要任务正是**扩展并整理关键文献库**，此前“不要再扩展文献清单、先实现 Gaussian 和候选场”的旧执行原则已失效。
+
+正确顺序：
+
+1. 文献机制地图；
+2. 逐篇证据与参数提取；
+3. direct-competitor 审计；
+4. 文献证据饱和；
+5. 冻结 Paper 1 的代表机制与统一评价协议；
+6. 再讨论最小数值实现；
+7. Paper 1 结果出来后，才决定 Paper 2 是否启动以及采用什么设计家族。
+
+当前不启动正式 structured-beam coding、大规模 multi-screen Monte Carlo 或 Paper 2 joint optimization。

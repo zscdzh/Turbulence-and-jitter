@@ -1,158 +1,64 @@
 # CODEX_HANDOFF
 
-## 一、项目启动要求
+**状态：SUSPENDED / DO NOT EXECUTE AS AN IMPLEMENTATION TASK**  
+**更新日期：2026-08-07**
 
-这是一个新的科研仓库。开始工作前请完整阅读：
+本文件原先包含“先实现 Gaussian、flattened-Gaussian、Gaussian–LG，再进入 turbulence”的启动任务。该执行顺序已经被 2026-08-07 的路线纠正明确废止。
 
-1. `README.md`；
-2. `PROJECT_STATE.md`；
-3. `AI_RESEARCH_GOVERNANCE.md`；
-4. `docs/SCIENTIFIC_CONTRACT_DRAFT.md`；
-5. `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`。
+权威边界见：
 
-不要只根据本交接词直接写代码。
+- `PROJECT_STATE.md`
+- `docs/RESEARCH_STAGE_BOUNDARY.md`
+- `AI_RESEARCH_GOVERNANCE.md`
+- `docs/SCIENTIFIC_CONTRACT_DRAFT.md`
 
-本项目不是生产软件项目。当前目标是建立最小、可信、可解释的波动光学研究框架，不需要 GitHub Actions、复杂 CI、全覆盖测试或大规模工程化重构。
+## 一、当前阶段
 
-## 二、当前科学问题
+当前处于：
 
-近地面 UAV-FSO 链路同时受到：
+> **Paper 1 / Stage A：关键文献与抗湍流机制地图**
 
-- 大气湍流；
-- 独立平台/PAT 残余角抖动；
-- 有限发射与接收口径。
+Paper 1 的任务是研究已有 turbulence-resistant beams / mechanisms 面对 independent mechanical residual jitter 时的保持、退化、排序变化和失效边界。
 
-第一阶段要回答：
+Paper 1 不是联合新光束设计。
 
-> 独立机械残余抖动是否会改变抗湍流光场的性能排序、最优参数和适用域？
+Paper 2 才允许在 Paper 1 机制 trade-off 明确后开展 low-dimensional turbulence–jitter co-design。
 
-当前不要求直接提出“新光束”，也不允许一开始进行大规模 Monte Carlo 或模式动物园式比较。
+## 二、当前不授权的旧任务
 
-## 三、第一轮任务：基础模型与最小基准设计
+当前不要执行：
 
-请创建独立分支，并以 Draft PR 形式工作。第一轮只完成基础架构和小规模 smoke，不进行正式论文参数扫描。
+- 建立正式 propagation / turbulence 代码框架；
+- 实现 flattened-Gaussian 参数扫描；
+- 实现 Gaussian–LG joint optimization；
+- 预注册 Paper 2 设计候选；
+- 正式 multi-phase-screen Monte Carlo；
+- 为每种 structured beam 寻找 joint optimum；
+- 大规模参数扫描、BER 链路或高维模式扩展。
 
-### 任务 1：检查并细化科学契约
+旧版本中关于 `N=0,1,2,4,8`、`eta`、`waist_ratio`、候选 smoke 等任务均不再构成当前执行授权。
 
-阅读 `docs/SCIENTIFIC_CONTRACT_DRAFT.md`，指出：
+## 三、当前唯一允许的方向
 
-- 哪些公式或变量需要进一步冻结；
-- 哪些参数在数值实现前仍有歧义；
-- 哪些设置会导致采样、窗口、Fresnel 数或相位屏传播不合理；
-- 建议采用角谱法还是 Fresnel split-step，并说明适用边界。
+当前首先需要由 ChatGPT / 项目负责人完成文献驱动的科学契约冻结：
 
-不要静默修改科学问题。必要修改应写入新的决策文档或 PR 说明。
+1. 按抗湍流机制建立关键文献库；
+2. 初筛约 30–40 篇直接相关文献；
+3. 精读约 15–20 篇关键锚点；
+4. 建立机制—场定义—参数来源—资源—turbulence model—pointing coverage 证据矩阵；
+5. 完成 structured beam + turbulence + pointing 的 direct-competitor 审计；
+6. 文献证据趋于饱和后，冻结 Paper 1 的 3–5 个代表机制和统一评价协议。
 
-### 任务 2：建立最小代码结构
+如果未来项目负责人明确要求 Codex 参与文献下载、结构化抽取或后续代码实现，必须重新生成一份与当时科学契约一致的新正式 Codex 指令。
 
-建议但不强制的目录：
+## 四、Codex 触发规则仍有效
 
-```text
-src/
-  fields/
-  propagation/
-  turbulence/
-  jitter/
-  receiver/
-  metrics/
-configs/
-scripts/
-tests/
-results/smoke/
-docs/decisions/
-```
+只有当项目负责人明确说出：
 
-保持结构简单。避免为了未来扩展预先设计复杂框架。
+> 生成符合规范的Codex指令
 
-### 任务 3：Gaussian 自由空间基准
+才允许生成新的正式 Codex 执行提示词。
 
-实现并验证：
+“继续”“推进下一步”“可以做了”等表述不构成触发。
 
-- 圆形硬孔径内截断 Gaussian 发射场；
-- 自由空间传播；
-- 总功率归一化；
-- 接收圆孔积分；
-- 无湍流、无抖动能量账本；
-- 传播窗口和采样收敛的最小检查。
-
-给出：
-
-- 变量词典；
-- 解析 Gaussian 传播趋势与数值结果对比；
-- 发射面和接收面二阶矩/包围能量尺度；
-- 主要误差来源。
-
-### 任务 4：位移与抖动基准
-
-先不加入湍流，完成：
-
-- 接收面光场相对圆孔的确定性横向位移；
-- Gaussian 接收功率—位移曲线；
-- 二维 Gaussian residual jitter 采样；
-- 接收功率 ECDF、均值和 5% 分位；
-- 捕获函数中心曲率与阈值覆盖面积的初步计算。
-
-发射面 tilt 与接收面平移都可实现，先验证二者在小角度自由空间条件下是否一致，并说明何时不再等价。
-
-### 任务 5：只定义、不大扫的候选光场
-
-实现数学定义和无湍流 smoke：
-
-1. flattened-Gaussian：`N = 0, 1, 2, 4, 8`；
-2. 正交偏振 Gaussian–LG 双模：参数 `eta` 与 `waist_ratio`；
-3. 一个 Bessel–Gaussian 或 OPB 对照可暂只写接口和设计说明，不强制第一轮完整实现。
-
-所有场必须：
-
-- 在实际发射硬孔径内归一化；
-- 报告总功率、截断损失和二阶矩；
-- 说明参数物理意义；
-- 能生成可检查的发射面强度/相位和自由空间接收结果。
-
-### 任务 6：最小 smoke 输出
-
-只选择一组合理但明确标为“smoke”的参数，输出：
-
-- Gaussian 自由空间传播；
-- Gaussian 功率—位移曲线；
-- 一组 jitter ECDF；
-- flattened-Gaussian 不同阶数的无湍流捕获函数；
-- 一个 Gaussian–LG 权重案例的无湍流结果；
-- 能量和采样检查表。
-
-本轮不允许据此宣称任何联合鲁棒性结论。
-
-## 四、本轮不做
-
-- 不生成正式多相位屏湍流相图；
-- 不执行 300–10000 realization 的大规模 Monte Carlo；
-- 不扫描大量距离、口径和模式；
-- 不加入 Airy、Pearcey、矢量束、部分相干源或神经网络；
-- 不优化论文图表；
-- 不做 BER、编码或完整链路预算；
-- 不建立 CI 作为验收项。
-
-## 五、每轮输出格式
-
-按 `AI_RESEARCH_GOVERNANCE.md` 提供：
-
-1. 负责人摘要；
-2. 数学定义与变量词典；
-3. 关键代码链；
-4. 运行命令和证据入口；
-5. 结果支持、部分支持、开放和禁止的结论；
-6. CONTINUE / REVISE / STOP 建议。
-
-## 六、第一轮验收问题
-
-只有回答清楚以下问题，才进入湍流模块：
-
-1. Gaussian 自由空间传播是否与已知趋势一致？
-2. 总功率、硬孔径截断和接收积分是否可信？
-3. 传播窗口和采样是否足以容纳候选光场的外围能量？
-4. tilt 与接收面平移的关系是否被验证？
-5. 捕获函数、曲率和阈值覆盖面积是否定义明确？
-6. flattened-Gaussian 与 Gaussian–LG 的参数和归一化是否无歧义？
-7. 代码输出是否足以让项目负责人理解每张图和每个变量？
-
-完成后保持 PR 为 Draft，等待 ChatGPT 与用户审阅，不要自动进入大规模湍流仿真。
+因此，本文件当前只用于防止误执行旧任务，不是新的 Codex prompt。
