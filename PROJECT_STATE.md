@@ -1,263 +1,283 @@
-# 项目状态——无人机FSO发射光场湍流—抖动联合鲁棒性
+# 项目状态——无人机 FSO 抗湍流光束的抖动敏感性与后续联合设计
 
-**更新日期：** 2026-08-06  
-**已接受基线：** `main@16c02105a066cb123035f209c8f103abe13df88f`  
-**当前阶段：** 项目初始化与科学契约冻结前阶段；尚未建立正式代码链，尚未运行自由空间或湍流仿真。  
-**当前路线裁决：** 阶段一统一评价为 **GO**；阶段二低维联合光场设计为 **CONDITIONAL GO**。  
-**主要科学文档：** `docs/SCIENTIFIC_CONTRACT_DRAFT.md`、`docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`
+**更新日期：** 2026-08-07  
+**已接受主分支基线：** `main@16c02105a066cb123035f209c8f103abe13df88f`  
+**当前工作分支：** `docs/ai-governance-initialization`（Draft，尚未合并）  
+**当前阶段：** Paper 1 / Stage A——关键文献与抗湍流机制地图；尚未建立正式科学代码链，尚未运行自由空间或湍流仿真。  
+**当前路线裁决：** Paper 1 文献与机制研究 **GO**；Paper 1 后续统一评价 **GO 但等待文献冻结**；Paper 2 低维联合设计 **CONDITIONAL GO**。  
+**权威阶段边界：** `docs/RESEARCH_STAGE_BOUNDARY.md`
 
-本文件是当前负责人层面的权威状态快照。它只记录仓库证据能够支持的事实。无法从当前 `main`、已接受文档或运行产物确认的内容，均标记为“未确认”。
+本文件只记录当前仓库和负责人已确认决策能够支持的状态。Draft PR、计划参数、文献中的示例数字和未运行模型均不得写成已支持科学结果。
 
 ## 一、项目原始科学问题
 
-本项目研究近地面无人机自由空间光通信中，大气湍流与平台、云台和 PAT/FSM 闭环后的独立机械残余抖动共同作用时，发射光场应如何选择。
+### Paper 1：当前主问题
 
-原始问题不是：
+现有文献已经提出多类 turbulence-resistant beams，但它们大多围绕 atmospheric turbulence 的传播、闪烁、beam wander、模式保持、自愈或平均功率等指标设计和评价，并不等价于已经针对 UAV/PAT 独立机械 residual jitter 优化。
 
-> 首次在链路模型中同时加入湍流和 pointing error。
+当前主问题是：
 
-传统联合信道模型、Gaussian 束宽或发散角优化、部分相干 Gaussian 参数优化已经构成成熟前序。
+> 当 independent mechanical residual pointing jitter 被加入以后，不同抗湍流机制的原有优势哪些能够保持、哪些明显退化、哪些发生排序反转？这种差异能否用有限孔径捕获特性、长期光斑尺度、外围能量或其他少量结构描述量形成可解释的 sensitivity map、applicability regime 或 failure boundary？
 
-当前最小科学问题是：
+Paper 1 不是“寻找 joint optimum beam”，也不是“第一次联合 turbulence 与 pointing error”。
 
-> 独立机械残余抖动是否会改变抗湍流发射光场的性能排序、最优参数和适用域？turbulence-only、jitter-only 与 joint optimum 何时发生分离、排序反转或退化？
+### Paper 2：条件性后续问题
 
-进一步的问题是：
+只有 Paper 1 得到稳定机制 trade-off 后，才研究：
 
-> 不同光场的联合低尾可靠性，能否由有限孔径捕获函数、中心曲率、阈值覆盖面积、长期光斑尺度、外围能量比例和模态功率相关性等少量描述量解释？
+> 能否依据 Paper 1 的失效机制与资源权衡，设计一个少参数、可解释、可实现的 turbulence–jitter co-robust beam，并在与 optimized Gaussian 的公平比较中得到稳定的联合收益？
 
-## 二、当前研究阶段与范围
+Paper 2 才讨论 joint objective、joint optimum 和低维联合设计。
 
-### 阶段一：统一评价与适用域
+## 二、当前研究阶段
 
-**状态：GO，但尚未开始数值验证。**
+### Stage A：关键文献与机制地图
 
-目标是：
+**状态：当前正在进行。**
 
-- 分离 turbulence-induced beam wander、independent residual pointing jitter 与 static/slow boresight bias；
-- 建立少量代表性光场的共同传播和有限孔径评价框架；
-- 检查模式排序是否随湍流、抖动和接收孔径发生反转或压缩；
-- 建立无量纲适用域或失效边界；
-- 判断复杂光场的收益能否被普通 Gaussian 束宽或发散角优化完全解释。
+当前首要工作不是写传播代码，而是建立足以冻结 Paper 1 科学契约的关键文献库。
 
-阶段一只有在得到机制规律、稳定排序反转、可复用描述量或明确退化边界时才具有独立论文价值。普通“模式排行榜”不足以构成当前目标。
+文献按“抗湍流机制”组织，而不是按光束名字无边界扩张。当前需要覆盖但尚未冻结的机制包括：
 
-### 阶段二：低维联合光场设计
+- self-healing / angular-spectrum redundancy；
+- caustic / self-accelerating propagation；
+- self-focusing / pin-like / longitudinal concentration；
+- flat-top / flattened / super-Gaussian；
+- partial coherence / statistical beam shaping；
+- 只有在提供独立机制且数值复杂度可控时，才考虑 vector / mode-diversity 类补充。
 
-**状态：CONDITIONAL GO，未授权正式优化。**
+每类优先寻找机制锚点、强性能论文和必要的实验论文。
 
-只有阶段一证明非 Gaussian 结构提供稳定、可解释且适合目标场景的联合收益时才推进。
+从每篇关键文献提取：
 
-当前保留两个低维候选：
+- 发射场数学定义与关键参数；
+- 作者声称的抗湍流机制；
+- turbulence model 与适用范围；
+- 评价指标；
+- 发射/接收口径；
+- Gaussian 基线和比较规则；
+- 总功率、外围能量、生成损耗等资源；
+- 是否包含 turbulence-induced beam wander；
+- 是否包含 independent pointing jitter；
+- 参数属于实测、引用、理论定义还是仿真假设；
+- 对整体 lateral displacement 的潜在敏感性。
 
-1. flattened-Gaussian / super-Gaussian 的阶数—尺度优化；
-2. 正交偏振 Gaussian–LG 双模复合光场的功率权重与相对束宽优化。
+目标规模：先初筛约 30–40 篇直接相关文献，再精读约 15–20 篇关键锚点；以“新增文献不再实质改变机制分类、模型边界或创新判断”为证据饱和标准，而不是机械凑篇数。
 
-当前没有证据证明任何候选优于优化 Gaussian，也没有证据证明存在非端点联合最优。
+### Stage B：Paper 1 统一评价
 
-## 三、当前模型边界
+**状态：路线 GO，但尚未授权正式实现。**
 
-当前科学契约为 Draft，以下边界属于已记录的项目意图，不等于已经实现或验证：
+只有在 Stage A 完成后，才从文献中选择约 3–5 个机制真正不同的代表光束。
+
+统一评价至少比较：
+
+- turbulence only；
+- jitter only；
+- turbulence + independent jitter。
+
+第一层优先保留原文有依据的代表参数，回答“原抗湍流设计加入 jitter 后还剩多少优势”。第二层只在必要时允许有限尺度 retuning 和 optimized Gaussian 对照，用于区分结构机制与单纯光斑变宽/资源增加。
+
+Paper 1 不要求为每种 structured beam 求完整 joint optimum，不为了得到积极结果给每个模式增加多参数自由度。
+
+### Paper 2：低维联合设计
+
+**状态：CONDITIONAL GO，尚未授权。**
+
+flattened-/super-Gaussian、Gaussian–LG/annular-like 等目前只保留为可能的设计种子。最终是否采用任何一种结构必须由 Paper 1 的机制结果决定。
+
+Badás 2024 等 jitter-only 工作主要用于约束 Paper 2 的零假设和创新边界，不应反过来定义 Paper 1 的任务。
+
+## 三、当前共用物理边界
+
+以下是两篇论文可能共用、但仍需文献冻结的模型边界：
 
 ### 计划包含
 
-- 1550 nm 标量场或两正交偏振分量；
+- 近地 UAV-FSO 的波动光学传播；
 - 圆形有限发射与接收孔径；
-- 自由空间角谱法或 Fresnel split-step；
-- von Kármán 或 modified von Kármán 多相位屏；
+- 多相位屏 distributed turbulence；
 - turbulence-induced beam wander；
-- 独立二维机械角抖动；
-- 后续可选静态 boresight bias；
-- 大面积直接探测下的有限孔径接收功率。
+- independent mechanical angular jitter；
+- 后续可选 static/slow boresight bias；
+- 大面积直接探测下的 finite-aperture received power。
 
 ### 当前不包含
 
 - 完整无人机六自由度动力学；
-- 详细 PAT/FSM 控制器和飞控模型；
-- AO 瞬时波前补偿；
+- 详细 PAT/FSM 控制器与飞控闭环；
+- AO 瞬时补偿；
 - 单模光纤耦合；
 - 模式分解或相干接收；
-- 复杂调制、编码和探测器噪声链；
+- 复杂编码与完整 receiver noise chain；
 - 高维像素级逆设计或神经网络。
 
-上述边界仍需在第一次模型实现前冻结具体数值定义。
+## 四、已接受的方法学定义
 
-## 四、关键变量与物理含义
+来自 Liu/Jiang 2021 的逐篇精读，当前已经接受但仍需进入最终科学契约的共用方法增量见 `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`。
 
-以下变量来自当前科学契约。部分参考尺度和参数范围尚未最终确认。
+当前包括：
+
+1. independent mechanical residual jitter 主链优先用 transmitter angular tilt；
+2. `sigma_theta` 表示单轴 angular standard deviation；
+3. `W_eff^2 = W^2 + 4 L^2 sigma_theta^2` 可作为 Gaussian jitter broadening 的解析 sanity check，前提是 beam-radius convention 一致；
+4. finite-aperture received power 是通信主观测，point irradiance 和 scintillation 只作辅助；
+5. single-layer `0.36 L` phase screen 只作 weak-turbulence benchmark，不作为正式 distributed-turbulence model；
+6. turbulence beam wander、independent jitter 和 boresight bias 必须独立记账。
+
+## 五、当前关键变量
+
+以下只列共用变量；Paper 2 的设计变量尚未进入当前主状态。
 
 | 变量 | 含义 | 单位 | 当前状态 |
 |---|---|---:|---|
-| `lambda` / \(\lambda\) | 光波长 | m | 计划基准为 1550 nm，未通过代码确认 |
-| `transmitter_diameter` / \(D_T\) | 发射清孔径直径 | m | 计划范围 40–80 mm，主基准未冻结 |
-| `receiver_diameter` / \(D_R\) | 接收孔径直径 | m | 至少两档，具体值未冻结 |
-| `range` / \(L\) | 链路距离 | m | 计划 1 km 主场景、2–3 km 压力场景，未冻结 |
-| \(r_0\) | Fried 相干长度 | m | 由湍流条件确定，计算方式未冻结 |
-| \(\tau=D_T/r_0\) | 归一化湍流强度 | 无量纲 | 定义已提出，数值实现未确认 |
-| `jitter_sigma` / \(\sigma_\theta\) | 单轴机械残余角抖动标准差 | rad | 初始计划为二维零均值 Gaussian，未实现 |
-| \(j=L\sigma_\theta/w_{ref}\) | 归一化机械抖动 | 无量纲 | `w_ref` 的最终定义未冻结 |
-| \(\rho_{bw}\) | 湍流产生的接收面质心漂移 | m | 必须由相位屏传播产生，未实现 |
-| \(\rho_b\) | 静态或慢 boresight 偏置 | m | 第一阶段可设为零，未实现 |
-| \(P_T\) | 总发射功率 | W 或归一化 1 | 归一化规则未实现 |
-| \(P_R\) | 单次 realization 的有限孔径接收功率 | W 或归一化功率 | 定义已提出，未实现 |
-| \(H=P_R/P_T\) | 归一化接收功率 | 无量纲 | 定义已提出，未实现 |
-| \(Q_{5\%}(H)\) | 接收功率 5% 分位数 | 无量纲或 dB | 主指标候选，未计算 |
-| \(P_{out}\) | 低于给定门限的中断概率 | 无量纲 | 主指标候选，门限未冻结 |
-| \(G(\Delta;\omega)\) | 给定湍流 realization 下的有限孔径捕获函数 | 功率 | 定义已提出，未实现 |
-| \(\kappa\) | 捕获函数中心附近的小抖动曲率 | 取决于位移归一化 | 定义已提出，数值离散方式未确认 |
-| \(\mathcal A(H_{th})\) | 超过功率门限的位移覆盖面积 | m² 或归一化面积 | 定义已提出，门限和离散方式未确认 |
-| \(N\) | flattened-Gaussian 阶数 | 整数 | 计划 `0,1,2,4,8`，未实现 |
-| \(\eta\) | Gaussian–LG 中 Gaussian 功率比例 | 无量纲 | 范围 0–1，未实现 |
-| \(s=w_{LG}/w_G\) | Gaussian–LG 相对束宽 | 无量纲 | 未冻结扫描范围 |
+| `lambda` / \(\lambda\) | 波长 | m | UAV 主场景值待文献冻结；1550 nm 仍只是强候选，不视为已冻结 |
+| `transmitter_diameter` / \(D_T\) | 发射清孔径直径 | m | 待真实终端/代表文献冻结 |
+| `receiver_diameter` / \(D_R\) | 接收孔径直径 | m | 待文献冻结 |
+| `range` / \(L\) | 链路距离 | m | 待 UAV 场景文献冻结 |
+| \(r_0\) | Fried coherence length | m | 定义与计算方法待 turbulence 文献冻结 |
+| `jitter_sigma` / \(\sigma_\theta\) | 单轴独立机械 residual angle std | rad | 定义已接受，真实 UAV/PAT 数值待实测/系统文献 |
+| \(\rho_{bw}\) | turbulence-induced receive-plane centroid wander | m | 必须来自 turbulence propagation |
+| \(\rho_j=L\theta_j\) | independent mechanical jitter 位移尺度 | m | 共用诊断量 |
+| \(\rho_b\) | static/slow boresight bias | m | 第一篇可先设 0，后续是否加入待定 |
+| \(P_T\) | 总发射功率 | W 或归一化 1 | 归一化协议待机制比较规则冻结 |
+| \(P_R\) | 单 realization finite-aperture received power | W 或归一化功率 | 主观测 |
+| \(H=P_R/P_T\) | normalized received power | 无量纲 | 主统计输入 |
+| `mechanism_class` | 抗湍流机制分类 | 类别 | Stage A 正在建立 |
+| `literature_anchor` | 代表机制的原始/关键文献 | 引用 | Stage A 正在建立 |
+| `resource_ledger` | 功率、口径、外围能量、生成损耗等 | 多单位 | Stage A/Stage B 必须记录 |
 
-## 五、计划中的输入—处理—输出关系
+当前不把 flattened-Gaussian 阶数、Gaussian–LG 权重或 relative waist 视为 Paper 1 的关键变量；它们属于可能的 Paper 2 设计变量。
 
-当前计划的数据链为：
+## 六、Paper 1 计划中的输入—处理—输出关系
+
+Stage A 的当前数据链是：
 
 \[
-\{\text{光场家族与参数、口径、波长、距离}\}
+\{\text{关键文献}\}
 \rightarrow
-\{\text{机械倾斜、湍流相位屏、分步传播}\}
+\{\text{机制、场定义、参数来源、资源、指标、pointing 覆盖}\}
+\rightarrow
+\{\text{机制证据矩阵}\}
+\rightarrow
+\{\text{Paper 1 代表机制与统一评价协议}\}.
+\]
+
+Stage B 冻结后，才建立数值链：
+
+\[
+\{\text{代表抗湍流光场}\}
+\rightarrow
+\{\text{turbulence / jitter / joint propagation}\}
 \rightarrow
 U_L(x,y)
 \rightarrow
-\{P_R,\rho_{bw},G,\kappa,\mathcal A\}
+P_R
 \rightarrow
-\{\mathrm{ECDF},Q_{5\%},P_{out},\text{适用域}\}.
+\{\mathrm{ECDF},\text{low-tail metrics},\text{mechanism sensitivity / failure regime}\}.
 \]
 
-一个预期的具体例子是：
+## 七、当前仓库代码与数据链
 
-1. 输入一个固定口径内归一化的 Gaussian 或 flattened-Gaussian 发射场；
-2. 对其施加一组二维机械角倾斜；
-3. 通过共同的多相位屏 realization 传播；
-4. 在固定圆形接收孔径内积分接收功率；
-5. 对多次共同随机 realization 形成配对功率样本；
-6. 计算 ECDF、5% 分位功率、outage 和捕获函数解释量；
-7. 与针对同一任务优化的 Gaussian 比较。
+### 已存在
 
-该链目前只是科学契约，尚无仓库代码或运行产物证明其已经实现。
+- 负责人层科学与治理文档；
+- `docs/RESEARCH_STAGE_BOUNDARY.md`：本轮路线纠正；
+- `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`：已接受文献证据增量；
+- `docs/literature/`：逐篇文献锚点；
+- Frozen Wave 独立支线储备文档。
 
-## 六、当前仓库结构、代码与数据链
+### 核心科学代码
 
-截至已接受基线 `main@16c02105a066cb123035f209c8f103abe13df88f`：
+**未建立。**
 
-### 已存在的负责人层文档
+当前没有已接受的 free-space propagation、multi-screen turbulence、representative structured fields、receiver integration 或 statistics 代码链。
 
-- `README.md`：研究动机、两阶段路线和仓库原则；
-- `AI_RESEARCH_GOVERNANCE.md`：AI参与规则；
-- `PROJECT_STATE.md`：当前状态；
-- `docs/SCIENTIFIC_CONTRACT_DRAFT.md`：Draft科学契约；
-- `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`：前序调研综合；
-- `docs/CODEX_HANDOFF.md`：早期Codex启动交接文档；
-- `.gitignore` 与 `results/.gitkeep`。
+### 正式运行与结果
 
-### 核心代码
+**未建立。** `results/` 仍无已接受科学结果。
 
-**未建立。** 当前 `main` 没有已接受的传播、湍流、光场、接收积分或统计模块。
+## 八、当前开放 PR 状态
 
-### 运行配置
+- PR #1：治理与项目状态初始化分支，当前正在吸收路线纠正与文献证据，拟作为统一文档 PR；
+- PR #2：Liu/Jiang 2021 文献证据分支，其有效内容已迁入 PR #1，后续应关闭为 superseded，避免两个 Draft PR 维持不同状态。
 
-**未建立。** 当前没有已接受的数值配置文件。
+在 PR #1 合并前，`main@16c02105...` 仍是已接受主分支基线；本文件中的新路线纠正属于 Draft 待合并内容。
 
-### 运行摘要和结果产物
+## 九、已支持的结论
 
-**未建立。** `results/` 仅有占位文件，没有已接受的仿真结果。
+当前支持的是路线与文献边界，不支持任何 structured-beam 数值性能结论：
 
-### PR状态
+1. “同时考虑 turbulence 与 pointing error”本身不是创新；
+2. 现有多类 turbulence-resistant beams 大多不是为 independent mechanical jitter 设计；
+3. Paper 1 应先系统研究这些抗湍流机制在 independent jitter 下的敏感性、失效和排序变化；
+4. Paper 1 的核心价值应是机制规律和适用域，而不是模式排行榜或 joint design；
+5. Paper 2 才允许根据 Paper 1 的 trade-off 做 low-dimensional turbulence–jitter co-design；
+6. flattened-/super-Gaussian、Gaussian–LG 当前只属于 Paper 2 的可能设计种子；
+7. finite-aperture received power 作为主链有文献依据，但不是本项目创新本身；
+8. single-screen 0.36L 仅可作 weak-turbulence benchmark；
+9. Liu/Jiang 2021 的 5–15 microrad 等仿真值不能作为 UAV residual-jitter 场景参数；
+10. Frozen Wave 保持独立纵向包络支线，不并入当前 Paper 1/2 主线。
 
-截至本文件更新前，仓库没有已合并或开放的 PR；初始化内容直接写入 `main`。因此不存在可以作为科学证据引用的 PR 结果。
+## 十、工作假设
 
-## 七、已支持的结论
+以下仍是需要 Paper 1 验证的假设，不得写成已支持结果：
 
-当前只支持负责人层的路线与范围判断，不支持任何数值性能结论。
+- self-healing 能恢复局部扰动结构，但不自动抵抗整体 lateral displacement；
+- 窄核心/高梯度光斑可能对 jitter 更敏感；
+- flat-top 类可能具有较低中心位移敏感性，但其优势可能来自更宽覆盖或额外外围能量；
+- partial coherence 降低 scintillation 不必然提高 finite-aperture low-tail power；
+- 不同抗湍流机制在加入 jitter 后可能出现排序压缩或反转；
+- 这些差异可能被少量 capture/scale/resource descriptors 解释。
 
-1. 近地面 UAV-FSO 的大气湍流和平台/PAT残余抖动构成合理的联合研究动机；
-2. “同时考虑湍流和 pointing error”本身不是创新点；
-3. 当前值得审查的窄问题是：独立机械抖动是否改写结构化抗湍流光场的排序、最优参数和适用域；
-4. 阶段一统一评价值得进入最小模型准备；
-5. 阶段二新光场设计必须等待阶段一证据；
-6. 新方案不必成为普适最优，但资源代价、适用场景和 Gaussian 基线必须透明；
-7. Frozen Wave 更适合作为纵向包络与距离变化的独立支线，不是当前横向抖动主线的默认候选；其储备说明见 `docs/research_reserve/FROZEN_WAVE_LONGITUDINAL_ENVELOPE.md`。
+## 十一、禁止表述
 
-这些结论来自当前 README、调研综合和科学契约，不是数值验证结果。
+当前禁止：
 
-## 八、部分支持或工作假设
+- “首次把 turbulence 与 pointing error 联合起来”；
+- “已经提出/验证了 turbulence–jitter 联合鲁棒新光束”；
+- “Paper 1 的目标是寻找 joint optimum structured beam”；
+- “flattened-Gaussian 或 Gaussian–LG 已经是本项目固定候选”；
+- “5–15 microrad 是典型 UAV/PAT residual jitter”；
+- “single-layer phase screen 足以代表正式中强湍流模型”；
+- “降低 scintillation 等价于提高通信可靠性”；
+- “self-healing 天然等价于 anti-jitter”；
+- “当前仓库已经有可复现数值结果”。
 
-以下内容有文献调研与物理推理支持，但尚未由本仓库模型验证：
+## 十二、当前唯一主要不确定性
 
-- 抗湍流不自动等于抗独立机械抖动；
-- 自愈或轴向维持不自动扩大固定孔径的横向位移容差；
-- flat-top 或 flattened-Gaussian 可能在 jitter 主导区域具有优势；
-- 湍流增强时最优平顶阶数可能下降；
-- 正交偏振 Gaussian–LG 双模可能通过外围覆盖和低相关散斑改善低尾功率；
-- 强湍流或大接收孔径可能使复杂光场退化为优化 Gaussian；
-- 捕获函数曲率和阈值覆盖面积可能解释部分排序变化。
+当前唯一最重要的不确定性已经从“是否能设计出 joint optimum beam”改为：
 
-这些内容必须标为假设，不得写成项目发现。
+> 文献中不同 turbulence-resistant mechanisms 面对 independent UAV/PAT residual jitter 时，哪些机制保持、退化或失效？我们能否找到足够有代表性的机制集合与可信参数/评价依据，使 Paper 1 成为机制论文而不是光束排行榜？
 
-## 九、开放问题
+任何当前工作都应直接减少这一不确定性。
 
-1. 角谱法与 Fresnel split-step 的适用条件、采样规则和主传播算子尚未冻结；
-2. modified von Kármán 谱、内外尺度和低频 subharmonic 处理尚未冻结；
-3. 相位屏数量、位置和分段强度规则尚未冻结；
-4. 机械 jitter 是通过发射面 tilt 还是接收面 shift 作为主模型，尚未最终冻结；
-5. `w_ref`、长期光斑尺度和包围能量尺度的定义尚未冻结；
-6. 接收功率门限、outage 的物理链路含义和尚未冻结；
-7. Gaussian 基线的优化变量和搜索范围尚未冻结；
-8. flattened-Gaussian 的归一化、硬孔径截断和可实现性尚未验证；
-9. Gaussian–LG 两分量是否共享同一湍流 realization、偏振如何传播、接收强度如何相加，需要实现核对；
-10. 捕获函数曲率和覆盖面积的离散计算是否稳定，尚未确认；
-11. 粗筛样本量能否稳定估计 5% 分位，尚未确认；
-12. 初始物理口径、距离和湍流参数是否代表目标 UAV 场景，尚未确认。
+## 十三、允许的最小下一步
 
-## 十、禁止表述
+当前只允许推进 Paper 1 / Stage A 文献工作：
 
-当前不得声称：
+1. 建立 `KEY_LITERATURE_MAP`；
+2. 按机制初筛约 30–40 篇直接相关论文；
+3. 选出约 15–20 篇锚点逐篇精读；
+4. 对每篇记录模型定义、参数来源、抗湍流主张、资源代价、pointing 覆盖和可继承性；
+5. 完成 direct-competitor 检索；
+6. 文献证据饱和后，再冻结 Paper 1 代表机制、场参数和统一评价协议；
+7. 只有在负责人再次批准后，才讨论数值实现。
 
-- 已证明某种光束在湍流与抖动下优于优化 Gaussian；
-- 已发现湍流最优、抖动最优和联合最优必然分离；
-- flattened-Gaussian 的最优阶数随湍流增强必然下降；
-- Gaussian–LG 双模已经产生散斑分集或低尾功率增益；
-- Bessel、OPB、Airy 或 self-healing 光束天然抗机械抖动；
-- 降低 scintillation 必然降低 outage 或 BER；
-- 当前结果能够代表真实无人机终端、PAT闭环或外场性能；
-- 当前仓库已经具备可复现的湍流传播代码或数据链；
-- Frozen Wave 已被证明具有通信优势或适合当前横向抖动主线。
+当前**不允许直接执行旧 `docs/CODEX_HANDOFF.md` 中的光场实现任务**，也不允许直接开始 flattened-Gaussian / Gaussian–LG 联合优化或大规模多相位屏 Monte Carlo。
 
-## 十一、当前主要不确定性
-
-当前唯一最重要的不确定性是：
-
-> 在严格区分大气 beam wander 与独立机械 residual jitter，并允许 Gaussian 针对同一任务认真优化后，非 Gaussian 低维结构是否仍产生稳定、可解释且适合目标场景的有限孔径低尾收益？
-
-当前任何新增计算都应直接减少这一不确定性。与此无关的模式扩展、复杂通信协议、CI、validator 或工程化重构均不属于最小下一步。
-
-## 十二、允许的最小下一步
-
-当前只允许进行模型冻结和基准准备，不允许直接进入大规模多相位屏 Monte Carlo 或高维参数优化。
-
-最小下一步是：
-
-1. 冻结第一版坐标、单位、归一化、孔径和传播约定；
-2. 建立 Gaussian 自由空间解析/数值基准；
-3. 建立圆孔积分、横向位移和随机 jitter 基准；
-4. 实现 flattened-Gaussian 与 Gaussian–LG 的无湍流定义和能量账本；
-5. 给出最小代码与数据链地图；
-6. 用少量 smoke 结果判断模型是否足以进入湍流阶段。
-
-在负责人批准前，不运行正式联合参数扫描，不激活 Frozen Wave 支线。
-
-## 十三、仓库读取顺序
+## 十四、仓库读取顺序
 
 新的重要对话应依次读取：
 
 1. `AI_RESEARCH_GOVERNANCE.md`；
 2. `PROJECT_STATE.md`；
-3. `README.md`；
-4. `docs/SCIENTIFIC_CONTRACT_DRAFT.md`；
-5. `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`；
-6. `docs/research_reserve/FROZEN_WAVE_LONGITUDINAL_ENVELOPE.md` 仅在讨论储备支线时读取；
-7. 需要核对当前工作时，再读取相关 PR、commit、运行摘要和结果文件。
+3. `docs/RESEARCH_STAGE_BOUNDARY.md`；
+4. `README.md`；
+5. `docs/SCIENTIFIC_CONTRACT_DRAFT.md`；
+6. `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`；
+7. `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`；
+8. `docs/literature/` 中相关逐篇锚点；
+9. 当前开放/已合并 PR、最近 commit 和后续结果。
 
-较早的聊天总结、调研报告和 Draft 文档不能覆盖已经接受的 `PROJECT_STATE.md` 与后续合并决策。
+较早聊天总结和旧 Codex 交接不得覆盖已经确认的阶段边界。
