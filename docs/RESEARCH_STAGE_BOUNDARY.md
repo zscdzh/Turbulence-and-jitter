@@ -1,109 +1,145 @@
 # RESEARCH_STAGE_BOUNDARY
 
 **决策日期：2026-08-07**  
-**当前状态：External Review = REVISE；Stage A broad literature search closed；Scientific Contract v0.3 candidate under short review。**
+**当前状态：Paper 1 / CONTRACT FREEZE GATE**  
+**最新短审：REVISE — KEEP CODE GATE CLOSED**
 
-## 1. Paper 1 正式范围
+本文件是 Paper 1 / Paper 2 路线边界。它约束文献、ChatGPT/Codex 任务、科学合同和论文表述。
 
-Paper 1 不再泛称“所有抗湍流光束”。正式 scope 为：
+## 1. Paper 1 与 Paper 2 不得混合
 
-> **coherent、deterministic、single-aperture transmit fields 在 direct-detection finite-aperture UAV-FSO 链路中的跨机制 turbulence–jitter sensitivity / failure map。**
+正确逻辑：
 
-研究问题：
+\[
+\text{existing turbulence-resistant mechanisms}
+\rightarrow
+\text{jitter sensitivity / failure analysis}
+\rightarrow
+\text{mechanism trade-off}
+\rightarrow
+\text{Paper-2 co-robust design principle}.
+\]
 
-> 已有 turbulence-resistant deterministic transmit-field mechanisms 在加入 independent post-PAT residual pointing jitter 后，哪些 turbulence-only 优势保持、压缩、反转或失效；这些变化能否在 transparent resources 与 optimized-Gaussian baseline 下形成可解释的 applicability / failure map？
+错误逻辑：
 
-## 2. Paper 1 第一轮 core set
+\[
+\text{先选 flattened-Gaussian / Gaussian-LG}
+\rightarrow
+\text{joint optimization}
+\rightarrow
+\text{再解释成 Paper 1}.
+\]
 
-冻结为：
+## 2. Paper 1 正式 scope
 
-- Gaussian G0/G1；
-- circular-truncated zeroth-order Bessel `J0`；
+Paper 1 限定为：
+
+> **coherent、deterministic、single-aperture scalar transmit fields 在 direct-detection finite-aperture UAV-FSO 链路中的跨机制 turbulence–jitter sensitivity / failure map。**
+
+首轮 core fields：
+
+- Gaussian G0 / G1；
+- circular-truncated `J0` Bessel；
 - continuum radial-phase OPB；
 - nested multi-Gaussian flat-top。
 
-不进入首轮数值集合：
+不进入首轮 numerical set：
 
-- Airy path-diversity array：multi-beam architecture，discussion only；
-- partial coherence：source ensemble / mature joint-optimization family，discussion only；
-- vector / mode diversity：超出 single-aperture direct-detection scope。
+- Airy path diversity；
+- partial coherence；
+- vector / mode diversity。
 
-## 3. Paper 1 不做什么
+这些机制可以保留在文献讨论，但不再用于扩张首轮代码。
 
-- 不发明新的 joint-robust beam；
-- 不为每种 structured beam 做 high-dimensional joint optimization；
-- 不把 turbulence + pointing 本身作为 novelty；
-- 不把 scintillation / point peak 当主通信指标；
-- 不建 full UAV dynamics / PAT controller / time-domain PSD model；
-- 不因负结果增加新 beam family 救论文。
+## 3. Paper 1 要回答什么
 
-## 4. Paper 1 两层公平比较
+至少比较：
 
-### Level A — primary
+1. turbulence only；
+2. jitter only；
+3. turbulence + independent post-PAT residual jitter。
 
-same `lambda, L, D_T, D_R, P_T`；same circular apertures；same paired turbulence/jitter realizations；aperture 后 equal-power normalization；完整 resource ledger。
+主结果不是 beam-name leaderboard，而是：
 
-### Level B — secondary diagnostic
+- turbulence-only 优势加入 jitter 后的保持、压缩、反转与失效；
+- finite-aperture `H=P_R/P_T` 的 ECDF / `Q5%` / paired differences；
+- optimized Gaussian 后仍剩多少结构收益；
+- receiver `r80` scale control 后差异是否仍存在；
+- resource ledger 能否解释差异；
+- applicability / failure map。
 
-唯一采用 no-turbulence/no-jitter receiver-plane `r80_R`-matched one-scale retuning。
+## 4. Paper 1 不做什么
 
-`H0` 继续报告，但不是 matching constraint。
+不允许：
 
-## 5. Gaussian zero hypothesis
+- 为每个 structured field 求 full joint optimum；
+- 为得到积极结果增加高维自由度；
+- full UAV 6-DOF / PAT/FSM time-domain simulation；
+- jitter PSD/controller dynamics 作为首轮主模型；
+- AO、SMF coupling、mode decomposition、coherent receiver；
+- high-dimensional inverse design / neural network。
 
-G1 允许预注册的 `w_G + quadratic focus` 二维搜索，以 `Q5%(H)` 为唯一主目标，并保证 optimization ensemble 与 final evaluation ensemble 分离。
+## 5. Paper 2 启动条件
 
-这用于排除“structured field 只是赢了一个没调好的 Gaussian”。
+Paper 2 只有在 Paper 1 发现：
 
-## 6. Paper 2 边界
+- 稳定、跨连续区域的 mechanism trade-off；
+- 不能被 optimized Gaussian 完全解释；
+- 可转化为少参数设计原则；
+- 资源代价适合目标 UAV-FSO 场景；
 
-Paper 2 才是 turbulence–jitter co-robust beam design。
+才允许启动 turbulence–jitter co-design。
 
-只有 Paper 1 找到稳定、可解释、且经过 G1 与 `r80` control 后仍存在的 mechanism trade-off，才允许启动 Paper 2。
+flattened-/super-Gaussian、Gaussian–LG/annular-like 目前只属于可能的 Paper-2 design seeds。
 
-flattened-/super-Gaussian、Gaussian–LG/annular-like 仅是可能的 Paper-2 seeds。
+## 6. 文献阶段状态
 
-## 7. 当前文献状态
+Stage-A broad literature search：**CLOSED**。
 
-Stage A 无边界扩展结束。只补的三条链已经关闭：
+三条外审指定补链已关闭：
 
-- Nelson 2014：Bessel/Airy turbulence failure boundary；
-- Jiang 2022/2026：flat-top joint-channel direct competitors；
-- Lane 1992：subharmonic / low-frequency phase-screen method anchor。
+- Nelson 2014；
+- Jiang 2022/2026；
+- Lane 1992。
 
-以后只有结果冲突、审稿要求或明确模型 blocker 才补定向文献。
+后续只在结果冲突或审稿需要时定向补文献，不因为新 beam name 重新广撒网。
 
-## 8. 当前代码 gate
+## 7. 当前 contract gate
 
-**NO structured-beam code before v0.3 short review。**
+当前 authoritative candidate：`docs/SCIENTIFIC_CONTRACT_DRAFT.md` v0.3.1。
 
-通过后顺序：
+v0.3 短审暴露三项 blocker：
 
-1. Gaussian free-space；
+1. OPB finite-aperture stationary-radius feasibility；
+2. G1 5% tail optimization sample stability；
+3. turbulence exact PSD normalization + absolute Gaussian references + split grid/window convergence。
+
+这些已在 v0.3.1 candidate 中修订，但仍等待最终短复核。
+
+## 8. code authorization
+
+当前：
+
+> **NO SCIENTIFIC CODE AUTHORIZED YET.**
+
+若 v0.3.1 短审 PASS，只授权 Gaussian-only implementation：
+
+1. free-space；
 2. finite-aperture displacement；
 3. analytic jitter；
-4. Gaussian multi-screen validation；
-5. Bessel literature reproduction sanity；
-6. Bessel / OPB / flat-top common comparison。
+4. Gaussian phase-screen / multi-screen V0–V12 validation。
 
-## 9. Paper 1 主输出
+Bessel / OPB / flat-top 只有在 Gaussian chain 全部通过后才授权。
 
-目标是：
+## 9. 禁止表述
 
-- turbulence-only -> joint ranking change；
-- mechanism-specific jitter sensitivity；
-- failure / applicability boundary；
-- finite-aperture ECDF / `Q5%`；
-- optimized-Gaussian paired comparison；
-- resource / receiver-scale interpretation。
+禁止：
 
-允许最终结论是负结果：若所有 structured-field advantages 在 G1 + `r80` control 后消失，这本身是 Paper 1 的有效机制结论。
-
-## 10. 永久禁止的路线偷换
-
-禁止把 Paper 1 偷换成：
-
-- flattened-Gaussian / Gaussian–LG joint optimization；
-- “找一个最强新光束”；
-- “所有 anti-turbulence beams 大全”；
-- 用更多模式、偏振、AI 或控制器补救不显著的主结果。
+- “首次联合 turbulence 与 pointing”；
+- “首次 structured beam + joint channel”；
+- “self-healing 等于自动回正”；
+- “27–42 urad 是典型 UAV one-way residual”；
+- “flat-top / OPB 已证明 joint-optimal”；
+- “multi-screen / subharmonic 本身是创新”；
+- “低 scintillation 等于高 `Q5%`”；
+- “representative field parameter 是文献证明 optimum”。
