@@ -1,194 +1,144 @@
 # PAPER1_COMMON_RESOURCE_GATE_DRAFT
 
-**状态：外部审查后修订；作为 Scientific Contract v0.3 candidate 的输入，不是代码授权。**
+**状态：与 Scientific Contract v0.3.1 candidate 对齐；不是代码授权。**
 
-本文件把 `PAPER1_PARAMETER_MAPPING_MATRIX.md` 中仍需人工裁决的内容压缩成最小 Gate。外部审查 Decision 为 **REVISE**：Level A 接受，Level B 改为 receiver-plane `r80_R`-matched one-scale diagnostic；核心集合冻结为 Gaussian + zeroth-order Bessel + OPB + flat-top。
+外部短审最新决定：**REVISE — KEEP CODE GATE CLOSED**。本文件只保留 common-resource / fairness / field-feasibility gate；权威数值以 `../SCIENTIFIC_CONTRACT_DRAFT.md` 为准。
 
 ## Gate A — common physical resources
 
 第一版统一：
 
-1. transmitter：single circular hard aperture；
+1. single circular Tx hard aperture；
 2. equal post-aperture transmitted power `P_T`；
-3. receiver：single circular finite aperture，direct detection；
-4. all fields share exactly the same turbulence and jitter realizations；
-5. source-plane field after aperture is numerically renormalized to equal `P_T`；
-6. common `lambda, L, D_T, D_R`。
+3. single circular finite Rx aperture，direct detection；
+4. common `lambda, L, D_T, D_R`；
+5. paired turbulence/jitter realizations；
+6. common nominal receiver axis。
 
-这一级是正式主比较，不通过任何 receiver-plane matching 人为调平各结构。
+Level A 是正式主比较。
 
-## Gate B — resource ledger：报告但不全部硬匹配
+## Gate B — report resource ledger, do not over-match
 
-所有场同时报告：
+所有场报告：
 
 - `r50_T, r80_T, r95_T`；
-- peripheral / halo energy fraction；
-- transverse-frequency / angular-spectrum cost；
-- no-disturbance finite-aperture capture `H0`；
-- receiver-plane `r50_R, r80_R`；
-- source / receiver second moment，如数值稳定；
+- peripheral / halo fraction；
+- source second moment；
+- transverse-frequency descriptor；
+- `H0`；
+- receiver `r50_R, r80_R`；
+- receiver second moment；
 - generation efficiency / conversion loss if literature-supported。
 
-这些量用于解释收益来源，而不是在 Level A 中全部配平。否则会把结构机制本身一并归一掉。
+这些量用于解释收益来源，不在 Level A 中全部配平。
 
-## Gate C — secondary scale-control：冻结为 `r80_R`-matched
+## Gate C — only secondary control: `r80_R` matching
 
-唯一 secondary diagnostic 为：
-
-> **receiver-plane no-turbulence/no-jitter `r80_R`-matched one-scale retuning。**
-
-理由：
-
-- `H0` 强依赖 receiver aperture，对 ring / halo / autofocusing field 可能多解；
-- `r50_R` 对 Bessel / OPB 等外围能量结构过于偏向核心；
-- `r80_R` 更能暴露 peripheral-energy cost，同时仍然是清楚的 receiver-plane scale descriptor。
-
-`H0` 必须继续报告，但**不作为 matching constraint**。
-
-每个 structured family 只能开放一个预注册尺度变量：
-
-- Bessel：`chi_B = k_r a_T`；
-- OPB：`beta` 的等价单尺度表示，优先使用 target pin-scale `W(L)/a_T`；
-- flat-top：固定 order `N`，只调 common radial scale `gamma_F`。
-
-禁止在 Level B 同时改变 family order 与 radial scale，禁止形成隐性多参数优化。
-
-## Gate D — Gaussian reference and G1 optimization
-
-### G0
-
-common-resource Gaussian 用于定义固定参考尺度：
+no-turbulence/no-jitter receiver `r80_R`-matched one-scale retuning：
 
 \[
-j=\frac{L\sigma_\theta}{w_{ref}}.
+|r_{80,R}^{field}/r_{80,R}^{G0}-1|\le1\%.
 \]
 
-`w_ref` 在 v0.3 中冻结为 G0 无湍流、无抖动 receiver-plane 的固定 beam-radius convention；若 hard clipping 使 `1/e^2` radius 不稳定，则改用 G0 的 `r80_R`，且全文只使用一种 convention。
+若预注册范围无唯一稳定解，记录 `NO R80 MATCH`，不得扩大范围救结果。
 
-### G1 optimized-Gaussian envelope
+- Bessel：只调 `chi_B in [6,18]`；
+- OPB：只调 `omega_OPB in [0.55,0.90]`；
+- flat-top：固定 `N=4`，只调 `w_F/a_T in [0.40,0.90]`。
 
-G1 必须预注册以下四项后才允许执行：
+`H0` 只报告，不作为 matching constraint。
 
-1. `w_G` 搜索边界；
-2. quadratic-phase / equivalent focus `f_G` 搜索边界；
-3. 唯一主优化指标；
-4. optimization ensemble 与 final evaluation ensemble 完全分离。
+## Gate D — Gaussian G0/G1
 
-当前推荐主优化指标：
+G0：`w_G=0.65a_T`, `f_G=infinity`。
 
-\[
-Q_{5\%}(H).
-\]
+G1 search：
 
-完整 ECDF 为核心展示；outage 仅作为给定阈值下的辅助结果。
+- `w_G/a_T = 0.35:0.10:0.95`；
+- `u_f=L/f_G = 0,0.5,1.0,1.5,2.0`；
+- 唯一 objective：`Q5%(H)`。
 
-是否逐 `(tau,j,alpha_R)` 独立优化必须在 v0.3 中预注册，不能看完 structured-beam 结果后再决定。
+G1 final parameter selection 采用 CRN staged design：
 
-## Gate E — frozen first-round numerical scope
+1. 全 35 候选共享 256 realizations；
+2. Top-5 补同一套 additional CRN 到总计 `N_opt=1024`；
+3. winner 只由 1024 optimization set 决定；
+4. `N_eval=1024` 与 optimization 完全 disjoint；
+5. near-boundary evaluation 可扩至 4096。
 
-Paper 1 第一轮数值 scope 限定为：
+## Gate E — frozen first-round field scope
 
-> **coherent、deterministic、single-aperture transmit fields + direct-detection finite-aperture receiver。**
+只包括：
 
-核心集合冻结为：
+- Gaussian；
+- circular-truncated `J0`；
+- continuum OPB；
+- nested multi-Gaussian flat-top。
 
-- Gaussian G0 / G1；
-- zeroth-order Bessel；
-- OPB continuum radial phase；
-- flat-top representative。
+不进入首轮数值：Airy path diversity、partial coherence、vector/mode diversity。
 
-不进入首轮数值集合：
-
-- Airy path-diversity array：multi-beam architecture，只保留文献/架构讨论；
-- partial coherence：source ensemble / statistical beam family，已有成熟 turbulence+pointing joint optimization，只保留讨论层成熟对照；
-- vector / mode-diversity：超出当前 direct-detection single-aperture scope。
-
-## Gate F — field-specific freezes
+## Gate F — field feasibility
 
 ### Bessel
 
-主代表冻结为 **circular-truncated `J0`**：
-
 \[
-U_B(r)=C_B J_0\left(\chi_B\frac{r}{a_T}\right)\Pi(r/a_T).
+U_B=C_BJ_0(\chi_Br/a_T)\Pi(r/a_T).
 \]
 
-进入正式比较前先做一次 Eyyuboğlu 2013 square-window reproduction sanity check。只有结论对 hard truncation 形式敏感时，才增加 Bessel-Gaussian sensitivity check。
+Level-A `chi_B=10`。正式 comparison 前做 Eyyuboğlu square-window reproduction。
 
 ### OPB
 
-第一版冻结：
-
-- continuum radial phase；
-- 不实现真实 32-filament / etched-mask discretization；
-- pin-width 关系必须使用
-
 \[
-W(z)=\frac{1}{4k\beta z},
+U_{OPB}=C_{OPB}e^{-r^2/(0.65a_T)^2}
+\exp[-i(4/3)k\sqrt\beta r^{3/2}]\Pi(r/a_T).
 \]
 
-不得出现 `beta^2`；
-- `A(r)`、phase-strength / target pin-scale 的最终代表值仍需在 v0.3 physical-scene freeze 中写明。
+必须同时满足：
+
+\[
+W(L)=1/(4k\beta L),
+\qquad
+\rho_s=4\beta L^2,
+\qquad
+\rho_s\le r_{95,T}.
+\]
+
+primary scene 下冻结：
+
+- `omega_OPB=W(L)/a_T=0.55`；
+- `beta≈4.49e-9 m^-1`；
+- `rho_s≈17.94 mm`；
+- `r95_T≈19.37 mm`。
+
+Level-B OPB 所有候选都必须重新检查 `rho_s<=r95_T`。
 
 ### flat-top
 
-第一版冻结为：
+- `N=1` sanity；
+- `N=4` primary；
+- `N=8` optional stress；
+- aperture 后 equal-power normalization。
 
-- `N=1` nested Gaussian sanity；
-- 一个 moderate-order representative；
-- 一个 high-order point 仅作为可选 stress case；
-- 每个 order 在 common circular aperture 后重新 equal-power normalization。
+## Gate G — turbulence numerical prerequisites
 
-moderate `N` 的具体数值由 Jiang 2022/2026 direct-competitor audit + 2006/2008 resource chain 冻结；不做大范围 order optimization。
+在任何 structured-field multi-screen run 前，Gaussian chain 必须通过：
 
-## Gate G — jitter scope
+- exact modified-von-Karman PSD / Fourier normalization；
+- PSD / structure function；
+- independent beam-wander absolute reference；
+- weak-turbulence long-term-radius absolute reference；
+- low-frequency refinement；
+- screen-number convergence；
+- **fixed-window grid-resolution** convergence；
+- **fixed-Delta-x physical-window** convergence；
+- maximum-tilt wrap-around / aliasing；
+- split-step sampling convergence。
 
-现有证据足以启动 dimensionless study，不再要求代码前必须找到 one-way active-transmitter multirotor residual。
+具体 V0–V12 acceptance 见科学合同。
 
-主坐标：
+## Current decision
 
-\[
-j=\frac{L\sigma_\theta}{w_{ref}}.
-\]
+> **KEEP CODE GATE CLOSED until v0.3.1 short re-review PASS.**
 
-现实映射只作为 evidence-labelled anchors：
-
-- fixed-wing high-performance flight：约 `8–10 urad (1sigma)`；
-- Trinh 2021 multirotor retro-FSO：`27–42 urad/axis`，仅作 double-pass compact-tracker stress anchor。
-
-第一版 jitter cases：
-
-- zero-mean isotropic Gaussian 为主；
-- 一个 anisotropic covariance sensitivity；
-- 一个 nonzero boresight-bias sensitivity。
-
-Paper 1 定位为 ensemble/static reliability study，因此 PSD、correlation time、FSM/controller dynamics 暂不进入主模型。
-
-## Gate H — production turbulence validation
-
-正式 multi-screen 之前，Gaussian turbulence module 至少需要：
-
-1. phase-screen PSD / phase-structure-function validation；
-2. low-frequency treatment / subharmonic validation；
-3. turbulence-induced beam-wander variance；
-4. long-term beam radius；
-5. scintillation / short-term diagnostics；
-6. phase-screen number convergence；
-7. grid/window convergence；
-8. propagation sampling convergence；
-9. 最大 mechanical tilt 下的 wrap-around / aliasing convergence；
-10. von Karman `L0/l0` baseline 与 sensitivity range。
-
-constant-`Cn2` horizontal primary scene 可优先使用 equal-spacing screens；高度依赖 `Cn2(z)` 只作为 secondary case。
-
-## 当前 Gate 决策
-
-**NO CODE YET / CONTRACT FREEZE GATE。**
-
-进入代码前只剩：
-
-1. 完成 Nelson、Jiang 2022/2026、Lane 1992 三条定向文献链；
-2. 修正 OPB 锚点公式并冻结 OPB amplitude / scale；
-3. 冻结 flat-top canonical expression / moderate order；
-4. 冻结一个 primary physical scene、G1 搜索边界与 Gaussian validation tolerance table；
-5. 形成并短审 Scientific Contract v0.3 candidate。
+即使 PASS，也只授权 Gaussian-only implementation；Bessel/OPB/flat-top 等待 Gaussian V0–V12 全部通过。
