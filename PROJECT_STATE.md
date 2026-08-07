@@ -4,13 +4,13 @@
 **当前主分支：main**  
 **当前阶段：Paper 1 / CONTRACT FREEZE GATE**  
 **最新外部短审：REVISE — KEEP CODE GATE CLOSED**  
-**Scientific Contract：v0.3.1 candidate，等待短复核**  
+**Scientific Contract：v0.3.2 candidate，等待最终极短复核**  
 **正式科学代码：未建立**  
 **正式数值结果：无**
 
 ## 1. 当前科学问题
 
-Paper 1 已收窄为：
+Paper 1 已冻结为：
 
 > coherent、deterministic、single-aperture scalar transmit fields 在 direct-detection finite-aperture UAV-FSO 链路中的跨机制 turbulence–jitter sensitivity / failure map。
 
@@ -27,49 +27,60 @@ Paper 2 才是条件性的 turbulence–jitter co-design。
 3. continuum radial-phase OPB；
 4. nested multi-Gaussian flat-top。
 
-讨论层保留但不进入首轮数值：
+讨论层保留但不进入首轮数值：Airy path diversity、partial coherence、vector/mode diversity。
 
-- Airy path diversity；
-- partial coherence；
-- vector / mode diversity。
+## 3. 外审 blocker 状态
 
-## 3. v0.3 短审暴露的三个 blocker
+### OPB finite-aperture feasibility — PASS
 
-### Blocker A — OPB finite-aperture feasibility
-
-已在 v0.3.1 candidate 修订：
-
-- `rho_s=4 beta L^2` 正式进入约束；
-- `w_A=0.65a_T` 下 `r95_T≈0.775a_T`；
-- primary `omega_OPB` 从 `0.35` 改为 `0.55`；
+- `rho_s=4 beta L^2`；
+- `w_A=0.65a_T`，aperture 后 `r95_T≈0.775a_T`；
+- primary `omega_OPB=0.55`；
 - primary scene 下 `rho_s≈17.94 mm < r95_T≈19.37 mm`；
-- Level-B OPB 范围改为 `[0.55,0.90]`，同时强制 `rho_s<=r95_T`。
+- Level-B OPB `omega in [0.55,0.90]` 且强制 `rho_s<=r95_T`。
 
-### Blocker B — G1 tail optimization stability
+### G1 lower-tail optimization — PASS
 
-已在 v0.3.1 candidate 修订：
-
-- 35 个 Gaussian 候选共享 common random numbers；
-- 256 realizations 全候选粗筛；
-- Top-5 再补 768，最终每个 finalist `N_opt=1024`；
+- 35 Gaussian candidates 共享 256 common random realizations；
+- Top-5 再补 768，finalist `N_opt=1024`；
 - `N_eval=1024` 与 optimization 完全 disjoint；
 - near-boundary evaluation 可扩至 4096。
 
-### Blocker C — turbulence absolute validation
+### phase-spectrum `2pi` normalization — v0.3.2 已修，等待最终复核
 
-已在 v0.3.1 candidate 修订：
+v0.3.1 的确定问题是：`0.033 Cn2` / `Phi_phi^(atm)=2pi k^2 Delta-z Phi_n^(atm)` 与带 `(2pi)^-2` 的 mathematical Fourier measure 被直接混用，导致 structure-function variance 缩小 `(2pi)^2`。
 
-- 冻结 exact modified-von-Karman `Phi_n(kappa)`；
-- 冻结 `kappa0=2pi/L0`, `kappam=5.92/l0`；
-- 冻结 thin-screen `Phi_phi=2pi k^2 Delta-z Phi_n` 与连续 Fourier convention；
-- 新增 Gaussian weak-turbulence long-term-radius absolute reference；
-- 新增独立 spectral beam-wander quadrature reference；
-- grid-resolution 与 physical-window convergence 拆成 V10a/V10b；
-- 保留 maximum-tilt wrap-around / aliasing gate。
+v0.3.2 已显式分开：
+
+\[
+\Phi_\phi^{(atm)}=2\pi k^2\Delta z\,\Phi_n^{(atm)},
+\]
+
+\[
+\boxed{
+\Phi_\phi^{(math)}
+=(2\pi)^2\Phi_\phi^{(atm)}
+=(2\pi)^3k^2\Delta z\,\Phi_n^{(atm)}
+}.
+\]
+
+并冻结 mathematical Fourier convention：
+
+\[
+\phi(r)=\int\frac{d^2\kappa}{(2\pi)^2}\tilde\phi(\kappa)e^{i\kappa\cdot r}.
+\]
+
+V5 新增 absolute Kolmogorov gate：
+
+\[
+D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3},
+\qquad
+r_{0,screen}=[0.423k^2C_n^2\Delta z]^{-3/5}.
+\]
 
 ## 4. primary physical scene
 
-保持短审已通过的 scene：
+保持已通过的 scene：
 
 - `lambda=1550 nm`；
 - `L=1 km`；
@@ -103,30 +114,19 @@ no-turbulence/no-jitter receiver `r80_R`-matched one-scale retuning。
 
 ## 6. jitter contract
 
-主坐标：
-
 \[
 j=L\sigma_\theta/w_{ref}.
 \]
 
 第一版：zero-mean isotropic Gaussian；补一个 anisotropic case 和一个 nonzero boresight-bias case。
 
-现实锚点：
-
-- fixed-wing actual-flight `~8–10 urad (1sigma)`；
-- Trinh multirotor retro-FSO `~27–42 urad/axis` 仅作 double-pass stress anchor。
+现实锚点：fixed-wing actual-flight `~8–10 urad (1sigma)`；Trinh multirotor retro-FSO `~27–42 urad/axis` 仅作 double-pass stress anchor。
 
 不模拟第一版 jitter PSD / temporal controller。
 
 ## 7. 文献状态
 
-Stage A broad search 已关闭。三条定向链已完成：
-
-- Nelson 2014：Bessel/Airy turbulence failure boundary；
-- Jiang 2022/2026：flat-top direct competitors；
-- Lane 1992：subharmonic/low-frequency anchor。
-
-不再因为出现新的 beam name 重启广撒网。
+Stage A broad search 已关闭。三条定向链已完成：Nelson 2014、Jiang 2022/2026、Lane 1992。不再因为出现新的 beam name 重启广撒网。
 
 ## 8. 当前 code gate
 
@@ -134,7 +134,9 @@ Stage A broad search 已关闭。三条定向链已完成：
 
 > **REVISE — KEEP CODE GATE CLOSED.**
 
-下一步只做 v0.3.1 短复核。若短审 PASS，只授权以下 Gaussian-only 顺序：
+下一步只对 v0.3.2 的 spectrum/Fourier normalization 做一次最终极短复核。
+
+若 PASS，只授权 Gaussian-only 顺序：
 
 1. Gaussian free-space；
 2. finite-aperture displacement；
