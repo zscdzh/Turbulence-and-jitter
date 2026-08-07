@@ -64,6 +64,8 @@ Paper 2 才讨论 joint objective、joint optimum 和低维联合设计。
 
 目标规模：先初筛约 30–40 篇直接相关文献，再精读约 15–20 篇关键锚点；以“新增文献不再实质改变机制分类、模型边界或创新判断”为证据饱和标准，而不是机械凑篇数。
 
+`docs/KEY_LITERATURE_MAP.md` 已建立为 Stage A 当前入口。
+
 ### Stage B：Paper 1 统一评价
 
 **状态：路线 GO，但尚未授权正式实现。**
@@ -183,6 +185,7 @@ P_R
 
 - 负责人层科学与治理文档；
 - `docs/RESEARCH_STAGE_BOUNDARY.md`：本轮路线纠正；
+- `docs/KEY_LITERATURE_MAP.md`：Paper 1 Stage A 文献机制入口；
 - `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`：已接受文献证据增量；
 - `docs/literature/`：逐篇文献锚点；
 - Frozen Wave 独立支线储备文档。
@@ -199,8 +202,8 @@ P_R
 
 ## 八、当前开放 PR 状态
 
-- PR #1：治理与项目状态初始化分支，当前正在吸收路线纠正与文献证据，拟作为统一文档 PR；
-- PR #2：Liu/Jiang 2021 文献证据分支，其有效内容已迁入 PR #1，后续应关闭为 superseded，避免两个 Draft PR 维持不同状态。
+- PR #1：当前统一路线纠正、治理、项目状态、科学契约和文献证据的 Draft PR；
+- PR #2：Liu/Jiang 2021 单篇文献证据 Draft，其有效内容已经迁入 PR #1，应关闭为 superseded，避免并行维护不同状态。
 
 在 PR #1 合并前，`main@16c02105...` 仍是已接受主分支基线；本文件中的新路线纠正属于 Draft 待合并内容。
 
@@ -256,7 +259,7 @@ P_R
 
 当前只允许推进 Paper 1 / Stage A 文献工作：
 
-1. 建立 `KEY_LITERATURE_MAP`；
+1. 持续更新 `docs/KEY_LITERATURE_MAP.md`；
 2. 按机制初筛约 30–40 篇直接相关论文；
 3. 选出约 15–20 篇锚点逐篇精读；
 4. 对每篇记录模型定义、参数来源、抗湍流主张、资源代价、pointing 覆盖和可继承性；
@@ -277,7 +280,8 @@ P_R
 5. `docs/SCIENTIFIC_CONTRACT_DRAFT.md`；
 6. `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`；
 7. `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`；
-8. `docs/literature/` 中相关逐篇锚点；
-9. 当前开放/已合并 PR、最近 commit 和后续结果。
+8. `docs/KEY_LITERATURE_MAP.md`；
+9. `docs/literature/` 中相关逐篇锚点；
+10. 当前开放/已合并 PR、最近 commit 和后续结果。
 
 较早聊天总结和旧 Codex 交接不得覆盖已经确认的阶段边界。
