@@ -30,11 +30,19 @@ Round 1 机制筛选详见：`docs/literature/PAPER1_MECHANISM_SCREEN_ROUND1.md`
 
 关键锚点：
 
-- Eyyuboğlu, Voelz, Xiao, *Applied Optics* 2013, DOI `10.1364/AO.52.008032`：**ANCHOR_TO_READ / HIGH PRIORITY**。重点是 equal-source-power 与 per-unit-received-power 两种评价下 Bessel 优势明显不同，是资源公平性一级锚点。
+- Eyyuboğlu, Voelz, Xiao, *Applied Optics* 2013, DOI `10.1364/AO.52.008032`：**READ / RESOURCE-FAIRNESS ANCHOR**。equal-source-power 下 Bessel 的 aperture-averaged scintillation 优势较广，但加入 received-power criterion 后优势大幅收缩；论文也没有证明 self-healing 是低 scintillation 的确定原因。详见 `docs/literature/EYYUBOGLU_2013_BESSEL_RESOURCE_ANCHOR.md`。
 - Yuan et al., *Scientific Reports* 2017, *Beam wander relieved orbital angular momentum communication in turbulent atmosphere using Bessel beams*：**ANCHOR_TO_READ / EXPERIMENTAL PERFORMANCE**。重点提取 beam-wander 机制，不直接继承 OAM 接收任务。
 - Nelson et al., *Propagation of Bessel and Airy beams through atmospheric turbulence*, arXiv:1312.0620：**ANCHOR_TO_READ / FAILURE-BOUNDARY**。重点是 turbulence 破坏 quasi-nondiffracting 性的尺度边界。
 
 当前 jitter 工作假设：self-healing 不自动 recenter 整体 mechanical displacement；窄核心和外围能量必须与 finite-aperture capture / resource ledger 一起评价。
+
+当前从 Eyyuboğlu 2013 接受的 Paper-1 评价护栏：
+
+- 不用 scintillation 单指标宣称通信优势；
+- equal transmitted power 是必要资源口径，但不足以单独保证公平；
+- 还需报告 transmitter aperture、外围能量、receiver aperture、无扰动接收功率和 receiver-plane characteristic scale；
+- Bessel turbulence-only claim 应优先以低阶、尤其 `n=0` 为代表，避免无必要地扩展高阶/OAM模式；
+- 最终使用 square-truncated Bessel、circular-truncated Bessel 还是 Bessel-Gaussian 尚未冻结。
 
 ### B. caustic / self-accelerating / path diversity
 
@@ -187,7 +195,7 @@ DOI: `10.1364/OE.533250`
 
 ### 第一批：决定 Paper 1 机制结构
 
-1. Eyyuboğlu et al. 2013 — Bessel / resource fairness；
+1. ~~Eyyuboğlu et al. 2013 — Bessel / resource fairness~~ **READ**；
 2. Zhang et al. 2019 — OPB / self-focusing；
 3. Gu & Gbur 2010 — Airy array / path diversity；
 4. Borah & Voelz 2010 + Liu et al. 2014 — partial coherence；
