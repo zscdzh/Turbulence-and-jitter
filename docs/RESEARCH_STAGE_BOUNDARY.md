@@ -1,9 +1,9 @@
 # RESEARCH_STAGE_BOUNDARY
 
 **决策日期：2026-08-07**  
-**当前状态：Paper 1 / CONTRACT FREEZE GATE**  
-**最新短审：REVISE — KEEP CODE GATE CLOSED**  
-**当前 authoritative candidate：Scientific Contract v0.3.2**
+**当前状态：Paper 1 / GAUSSIAN NUMERICAL QUALIFICATION**  
+**最新短审：PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION**  
+**当前 authoritative contract：Scientific Contract v0.3.2**
 
 本文件约束文献、ChatGPT/Codex 任务、科学合同和论文表述。
 
@@ -78,47 +78,44 @@ Stage-A broad literature search：**CLOSED**。
 
 后续只在结果冲突或审稿需要时定向补文献，不因为新 beam name 重新广撒网。
 
-## 7. 当前 contract gate
+## 7. contract review 状态
 
-v0.3.1 最新短复核结果：
+v0.3.1 短复核结果：
 
 - OPB finite-aperture feasibility：PASS；
 - G1 lower-tail optimization：PASS；
 - 唯一 remaining blocker：phase-spectrum / Fourier `(2pi)` normalization。
 
-v0.3.2 已采用唯一 convention：
-
-\[
-\Phi_\phi^{(atm)}=2\pi k^2\Delta z\,\Phi_n^{(atm)},
-\]
-
-\[
-\Phi_\phi^{(math)}=(2\pi)^2\Phi_\phi^{(atm)}
-=(2\pi)^3k^2\Delta z\,\Phi_n^{(atm)},
-\]
-
-并要求在 mathematical Fourier measure `d^2kappa/(2pi)^2` 下恢复：
+v0.3.2 已显式区分 atmospheric 与 mathematical PSD，并恢复：
 
 \[
 D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3}.
 \]
 
-当前只等待这一 normalization 修订的最终极短复核。
+最终极短复核结论：
+
+> **PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION**
+
+审查记录：`docs/review/SCIENTIFIC_CONTRACT_V032_FINAL_REVIEW_DECISION.md`。
 
 ## 8. code authorization
 
-当前：
+当前允许且仅允许 **Gaussian numerical qualification**：
 
-> **NO SCIENTIFIC CODE AUTHORIZED YET.**
-
-若 v0.3.2 极短复核 PASS，只授权 Gaussian-only implementation：
-
-1. free-space；
-2. finite-aperture displacement；
-3. analytic jitter；
+1. Gaussian free-space propagation；
+2. finite-aperture displacement / capture；
+3. analytic jitter benchmark；
 4. Gaussian phase-screen / multi-screen V0–V12 validation。
 
-Bessel / OPB / flat-top 只有在 Gaussian chain 全部通过后才授权。
+### 未授权
+
+- Bessel implementation / production comparison；
+- OPB implementation / production comparison；
+- flat-top implementation / production comparison；
+- structured-field Monte Carlo；
+- Paper-2 joint optimization。
+
+只有 Gaussian chain 全部通过 V0–V12 后，才允许重新打开 structured-field implementation gate。
 
 ## 9. 禁止表述
 
