@@ -169,3 +169,32 @@ Paper 1 仍允许采用二维 Gaussian transmitter-angle reduced model，但必�
 - 把 `~8–10 microrad` 作为真实 fixed-wing airborne order-of-magnitude anchor；
 - `sigma_theta` 的唯一物理 baseline 仍保持 **UNFROZEN**；
 - 不把 Ke 2021 的 `2.42 microrad (3sigma)` 室内 realignment 或 Moon 2025 的 mrad 级 raw attitude values 与该实飞 residual混用。
+
+## Delta 011 — 多旋翼真实悬停为 `O(30–40 microrad)` fine-tracking residual 提供工程锚点
+
+**状态：ACCEPTED AS MULTIROTOR ENGINEERING RANGE EVIDENCE / NOT DIRECT TRANSMITTER PARAMETER**  
+**来源：** Trinh et al., IEEE Access 2021, DOI `10.1109/ACCESS.2021.3117266`  
+**证据角色：** actual multirotor hover / retro-FSO fine-tracking / temporal-statistics anchor
+
+DJI Matrice 600 Pro 六旋翼 + Ronin MX 云台 + corner-cube retro-reflector 的真实悬停实验，在约 `101–102 m` one-way LoS、`202–204 m` roundtrip 下使用地面 FSM + QD + PID fine tracker。
+
+实验显示：
+
+- fine tracking 前 telescope-entrance incoming AoA standard deviations 约 `1.17–2.67 mrad`；
+- fine tracking 后 PM-plane residual Gaussian-fit standard deviations 约 `27–42 microrad` per axis；
+- x/y Gaussian fits 的 `R^2` 约 `0.999`；
+- hover-related AoA 主要频谱能量位于 `<50 Hz`，少量延伸至约 `200 Hz`；
+- beam-centroid displacement coherence time约 `700 ms`。
+
+这足以支持：
+
+> 小/中型多旋翼实际悬停、紧凑 optical fine-tracking architecture 下，`O(30–40 microrad)` residual AoA 是现实工程量级之一。
+
+但该系统为 double-pass retro-reflected architecture，fine tracker 位于地面，CCR/gimbal 改变 attitude-to-LOS mapping，因此这些数值不能直接等价于本项目 one-way active-transmitter per-axis `sigma_theta`。
+
+加入该证据后，Paper 1 继续采用：
+
+- dimensionless jitter 作为主科学坐标；
+- `~8–10 microrad` 作为 high-performance fixed-wing real-flight anchor；
+- `~30–40 microrad` 作为 multirotor compact-tracker engineering / stress anchor；
+- 单一 universal UAV physical baseline 仍保持 **UNFROZEN**。
