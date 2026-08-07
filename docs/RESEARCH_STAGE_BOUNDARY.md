@@ -2,9 +2,10 @@
 
 **决策日期：2026-08-07**  
 **当前状态：Paper 1 / CONTRACT FREEZE GATE**  
-**最新短审：REVISE — KEEP CODE GATE CLOSED**
+**最新短审：REVISE — KEEP CODE GATE CLOSED**  
+**当前 authoritative candidate：Scientific Contract v0.3.2**
 
-本文件是 Paper 1 / Paper 2 路线边界。它约束文献、ChatGPT/Codex 任务、科学合同和论文表述。
+本文件约束文献、ChatGPT/Codex 任务、科学合同和论文表述。
 
 ## 1. Paper 1 与 Paper 2 不得混合
 
@@ -20,19 +21,9 @@
 \text{Paper-2 co-robust design principle}.
 \]
 
-错误逻辑：
-
-\[
-\text{先选 flattened-Gaussian / Gaussian-LG}
-\rightarrow
-\text{joint optimization}
-\rightarrow
-\text{再解释成 Paper 1}.
-\]
+错误逻辑：先选 flattened-Gaussian / Gaussian-LG 做 joint optimization，再回头解释成 Paper 1。
 
 ## 2. Paper 1 正式 scope
-
-Paper 1 限定为：
 
 > **coherent、deterministic、single-aperture scalar transmit fields 在 direct-detection finite-aperture UAV-FSO 链路中的跨机制 turbulence–jitter sensitivity / failure map。**
 
@@ -43,13 +34,7 @@ Paper 1 限定为：
 - continuum radial-phase OPB；
 - nested multi-Gaussian flat-top。
 
-不进入首轮 numerical set：
-
-- Airy path diversity；
-- partial coherence；
-- vector / mode diversity。
-
-这些机制可以保留在文献讨论，但不再用于扩张首轮代码。
+Airy path diversity、partial coherence、vector/mode diversity 只保留在讨论层，不进入首轮 numerical set。
 
 ## 3. Paper 1 要回答什么
 
@@ -59,7 +44,7 @@ Paper 1 限定为：
 2. jitter only；
 3. turbulence + independent post-PAT residual jitter。
 
-主结果不是 beam-name leaderboard，而是：
+主结果应形成：
 
 - turbulence-only 优势加入 jitter 后的保持、压缩、反转与失效；
 - finite-aperture `H=P_R/P_T` 的 ECDF / `Q5%` / paired differences；
@@ -81,14 +66,7 @@ Paper 1 限定为：
 
 ## 5. Paper 2 启动条件
 
-Paper 2 只有在 Paper 1 发现：
-
-- 稳定、跨连续区域的 mechanism trade-off；
-- 不能被 optimized Gaussian 完全解释；
-- 可转化为少参数设计原则；
-- 资源代价适合目标 UAV-FSO 场景；
-
-才允许启动 turbulence–jitter co-design。
+只有 Paper 1 得到稳定、跨连续区域、不能被 optimized Gaussian 完全解释、且可转化为少参数设计原则的 mechanism trade-off，才允许启动 turbulence–jitter co-design。
 
 flattened-/super-Gaussian、Gaussian–LG/annular-like 目前只属于可能的 Paper-2 design seeds。
 
@@ -96,25 +74,36 @@ flattened-/super-Gaussian、Gaussian–LG/annular-like 目前只属于可能的 
 
 Stage-A broad literature search：**CLOSED**。
 
-三条外审指定补链已关闭：
-
-- Nelson 2014；
-- Jiang 2022/2026；
-- Lane 1992。
+三条外审指定补链已关闭：Nelson 2014、Jiang 2022/2026、Lane 1992。
 
 后续只在结果冲突或审稿需要时定向补文献，不因为新 beam name 重新广撒网。
 
 ## 7. 当前 contract gate
 
-当前 authoritative candidate：`docs/SCIENTIFIC_CONTRACT_DRAFT.md` v0.3.1。
+v0.3.1 最新短复核结果：
 
-v0.3 短审暴露三项 blocker：
+- OPB finite-aperture feasibility：PASS；
+- G1 lower-tail optimization：PASS；
+- 唯一 remaining blocker：phase-spectrum / Fourier `(2pi)` normalization。
 
-1. OPB finite-aperture stationary-radius feasibility；
-2. G1 5% tail optimization sample stability；
-3. turbulence exact PSD normalization + absolute Gaussian references + split grid/window convergence。
+v0.3.2 已采用唯一 convention：
 
-这些已在 v0.3.1 candidate 中修订，但仍等待最终短复核。
+\[
+\Phi_\phi^{(atm)}=2\pi k^2\Delta z\,\Phi_n^{(atm)},
+\]
+
+\[
+\Phi_\phi^{(math)}=(2\pi)^2\Phi_\phi^{(atm)}
+=(2\pi)^3k^2\Delta z\,\Phi_n^{(atm)},
+\]
+
+并要求在 mathematical Fourier measure `d^2kappa/(2pi)^2` 下恢复：
+
+\[
+D_\phi(\rho)=6.88(\rho/r_{0,screen})^{5/3}.
+\]
+
+当前只等待这一 normalization 修订的最终极短复核。
 
 ## 8. code authorization
 
@@ -122,7 +111,7 @@ v0.3 短审暴露三项 blocker：
 
 > **NO SCIENTIFIC CODE AUTHORIZED YET.**
 
-若 v0.3.1 短审 PASS，只授权 Gaussian-only implementation：
+若 v0.3.2 极短复核 PASS，只授权 Gaussian-only implementation：
 
 1. free-space；
 2. finite-aperture displacement；
