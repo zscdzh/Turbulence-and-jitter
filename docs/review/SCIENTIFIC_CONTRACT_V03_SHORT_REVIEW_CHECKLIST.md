@@ -1,55 +1,17 @@
-# Scientific Contract v0.3.1 Candidate — Short Review Checklist
+# Scientific Contract v0.3.2 Candidate — Final Ultra-Short Review Checklist
 
-**用途：** 这是 code gate 前的最终短复核，不重新开启 Stage-A broad literature review。  
+**用途：** code gate 前的最终极短复核；不重新开启 Stage-A broad literature review，也不重新审查已 PASS 的 OPB、G1、scene 或 mechanism set。  
 **待审合同：** `../SCIENTIFIC_CONTRACT_DRAFT.md`  
-**上一轮决定：** `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md`
+**上一轮决定：** `SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md`
 
-请只检查以下四组问题。
+本轮只检查一个问题：**phase-spectrum / Fourier `2pi` normalization 是否已经完全自洽。**
 
-## 1. OPB finite-aperture feasibility
+## 1. atmospheric spectrum
 
-检查合同中：
-
-\[
-W(L)=1/(4k\beta L),
-\qquad
-\rho_s=4\beta L^2,
-\qquad
-\omega=W(L)/a_T.
-\]
-
-以及：
-
-- `A(r)=exp(-r^2/w_A^2)`, `w_A=0.65a_T`；
-- aperture 后 `r95_T≈0.775a_T`；
-- primary `omega_OPB=0.55`；
-- `beta≈4.49e-9 m^-1`；
-- `rho_s≈17.94 mm < r95_T≈19.37 mm`；
-- Level-B `omega in [0.55,0.90]` 且继续要求 `rho_s<=r95_T`。
-
-问题：这些关系在量纲、数值与 Zhang 2019 的 stationary-phase interpretation 上是否自洽？
-
-输出：`PASS / REVISE`，只列真正阻塞实现的问题。
-
-## 2. G1 lower-tail optimization
-
-检查：
-
-- 35 个候选全部共享同一组 256 common random realizations；
-- Top-5 再共享额外 768 realizations；
-- finalist 的最终 `N_opt=1024`；
-- winner 只由完整 1024 optimization set 决定；
-- `N_eval=1024` 与 optimization 完全 disjoint；
-- near-boundary evaluation 扩展至 4096。
-
-问题：这一 staged CRN design 是否足以避免 5% quantile winner 被小样本噪声支配，同时不过度增加计算？
-
-## 3. exact turbulence spectrum / absolute references
-
-检查 exact convention：
+合同定义：
 
 \[
-\Phi_n(\kappa)=0.033C_n^2
+\Phi_n^{(\mathrm{atm})}(\kappa)=0.033C_n^2
 \frac{\exp[-(\kappa/\kappa_m)^2]}
 {(\kappa^2+\kappa_0^2)^{11/6}},
 \]
@@ -61,24 +23,82 @@ W(L)=1/(4k\beta L),
 \]
 
 \[
-\Phi_\phi(\kappa)=2\pi k^2\Delta z\,\Phi_n(\kappa),
+\Phi_\phi^{(\mathrm{atm})}(\kappa)
+=2\pi k^2\Delta z\,\Phi_n^{(\mathrm{atm})}(\kappa).
 \]
 
-以及合同中明确写出的 continuous Fourier convention 和 `D_phi` integral。
+这里 atmospheric spectrum integral 不额外使用 `(2pi)^-2` measure。
 
-再检查：
+## 2. mathematical Fourier convention
 
-- V6a independent beam-wander spectral quadrature；
-- V7a weak-Kolmogorov Gaussian `W_LT` absolute reference；
-- V10a fixed-window grid-resolution refinement；
-- V10b fixed-`Delta x` physical-window enlargement；
-- V11 maximum-tilt wrap-around / aliasing。
+合同保留：
 
-问题：这些定义是否已经足以防止 FFT normalization 错误或“自收敛到错误答案”？若仍缺一项，请只指出最小必须补的绝对 benchmark。
+\[
+\phi(\mathbf r)=
+\int\frac{d^2\kappa}{(2\pi)^2}
+\tilde\phi(\boldsymbol\kappa)e^{i\boldsymbol\kappa\cdot\mathbf r},
+\]
+
+因此要求：
+
+\[
+\boxed{
+\Phi_\phi^{(\mathrm{math})}(\kappa)
+=(2\pi)^2\Phi_\phi^{(\mathrm{atm})}(\kappa)
+=(2\pi)^3k^2\Delta z\,\Phi_n^{(\mathrm{atm})}(\kappa)
+}.
+\]
+
+并使用：
+
+\[
+D_\phi(\rho)
+=2\int\frac{d^2\kappa}{(2\pi)^2}
+\Phi_\phi^{(\mathrm{math})}(\kappa)
+[1-\cos(\boldsymbol\kappa\cdot\boldsymbol\rho)].
+\]
+
+请确认这与 atmospheric-measure 写法
+
+\[
+D_\phi(\rho)
+=2\int d^2\kappa\,
+\Phi_\phi^{(\mathrm{atm})}(\kappa)
+[1-\cos(\boldsymbol\kappa\cdot\boldsymbol\rho)]
+\]
+
+严格等价。
+
+## 3. absolute Kolmogorov gate
+
+V5 现在要求在 screen-level Kolmogorov validation limit 中恢复：
+
+\[
+\boxed{
+D_\phi(\rho)
+=2.91k^2C_n^2\Delta z\,\rho^{5/3}
+=6.88\left(\frac{\rho}{r_{0,\mathrm{screen}}}\right)^{5/3}
+}
+\]
+
+\[
+\boxed{
+r_{0,\mathrm{screen}}
+=[0.423k^2C_n^2\Delta z]^{-3/5}
+}.
+\]
+
+V5 acceptance：
+
+- finite-scale continuous integral median relative error `<=10%`；
+- Kolmogorov-limit absolute amplitude median relative error `<=10%` over preregistered resolved inertial interval；
+- log-slope `5/3 ±0.10`。
+
+问题：上述定义是否已经消除 v0.3.1 中的 `(2pi)^2` variance error，并使 V4/V5 能发现 absolute normalization 错误？
 
 ## 4. final code-gate decision
 
-若 1–3 均无 blocker，请输出：
+若无 remaining normalization blocker，请输出：
 
 > **PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION**
 
@@ -89,10 +109,10 @@ W(L)=1/(4k\beta L),
 3. analytic jitter；
 4. Gaussian phase-screen / multi-screen validation V0–V12。
 
-不授权 Bessel / OPB / flat-top production comparison。structured fields 只有 Gaussian chain 全部通过后才进入。
+仍不授权 Bessel / OPB / flat-top production comparison。
 
-若仍有 blocker，请输出：
+若仍有确定 blocker，请输出：
 
 > **REVISE — KEEP CODE GATE CLOSED**
 
-并限制为最多 1–3 个真正阻塞实现的问题。
+并只指出 normalization / absolute-reference 层的最小问题，不重开路线或文献调研。
