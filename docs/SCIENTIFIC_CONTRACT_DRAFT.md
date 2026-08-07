@@ -1,298 +1,571 @@
 # SCIENTIFIC_CONTRACT_DRAFT
 
-**状态：** Draft v0.2 — 路线纠正版，尚未完成文献驱动的参数冻结  
-**日期：** 2026-08-07  
-**当前适用对象：** Paper 1 的文献机制地图与后续统一评价。Paper 2 联合设计单独列出，不得混入当前执行任务。  
-**阶段权威边界：** `docs/RESEARCH_STAGE_BOUNDARY.md`
+**状态：Scientific Contract v0.3 candidate — CONTRACT FREEZE GATE；短审通过前不授权 structured-beam 代码。**  
+**日期：2026-08-07**  
+**外部审查决策：REVISE**  
+**审查输入：** `docs/review/EXTERNAL_REVIEW_DECISION_2026-08-07.md`  
+**阶段边界：** `docs/RESEARCH_STAGE_BOUNDARY.md`
 
-## 1. Paper 1 科学问题
+---
 
-当前首先研究的不是“什么光束在 turbulence + jitter 下 joint optimum”，而是：
+## 1. Paper 1 正式 scope
 
-> 文献中已经提出的不同 turbulence-resistant beam mechanisms，在加入独立机械 residual pointing jitter 后，哪些原有抗湍流优势能够保持、哪些明显退化、哪些发生排序反转？这种差异能否形成可解释的 jitter-sensitivity map、applicability regime 或 failure boundary？
+Paper 1 收窄为：
 
-Paper 1 的核心对象是**已有抗湍流机制**，不是提前设计新的联合鲁棒光束。
+> **coherent、deterministic、single-aperture transmit fields 在 direct-detection finite-aperture UAV-FSO 链路中的跨机制 turbulence–jitter sensitivity / failure map。**
 
-不得把以下问题偷换成 Paper 1 主任务：
+研究目标不是证明某一种 structured beam 普适更好，而是回答：
 
-- 直接寻找 flattened-Gaussian 的 joint optimum order；
-- 直接寻找 Gaussian–LG 的 joint optimum weight；
-- 为所有 structured beams 做多参数联合优化；
-- 把“联合 turbulence 与 pointing error”本身当作创新。
+> 已有 turbulence-resistant deterministic transmit-field mechanisms 在加入 independent post-PAT residual pointing jitter 后，哪些 turbulence-only 优势能够保持、哪些压缩、哪些反转、哪些失效；这些变化是否能用少量尺度、capture 与 resource descriptors 形成可解释的 applicability / failure map？
 
-## 2. Paper 2 条件性科学问题
+### scope 内
 
-只有 Paper 1 形成稳定机制 trade-off 后，才允许研究：
+- coherent deterministic scalar complex fields；
+- single circular transmitter aperture；
+- single circular finite receiver aperture；
+- direct-detection received power；
+- distributed atmospheric turbulence；
+- turbulence-induced beam wander；
+- independent post-PAT residual angular jitter；
+- 一个 anisotropic-jitter sensitivity case；
+- 一个 nonzero boresight-bias sensitivity case。
 
-> 能否依据 Paper 1 暴露出的抗湍流机制与 anti-jitter 需求之间的矛盾，构造一个少参数、可解释、资源透明的 turbulence–jitter co-robust beam？
+### scope 外
 
-Paper 2 才允许定义 joint objective、比较 turbulence-only / jitter-only / joint optimum，并优化少量结构参数。
+- partially coherent / source-ensemble optimization；
+- multi-beam path-diversity architecture；
+- vector / polarization / mode-diversity receiver task；
+- coherent receiver / mode demultiplexing；
+- single-mode-fiber coupling；
+- AO instantaneous correction；
+- full UAV 6-DOF / PAT/FSM time-domain controller；
+- jitter PSD / temporal correlation in Paper 1 primary model；
+- high-dimensional inverse design / neural network。
 
-flattened-/super-Gaussian、Gaussian–LG/annular-like 当前仅是可能的设计种子，不是已冻结候选。
+Airy path-diversity、partial coherence、vector/mode-diversity 可在文献讨论中保留，但不构成“数值集合不完整”的遗漏，因为它们被明确排除在本 scope 外。
 
-## 3. Paper 1 / Stage A：文献机制契约
+---
 
-在数值模型开始前，必须先建立文献证据矩阵。
+## 2. Paper 2 边界
 
-### 3.1 文献按机制组织
+Paper 2 仍为 **CONDITIONAL GO**：只有 Paper 1 出现稳定、跨连续区域、且不能被 optimized Gaussian / receiver-scale matching 完全解释的 turbulence–jitter trade-off 后，才允许构造少参数 co-robust beam。
 
-初始需要覆盖但尚未冻结的机制包括：
+flattened-/super-Gaussian、Gaussian–LG/annular-like 目前仅为 Paper 2 设计种子，不得反向定义 Paper 1。
 
-- self-healing / angular-spectrum redundancy；
-- caustic / self-accelerating propagation；
-- self-focusing / pin-like / longitudinal concentration；
-- flat-top / flattened / super-Gaussian；
-- partial coherence / statistical beam shaping；
-- 必要时再加入提供独立机制且计算成本合理的 vector / mode-diversity 类。
+---
 
-### 3.2 每篇关键文献必须提取
+## 3. 第一轮 core field set — FROZEN
 
-- 文献身份与证据等级；
-- 发射场数学定义；
-- 关键光场参数及其物理含义；
-- 作者声称的抗湍流机制；
-- turbulence model、强度范围和适用边界；
-- 是否包含 turbulence-induced beam wander；
-- 是否包含 independent pointing jitter / boresight bias；
-- 发射/接收口径、距离、波长；
-- Gaussian baseline 的定义和优化权限；
-- 总功率、外围能量、硬孔径、生成损耗等资源；
-- 评价指标及其局限；
-- 参数属于理论定义、实测值、引用值还是作者仿真假设；
-- 对整体 lateral displacement 的潜在敏感性；
-- 对 Paper 1 或 Paper 2 的证据角色。
+### 3.1 Gaussian G0 / G1
 
-### 3.3 文献充分条件
-
-目标不是机械凑篇数。建议初筛约 30–40 篇，精读约 15–20 篇锚点，并在以下条件接近满足时认为可以进入 Stage B：
-
-- 每个核心机制都有方法/定义锚点；
-- 关键模型定义至少有独立来源交叉确认；
-- UAV/PAT residual jitter 的定义和现实量级有系统或实验依据；
-- multi-screen turbulence / low-frequency beam-wander 数值问题有专门方法依据；
-- direct-competitor 检索不再出现会实质改写 Paper 1 科学问题的新工作；
-- 新增文献不再显著改变机制分类、代表光束选择或创新边界。
-
-## 4. Paper 1 / Stage B：统一评价对象
-
-文献冻结后，只选择约 3–5 个机制真正不同的代表光束。最终名单由 Stage A 决定，当前不预注册具体模式动物园。
-
-每个代表机制至少比较：
-
-1. turbulence only；
-2. jitter only；
-3. turbulence + independent jitter。
-
-第一层优先使用原文有依据的代表参数，用来回答：
-
-> 原抗湍流设计加入 independent jitter 后还剩多少优势？
-
-第二层仅在必要时允许有限、透明的尺度 retuning，以及与 optimized Gaussian 的共同任务对照，用来判断收益是结构机制还是单纯的 beam spreading / peripheral energy / aperture resource exchange。
-
-Paper 1 不要求为每个 structured beam 寻找完整 joint optimum。
-
-## 5. 共用传播模型
-
-发射面复场记为
+common-resource Gaussian：
 
 \[
-U_0(x,y;\boldsymbol\alpha),
+U_G(r)=C_G\exp(-r^2/w_G^2)
+\exp\left[-i\frac{k r^2}{2f_G}\right]\Pi(r/a_T).
 \]
 
-其中 \(\boldsymbol\alpha\) 在 Paper 1 中首先表示**文献给出的代表场参数**；只有明确授权的有限 retuning 才作为优化变量。
+G0：固定 common-resource reference。  
+G1：预注册低维 optimized-Gaussian envelope。
 
-多相位屏传播计划表示为
+### 3.2 zeroth-order Bessel — FROZEN FORM
+
+主代表：circular-truncated `J0`
 
 \[
-U_{m+1}
-=
-\mathcal P_{\Delta z_m}
-\left[
-U_m\exp(i\phi_m)
-\right].
+U_B(r)=C_BJ_0\left(\chi_B\frac{r}{a_T}\right)\Pi(r/a_T).
 \]
 
-正式 turbulence model 尚未冻结，后续必须由专门文献确定：
-
-- Kolmogorov / von Karman / modified von Karman spectrum；
-- inner / outer scale；
-- phase-screen number and spacing；
-- subharmonic 或其他 low-frequency treatment；
-- beam-wander accuracy；
-- grid / window / propagation sampling requirements。
-
-Liu/Jiang 2021 的 single-screen `0.36 L` 模型只保留为 weak-turbulence benchmark，不作为正式生产模型。
-
-## 6. independent mechanical jitter
-
-当前接受 independent mechanical residual jitter 优先通过 transmitter angular tilt 进入 wave optics：
+第一轮 representative：
 
 \[
-U_0'(x,y)
-=
-U_0(x,y)
-\exp\left[ik(\theta_xx+\theta_yy)\right].
+\chi_B=10.
 \]
 
-若使用零均值各向同性 Gaussian jitter：
+理由：位于 Eyyuboğlu 2013 文献映射得到的约 `O(5–20)` 主结构范围内部；这是 representative choice，不是文献 optimum claim。
+
+在正式 common comparison 前必须先做一次 Eyyuboğlu square-window Bessel reproduction sanity case。Bessel–Gaussian 只有在结论对 hard truncation 敏感时才增加。
+
+### 3.3 OPB — FROZEN FORM
+
+第一版使用 continuum radial phase：
 
 \[
-\theta_x,\theta_y\sim\mathcal N(0,\sigma_\theta^2),
+U_{OPB}(r)=C_{OPB}A(r)
+\exp\left[-i\frac{4}{3}k\sqrt{\beta}\,r^{3/2}\right]
+\Pi(r/a_T).
 \]
 
-其中 `sigma_theta` 明确定义为**单轴 angular standard deviation**，单位 rad。
+冻结 amplitude：
 
-接收面平移可用于快速近似或交叉验证，但不能默认替代完整倾斜传播。
+\[
+A(r)=\exp(-r^2/w_A^2),
+\qquad
+w_A=0.65a_T.
+\]
 
-真实 UAV/PAT 的 `sigma_theta`、PSD、相关时间与各向异性尚未冻结，必须由系统/实验文献建立证据链。
+这与 G0 使用相同 Gaussian source occupation，使 OPB 第一层差异主要来自 radial phase，而不是额外 amplitude footprint。
 
-## 7. 三类横向运动
+正确 pin-width relation：
+
+\[
+\boxed{W(z)=\frac{1}{4k\beta z}}.
+\]
+
+定义 primary target pin scale：
+
+\[
+\omega_{OPB}=\frac{W(L)}{a_T}=0.35,
+\]
+
+因此：
+
+\[
+\beta=\frac{1}{4kLa_T\omega_{OPB}}.
+\]
+
+`omega_OPB=0.35` 是 literature-inspired representative choice，不声称是 Zhang 2019 或 joint channel 的 optimum。
+
+不实现 32-filament / etched-mask discretization。
+
+### 3.4 flat-top — FROZEN FAMILY
+
+采用 nested multi-Gaussian family：
+
+\[
+U_N(r)=C_N\left[\frac{1}{N}\sum_{n=1}^{N}(-1)^{n-1}\binom{N}{n}
+\exp\left(-n\frac{r^2}{w_F^2}\right)\right]\Pi(r/a_T).
+\]
+
+冻结：
+
+- `N=1`：nested-Gaussian sanity；
+- `N=4`：moderate representative；
+- `N=8`：optional high-order stress only；
+- Level A primary `w_F=0.65a_T`。
+
+`N=4/8` 是项目代表性采样，不声称是 Jiang 2022/2026 的 joint optimum。
+
+### 3.5 不进入首轮数值集合
+
+- Airy path-diversity array：文献/架构讨论 only；
+- partial coherence：成熟 turbulence+pointing joint-optimization control，discussion only；
+- vector / mode diversity：out of scope。
+
+---
+
+## 4. common-resource Level A — FROZEN
+
+所有 core fields 使用完全相同：
+
+- wavelength `lambda`；
+- propagation distance `L`；
+- circular Tx clear aperture `D_T=2a_T`；
+- circular Rx aperture `D_R=2a_R`；
+- post-aperture transmitted power `P_T`；
+- turbulence realizations；
+- jitter realizations；
+- nominal receiver axis。
+
+所有 source fields 经 common aperture 后重新归一：
+
+\[
+\iint_{r\le a_T}|U_0|^2dA=P_T.
+\]
+
+Level A 是论文主结果。
+
+### 必须报告的 resource ledger
+
+- `r50_T,r80_T,r95_T`；
+- peripheral / halo power fraction；
+- source second moment；
+- angular-spectrum / transverse-frequency descriptor；
+- no-disturbance `H0`；
+- receiver-plane `r50_R,r80_R`；
+- receiver second moment；
+- literature-supported generation efficiency / conversion loss。
+
+这些量原则上**报告而不全部硬匹配**。
+
+---
+
+## 5. secondary Level B — FROZEN AS `r80_R` MATCHING
+
+唯一 secondary diagnostic：
+
+> **receiver-plane no-turbulence/no-jitter `r80_R`-matched one-scale retuning。**
+
+目标为与 G0 `r80_R` 匹配到：
+
+\[
+|r_{80,R}^{field}/r_{80,R}^{G0}-1|\le1\%.
+\]
+
+若预注册参数范围内没有唯一稳定解，标记 `NO R80 MATCH`，不得扩大搜索范围救结果。
+
+### 每个 family 只开放一个 scale
+
+- Bessel：`chi_B`，允许 `[6,18]`；
+- OPB：`omega_OPB=W(L)/a_T`，允许 `[0.20,0.70]`；
+- flat-top：固定 `N=4`，只调 `gamma_F=w_F/a_T`，允许 `[0.40,0.90]`。
+
+禁止同时改变 family order 和 radial scale。
+
+`H0` 只报告，不作为 matching constraint。
+
+---
+
+## 6. Gaussian G0 / G1 — FROZEN RULES
+
+### 6.1 G0 reference
+
+primary G0：
+
+\[
+w_G=0.65a_T,
+\qquad
+f_G=\infty.
+\]
+
+定义 Paper 1 主 reference scale：
+
+\[
+w_{ref}=r_{80,R}^{G0}
+\]
+
+其中 `r80_R^G0` 在 primary physical scene、no-turbulence/no-jitter 条件下由 validated free-space propagator 计算。
+
+Gaussian analytic jitter sanity check 仍单独使用 `1/e^2` intensity radius `W`，不得把 `r80` 与 `W` 混用。
+
+### 6.2 G1 search space
+
+定义：
+
+\[
+\gamma_G=w_G/a_T\in[0.35,0.95].
+\]
+
+第一版离散候选：
+
+`0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95`。
+
+quadratic focusing 用：
+
+\[
+u_f=L/f_G
+\]
+
+参数化，搜索：
+
+`u_f = 0, 0.5, 1.0, 1.5, 2.0`，
+
+其中 `u_f=0` 表示 collimated / `f_G=infinity`。
+
+### 6.3 G1 objective
+
+唯一主优化指标：
+
+\[
+\boxed{Q_{5\%}(H)}.
+\]
+
+G1 在每个正式场景点 `(tau,j,alpha_R)` 独立选择最佳 `(gamma_G,u_f)`，形成较强 Gaussian envelope。
+
+不得换用 mean power、scintillation 或看完 structured-field 结果后改变优化目标。
+
+### 6.4 optimization / evaluation independence
+
+- `N_opt = 256` independent realizations，仅用于 G1 parameter selection；
+- `N_eval = 1024` disjoint realizations，用于正式 common comparison；
+- near-boundary / ranking-reversal point 若 bootstrap uncertainty 仍与零差异重叠，可增加到 `N_confirm = 4096`；不得默认对全参数面跑 4096。
+
+`optimization seeds ∩ evaluation seeds = empty`。
+
+所有 fields 在正式 evaluation 中使用 paired common turbulence/jitter realizations。
+
+---
+
+## 7. primary physical scene — FROZEN FOR v0.3
+
+### 7.1 geometry
+
+- `lambda = 1550 nm`；
+- `L = 1000 m`；
+- `D_T = 50 mm`，`a_T=25 mm`；
+- `D_R = 50 mm`，`a_R=25 mm`；
+- normalized `P_T=1` for simulation；absolute power not needed for direct received-fraction study。
+
+该场景是**代表性 near-ground UAV-FSO mechanism scene**，不是声称所有 UAV terminal 都使用 50-mm apertures。
+
+### 7.2 turbulence
+
+primary atmosphere：constant-`Cn2` horizontal path，modified/von-Kármán spectrum。
+
+baseline：
+
+- `Cn2 = 1e-14 m^(-2/3)`；
+- `L0 = 10 m`；
+- `l0 = 5 mm`。
+
+primary turbulence sweep：
+
+- `Cn2 = 3e-15`；
+- `1e-14`；
+- `3e-14 m^(-2/3)`。
+
+使用 plane-wave `r0=[0.423 k^2 Cn2 L]^(-3/5)` 作为 turbulence scale diagnostic 时，对本 scene 约对应：
+
+- `r0≈162 mm`, `tau=D_T/r0≈0.31`；
+- `r0≈78.5 mm`, `tau≈0.64`；
+- `r0≈40.6 mm`, `tau≈1.23`。
+
+这些 `r0/tau` 为该冻结 scene 的派生量，不是额外拟合参数。
+
+outer/inner-scale sensitivity：
+
+- `L0 = 5, 10, 20 m`；
+- `l0 = 3, 5, 10 mm`。
+
+依据边界：near-ground optical-turbulence literature 支持 inner scale 为毫米量级、outer scale 为数米到数十米量级；`10 m / 5 mm` 仅作为 baseline，不宣称唯一真实值。
+
+`Cn2=1e-13` 可在 production module 通过验证后作为 optional strong stress，不属于第一轮主图必跑点。
+
+### 7.3 phase-screen placement
+
+primary constant-`Cn2` horizontal path：equal-spacing screens 起步。
+
+screen number 由 convergence 决定，不冻结“固定 10/20 张”。候选 validation ladder：`4 -> 8 -> 16 -> 32`。
+
+高度依赖 `Cn2(z)` 与 non-uniform placement 只作为 secondary extension。
+
+---
+
+## 8. jitter / boresight contract — FROZEN
+
+### 8.1 primary residual model
+
+transmitter angular tilt：
+
+\[
+U_0'(x,y)=U_0(x,y)
+\exp[ik(\theta_xx+\theta_yy)].
+\]
+
+primary：
+
+\[
+\theta_x,\theta_y\sim\mathcal N(0,\sigma_\theta^2).
+\]
+
+`σ_theta` 是单轴 post-PAT residual LOS angular standard deviation。
+
+主科学坐标：
+
+\[
+\boxed{j=\frac{L\sigma_\theta}{w_{ref}}}.
+\]
+
+primary jitter sweep：
+
+`j = 0, 0.25, 0.5, 1.0, 1.5`。
+
+现实 physical anchors 只映射到该 axis：
+
+- fixed-wing high-performance actual-flight：约 `8–10 urad (1sigma)`；
+- Trinh 2021 multirotor retro-FSO residual：约 `27–42 urad/axis`，只作 double-pass stress anchor。
+
+不定义唯一“典型 UAV sigma_theta”。
+
+### 8.2 anisotropic sensitivity
+
+增加一个 `sigma_y/sigma_x=2` case，并保持总 per-axis-average variance 与 isotropic reference 相同：
+
+\[
+(\sigma_x^2+\sigma_y^2)/2=\sigma_\theta^2.
+\]
+
+因此：
+
+\[
+\sigma_x=\sigma_\theta/\sqrt{2.5},
+\qquad
+\sigma_y=2\sigma_x.
+\]
+
+只在一个代表 `tau,j` 条件验证 ranking sensitivity。
+
+### 8.3 boresight sensitivity
+
+增加一个 x-direction nonzero bias：
+
+\[
+\rho_b=0.5w_{ref},
+\qquad
+\theta_b=\rho_b/L.
+\]
+
+只作 secondary sensitivity，不加入全参数扫描。
+
+### 8.4 turbulence beam wander separate ledger
 
 必须分别记录：
 
-1. \(\boldsymbol\rho_{bw}\)：由 turbulence realization 产生的接收面 centroid wander；
-2. \(L\boldsymbol\theta_j\)：independent mechanical residual jitter 对应的位移尺度；
-3. \(\boldsymbol\rho_b\)：static / slow boresight bias。
+- `rho_bw`：turbulence-only centroid wander；
+- `rho_j=L theta_j`：independent residual jitter；
+- `rho_b`：boresight bias。
 
-不得把 phase-screen 已包含的 beam wander 再作为独立 pointing loss 重复叠加。
+不得把 phase-screen 已包含的 beam wander 再作为额外 statistical pointing loss 重复叠加。
 
-## 8. Gaussian jitter sanity check
+---
 
-对于
+## 9. receiver observable and statistics — FROZEN
 
-\[
-I(x,y)\propto\exp[-2(x^2+y^2)/W^2]
-\]
-
-定义的 Gaussian `1/e^2` intensity radius `W`，无湍流二维独立角 jitter 应满足
+realization-level finite-aperture power：
 
 \[
-W_{\rm eff}^2=W^2+4L^2\sigma_\theta^2.
-\]
-
-该式只作为 jitter implementation 的解析 benchmark，不能在 beam-radius convention 不一致时直接使用。
-
-## 9. finite-aperture received power
-
-圆形接收孔径半径为 \(a_R\)。单次 realization 下：
-
-\[
-P_R
-=
-\iint_{x^2+y^2\le a_R^2}
-|U_L(x,y)|^2\,dx\,dy.
-\]
-
-归一化接收功率：
-
-\[
+P_R=\iint_{r\le a_R}|U_L|^2dA,
+\qquad
 H=P_R/P_T.
 \]
 
-Paper 1 的主统计证据应来自：
+### primary output
 
-- finite-aperture received-power samples；
-- ECDF；
-- 一个或多个低分位指标；
-- 必要时给定明确门限的 outage。
+- full ECDF of `H`；
+- `Q5%(H)`；
+- paired difference distributions against G1；
+- confidence interval / bootstrap uncertainty at claimed boundaries。
 
-point irradiance、peak intensity、scintillation、shape similarity、mode fidelity 只能作为机制诊断，不能单独证明通信优势。
+### secondary
 
-## 10. Paper 1 的机制描述量
+- outage at explicitly stated threshold；
+- mean `H`；
+- scintillation；
+- centroid / beam radius / profile descriptors。
 
-当前候选解释量包括但尚未冻结：
+point irradiance、peak intensity、scintillation、shape fidelity 不得单独证明 communication gain。
 
-- capture function \(G(\Delta;\omega)\)；
-- 中心附近位移敏感性或曲率；
-- threshold coverage area；
-- long-term beam scale；
-- peripheral / halo power fraction；
-- turbulence-induced centroid wander；
-- 与发射/接收 aperture 有关的无量纲比例。
+---
 
-这些量的作用是解释“为什么某类抗湍流机制怕或不怕 independent jitter”，而不是增加 Paper 1 的优化自由度。
+## 10. turbulence production numerical-validation table — FROZEN
 
-## 11. Gaussian baseline 与比较原则
+在任何 structured-field multi-screen production run 前，Gaussian module 必须依次通过以下验证。
 
-Paper 1 至少需要两类 Gaussian 角色：
+| Gate | 验证量 | v0.3 acceptance |
+|---|---|---|
+| V0 | full-grid power conservation, free space | relative drift `<=1e-4` |
+| V1 | unclipped Gaussian free-space radius / phase | analytic disagreement `<=1%` |
+| V2 | displaced Gaussian finite-aperture capture | analytic/high-accuracy quadrature disagreement `<=0.5%` |
+| V3 | Gaussian jitter broadening | `W_eff^2=W^2+4L^2 sigma_theta^2`, radius disagreement `<=1%` |
+| V4 | phase-screen PSD | resolved inertial-range spectral slope / level consistent with target; median relative level error `<=10%` over preregistered resolved band |
+| V5 | phase structure function `D_phi(rho)` | median relative error `<=10%` over resolved inertial interval; recovered log-slope within `±0.10` of target inertial slope |
+| V6 | low-frequency treatment | enabling/refining subharmonics or equivalent must converge `Var(rho_bw)`; production choice changes beam-wander variance `<5%` on further refinement |
+| V7 | long-term radius | further low-frequency/grid refinement changes `W_LT <2%` |
+| V8 | scintillation auxiliary | further screen/grid refinement changes scintillation `<5%` |
+| V9 | screen-number ladder | choose smallest of `4/8/16/32` for which V6–V8 all pass on next refinement |
+| V10 | grid/window | one grid/window refinement changes `W_LT <2%`, beam-wander variance `<5%`, scintillation `<5%` |
+| V11 | maximum tilt aliasing | centroid shift linearity vs vacuum prediction within `1%`; full-grid power drift `<=1e-4`; no wrap-around contamination at max `j+bias` |
+| V12 | propagation sampling | one longitudinal/transverse sampling refinement satisfies same observable tolerances as V10 |
 
-1. 原代表文献自身使用的 Gaussian comparison（用于复现和理解原抗湍流主张）；
-2. 针对共同任务认真处理的 Gaussian baseline（用于判断 structured-beam 优势是否只是尺度或资源交换）。
+### screen-level + propagation-level 双层验收
 
-不得只与固定教科书 Gaussian 比较。
+Lane 1992：正式 low-frequency / subharmonic anchor。  
+Chen 2020：beam-wander / long-term-radius consequence anchor。  
+Chahine 2020：non-uniform longitudinal placement secondary anchor。
 
-同时必须公开：
+生产模块不要求固定使用某一种 phase-screen algorithm；任何算法只要同时通过 screen-level PSD/structure-function 与 propagation-level observables 即可。
 
-- 总发射功率；
-- 发射清孔径；
-- 接收口径；
-- 硬孔径截断；
-- peripheral / halo energy；
-- generation efficiency 或无用级次（若相关）；
-- 无扰动接收功率和长期光斑尺度。
+---
 
-新光束不要求在所有归一化口径下普适获胜，但资源代价必须透明。
+## 11. three targeted literature chains — CLOSED
 
-## 12. Paper 1 可检验假设
+### Nelson 2014
 
-当前只保留机制层假设：
+`docs/literature/NELSON_2014_BESSEL_AIRY_FAILURE_BOUNDARY_ANCHOR.md`
 
-- H1：turbulence-only superiority 不足以预测 turbulence + independent-jitter reliability；
-- H2：self-healing / angular-spectrum redundancy 不自动转化为整体 lateral-displacement tolerance；
-- H3：窄核心、高中心梯度或强能量集中机制可能提高 jitter sensitivity；
-- H4：flat capture / wider coverage 可能降低 jitter sensitivity，但必须区分结构效应与额外外围能量；
-- H5：partial-coherence 或 scintillation reduction 不保证 finite-aperture low-tail power 更高；
-- H6：不同机制在加入 jitter 后可能出现排序压缩、反转或明确失效区；
-- H7：上述差异可能由少量 capture / scale / resource descriptors 解释。
+接受：Bessel/Airy quasi-nondiffracting robustness 在 `r0` 接近初始 aperture scale 时会明显失效；`D_T/r0` 是重要 mechanism-failure coordinate。不得把 `r0=D_T` 写成严格 universal threshold。
 
-当前不把“flattened-Gaussian 最优阶数”或“Gaussian–LG 内部权重”列为 Paper 1 假设，它们属于可能的 Paper 2 问题。
+### Jiang 2022/2026
 
-## 13. Paper 1 最低成文条件
+`docs/literature/JIANG_2022_2026_FLAT_TOP_DIRECT_COMPETITOR_AUDIT.md`
 
-Paper 1 不能退化为几种光束的排行榜。至少需要形成一项以上可复用机制结论，例如：
+接受：flat-top + turbulence + jitter/bias + average irradiance/received power 已存在；2026 又有 pointing + gamma–gamma + average BER。Paper 1 novelty 只能落在 distributed wave optics、realization-level low-tail、optimized Gaussian、resource matching 与 cross-mechanism failure map。
 
-1. 一类或多类抗湍流机制在 independent jitter 下出现稳定的优势压缩、反转或失效边界；
-2. 不同机制的 jitter sensitivity 能形成清楚的机制分类；
-3. 若干结果能用少量无量纲或 capture descriptors 归纳；
-4. 证明常见“抗湍流”指标不能直接预测 finite-aperture joint reliability；
-5. 给出对 UAV-FSO beam selection 有明确意义的 applicability / failure map。
+### Lane 1992
 
-## 14. Paper 2 启动条件
+`docs/literature/LANE_1992_SUBHARMONIC_LOW_FREQUENCY_ANCHOR.md`
 
-只有 Paper 1 明确揭示设计 trade-off 后，才允许冻结 Paper 2 科学契约。
+接受：subharmonic / low-frequency handling 必须正式进入 validation；screen-level PSD/structure function 与 propagation-level beam wander 必须同时通过。
 
-最低条件包括：
+**Stage A broad literature search is CLOSED。** 后续仅在出现结果冲突或审稿所需时定向补文献。
 
-- trade-off 跨连续参数区域稳定存在；
-- 不能被普通 Gaussian scale optimization 完全解释；
-- 可以转化为少参数设计原则；
-- 资源代价适合目标场景；
-- 与现有 jitter-only / turbulence-only beam shaping 文献相比仍有明确创新空间。
+---
 
-Paper 2 的设计种子暂包括 flattened-/super-Gaussian、Gaussian–LG/annular-like 等，但不预先承诺使用任何一种。
+## 12. Paper 1 hypotheses — FROZEN AS TESTS, NOT CLAIMS
 
-## 15. 当前数值参数状态
+- H1：turbulence-only superiority 不足以预测 turbulence+jitter low-tail reliability；
+- H2：Bessel angular-spectrum redundancy 不自动提供 common lateral-displacement correction；
+- H3：OPB narrow pin / autofocusing 可以保持 propagation structure，同时对 common tilt 产生 receiver loss；
+- H4：flat-top broad capture 可能降低 jitter sensitivity，但收益可能被 source/receiver scale 与 peripheral energy 解释；
+- H5：Nelson-type turbulence failure 与 mechanical-jitter failure 是两个不同机制层；
+- H6：经过 G1 optimized Gaussian 与 Level B `r80` control 后，structured-beam ranking 可能压缩、反转或退化为无显著机制收益；
+- H7：如果所有差异都可由 receiver-plane scale / optimized Gaussian 解释，则 Paper 1 必须接受负结果，不增加高维设计自由度救结论。
 
-当前**不冻结**以下此前 Draft 中出现过的候选数字：
+---
 
-- 1550 nm；
-- 1 km 主场景、2–3 km 压力场景；
-- 40–80 mm 发射口径；
-- 任何固定接收口径；
-- `D_T/r0 ≈ 4`；
-- `j = 0, 0.1, 0.25, 0.5, 1, 2`；
-- 300–500 或 2000+ realization。
+## 13. claims prohibited — FROZEN
 
-这些值目前只能作为前序讨论中的候选，不得机械进入实现。物理场景、UAV/PAT residual jitter、turbulence strength、aperture、sample size 与统计置信要求必须由 Stage A 文献证据重新冻结。
+禁止：
 
-## 16. 当前允许的下一步
+- “首次联合 turbulence 与 pointing error”；
+- “首次 structured beam + joint channel”；
+- “self-healing 等于自动回正”；
+- “27–42 urad 是典型 UAV one-way transmitter residual”；
+- “flat-top 或 OPB 已被证明 turbulence–jitter joint-optimal”；
+- “multi-screen / subharmonic 本身是创新”；
+- “低 scintillation 等价于更高 `Q5%` / lower outage”；
+- “Nelson `r0~D` 是精确 universal threshold”；
+- “N=4 flat-top / chi_B=10 / omega_OPB=0.35 是文献证明的 optimum”。
 
-当前只允许推进文献驱动的 Paper 1 Stage A：
+---
 
-- 关键文献识别；
-- 逐篇参数和机制证据提取；
-- direct-competitor 审计；
-- mechanism map 与 literature evidence matrix；
-- 文献充分后冻结 Paper 1 代表机制和评价协议。
+## 14. code authorization gate
 
-在负责人再次批准前，不直接实现 structured-beam families，不启动正式 multi-screen Monte Carlo，不进行 Paper 2 joint optimization。
+当前：
+
+> **NO STRUCTURED-BEAM CODE AUTHORIZED YET。**
+
+v0.3 candidate 需要一次短审，只检查：
+
+1. field definitions / dimensions 是否自洽；
+2. primary scene 是否合理；
+3. G1 fairness 是否预注册完整；
+4. numerical-validation tolerance 是否过松/过严；
+5. 是否还存在会改变核心集合或 novelty 的 blocker。
+
+若短审通过，代码顺序严格为：
+
+1. Gaussian free-space；
+2. finite-aperture displacement；
+3. analytic Gaussian jitter；
+4. Gaussian multi-screen validation；
+5. Eyyuboğlu Bessel reproduction sanity；
+6. 最后才加入 circular `J0` / OPB / flat-top common comparison。
+
+不得跳过 Gaussian validation 直接跑 structured-field Monte Carlo。
+
+---
+
+## 15. Paper 2 启动条件
+
+只有 Paper 1 证明存在稳定 mechanism trade-off，且该 trade-off：
+
+- 跨连续 `(tau,j,alpha_R)` 区域存在；
+- 经过 G1 optimized Gaussian 后仍存在；
+- 经过 Level B `r80_R` control 后仍存在；
+- 不是简单 Tx/Rx aperture、halo power 或 source-scale 交换；
+- 可以转化成少参数设计原则；
+
+才允许冻结 Paper 2 co-design contract。
+
+否则 Paper 2 暂停，而 Paper 1 仍可作为机制失效/负结果论文推进。
