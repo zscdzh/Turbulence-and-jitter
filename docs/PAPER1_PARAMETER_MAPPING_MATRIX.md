@@ -1,173 +1,151 @@
 # PAPER1_PARAMETER_MAPPING_MATRIX
 
-**状态：Scientific Contract v0.3 candidate 对齐版。短审通过前不授权代码。**  
-**日期：2026-08-07**
+**状态：与 Scientific Contract v0.3.1 candidate 对齐。**  
+**用途：** 把 literature parameters 转换为 common physical resources；不把不同论文的有量纲数字直接拼接。
 
-本表只回答：如何把文献代表场转换为同一物理资源与同一 receiver-scale diagnostic，而不把原论文的 wavelength/aperture/power 当成结构收益。
+## 1. common physical resources
 
-## 1. common physical layer
+首轮全部 coherent deterministic fields 共享：
 
-Primary scene：
+- `lambda=1550 nm`；
+- `L=1 km`；
+- circular `D_T=50 mm`；
+- circular `D_R=50 mm`；
+- post-aperture `P_T=1`；
+- paired turbulence/jitter realizations；
+- common nominal receiver axis。
 
-| Quantity | Frozen v0.3 candidate |
-|---|---|
-| `lambda` | 1550 nm |
-| `L` | 1000 m |
-| `D_T` | 50 mm |
-| `D_R` | 50 mm |
-| `P_T` | normalized 1 after common aperture |
-| Tx aperture | circular hard aperture |
-| Rx aperture | circular finite aperture, direct detection |
-| turbulence | constant-`Cn2` horizontal modified/von-Karman |
-| `Cn2` primary | `3e-15, 1e-14, 3e-14 m^-2/3` |
-| `L0` baseline | 10 m; sensitivity 5/20 m |
-| `l0` baseline | 5 mm; sensitivity 3/10 mm |
-| jitter coordinate | `j=L sigma_theta/w_ref` |
-| `j` primary | `0,0.25,0.5,1.0,1.5` |
+所有场在 Tx hard aperture 后重新归一到相同 `P_T`。
 
-所有 coherent fields 在 common Tx aperture 后重新归一：
+必须报告：`r50_T/r80_T/r95_T`、peripheral fraction、source second moment、transverse-frequency descriptor、`H0`、receiver `r50_R/r80_R`、receiver second moment，以及有文献依据时的 generation loss。
 
-\[
-\int_{r\le a_T}|U_0|^2dA=P_T.
-\]
+## 2. Level A / Level B
 
-## 2. G0 Gaussian reference
+### Level A — primary
+
+固定共同物理资源，各 structured family 使用一个文献支持的 representative 参数，不做 joint optimization。
+
+### Level B — only secondary diagnostic
+
+唯一 secondary control：no-turbulence/no-jitter receiver `r80_R`-matched one-scale retuning。
 
 \[
-U_{G0}(r)=C_G\exp(-r^2/w_G^2)\Pi(r/a_T),
+|r_{80,R}^{field}/r_{80,R}^{G0}-1|\le1\%.
 \]
 
-冻结：
+若预注册范围内无唯一稳定解，记录 `NO R80 MATCH`，不扩大范围。
 
-- `w_G=0.65 a_T`；
-- `f_G=infinity`；
-- `w_ref=r80_R(G0)`，由 validated free-space propagation 得到。
+`H0` 只报告，不用于 matching。
 
-Gaussian analytic jitter benchmark 使用单独的 `1/e^2` intensity radius `W`，不得与 `r80` 混用。
-
-## 3. G1 optimized Gaussian
+## 3. Gaussian
 
 \[
-U_G(r)=C_G\exp(-r^2/w_G^2)
-\exp[-ikr^2/(2f_G)]\Pi(r/a_T).
+U_G(r)=C_Ge^{-r^2/w_G^2}e^{-ikr^2/(2f_G)}\Pi(r/a_T).
 \]
 
-搜索：
+G0：`w_G=0.65a_T`, `f_G=infinity`。
 
-- `gamma_G=w_G/a_T = 0.35,0.45,0.55,0.65,0.75,0.85,0.95`；
-- `u_f=L/f_G = 0,0.5,1,1.5,2`。
+G1 候选：
 
-唯一 objective：`Q5%(H)`。
+- `w_G/a_T = 0.35,0.45,...,0.95`；
+- `u_f=L/f_G = 0,0.5,1.0,1.5,2.0`；
+- objective only `Q5%(H)`。
 
-每个 `(tau,j,alpha_R)` point 独立选择 G1；`N_opt=256` 与 `N_eval=1024` 使用完全分离 ensembles；关键 boundary 如仍不确定才增加到 `N_confirm=4096`。
+G1 optimization：
 
-## 4. Bessel mapping
+1. 全 35 个候选共享 256 common random realizations；
+2. Top-5 再共享 768 realizations，最终 `N_opt=1024`；
+3. winner 由 1024-sample optimization set 决定；
+4. `N_eval=1024` 完全独立；必要时边界点扩展至 4096。
 
-Literature prototype：Eyyuboğlu 2013 truncated Bessel。
+## 4. Bessel
 
-Paper 1 main field：
+文献原型：Eyyuboğlu 2013 truncated Bessel。
+
+common representative：
 
 \[
 U_B(r)=C_BJ_0(\chi_Br/a_T)\Pi(r/a_T).
 \]
 
-- primary `chi_B=10`；
-- literature-supported mapped range约 `O(5-20)`；
-- Level B 只允许 `chi_B in [6,18]` 做 `r80_R` matching；
-- 正式 common comparison 前做一次 square-window Eyyuboğlu reproduction sanity；
-- Bessel-Gaussian only if truncation sensitivity materially changes conclusions。
+- Level-A `chi_B=10`；
+- Level-B `chi_B in [6,18]`；
+- 正式 comparison 前做一次原文 square-window reproduction；
+- Bessel-Gaussian 仅在 hard-truncation sensitivity 必要时加入。
 
-## 5. OPB mapping
+## 5. OPB
 
-Correct continuum field：
+Zhang 2019 continuum radial phase：
 
 \[
-U_{OPB}(r)=C_{OPB}\exp(-r^2/w_A^2)
+U_{OPB}(r)=C_{OPB}A(r)
 \exp[-i(4/3)k\sqrt{\beta}r^{3/2}]\Pi(r/a_T),
 \]
 
-with
-
 \[
-w_A=0.65a_T.
+A(r)=e^{-r^2/w_A^2},\qquad w_A=0.65a_T.
 \]
 
-Correct pin-width relation：
+正确渐近关系：
 
 \[
-\boxed{W(z)=1/(4k\beta z)}.
+W(L)=\frac{1}{4k\beta L},
+\qquad
+\rho_s=4\beta L^2.
 \]
 
 定义：
 
 \[
-\omega_{OPB}=W(L)/a_T.
+\omega_{OPB}=W(L)/a_T,
+\qquad
+\rho_s=\frac{L}{ka_T\omega_{OPB}}.
 \]
 
-- primary `omega_OPB=0.35`；
-- `beta=1/(4kLa_T omega_OPB)`；
-- Level B 只允许 `omega_OPB in [0.20,0.70]` 做 `r80_R` matching；
-- 不实现 32-filament / etched-mask details。
-
-## 6. flat-top mapping
-
-Canonical nested multi-Gaussian：
+对于 aperture-truncated `w_A=0.65a_T` Gaussian illumination：
 
 \[
-U_N(r)=C_N\left[\frac1N\sum_{n=1}^N(-1)^{n-1}\binom{N}{n}
+r_{95,T}\approx0.775a_T.
+\]
+
+因此 primary scene 下：
+
+- hard-aperture constraint：`omega>=0.395`；
+- `rho_s<=r95_T`：`omega>=0.509`。
+
+冻结：
+
+- Level-A `omega_OPB=0.55`；
+- `beta≈4.49e-9 m^-1`；
+- `rho_s≈17.94 mm < r95_T≈19.37 mm`；
+- Level-B `omega_OPB in [0.55,0.90]`，且每个候选必须继续满足 `rho_s<=r95_T`。
+
+不实现真实 etched-mask discretization。
+
+## 6. flat-top
+
+\[
+U_N(r)=C_N\left[\frac1N\sum_{n=1}^N(-1)^{n-1}\binom Nn
 \exp(-nr^2/w_F^2)\right]\Pi(r/a_T).
 \]
 
-- `N=1` nested Gaussian sanity；
-- `N=4` primary moderate representative；
-- `N=8` optional high-order stress；
-- primary `w_F=0.65a_T`；
-- Level B 固定 `N=4`，只允许 `w_F/a_T in [0.40,0.90]` 做 `r80_R` matching。
+- `N=1`：Gaussian sanity；
+- Level-A `N=4`, `w_F=0.65a_T`；
+- `N=8`：optional stress；
+- Level-B 固定 `N=4`，只调 `w_F/a_T in [0.40,0.90]`。
 
-不得把 `N=4/8` 写成 Jiang 2022/2026 joint optima。
+不同 `N` 均在 aperture 后 equal-power normalization；不得沿用 fixed-amplitude order-dependent source power。
 
-## 7. Level A resource ledger
+## 7. discussion-only mechanisms
 
-所有 field 必须记录：
+不进入首轮 common numerical set：
 
-- `r50_T,r80_T,r95_T`；
-- peripheral/halo fraction；
-- source second moment；
-- transverse-frequency/angular-spectrum descriptor；
-- no-disturbance `H0`；
-- receiver `r50_R,r80_R`；
-- receiver second moment；
-- literature-supported generation loss/efficiency。
+- Airy path diversity；
+- partial coherence；
+- vector / mode diversity。
 
-Level A 不硬匹配这些量。
+它们保留为 literature / architecture context，不再用于扩张首轮代码。
 
-## 8. Level B matching rule
+## 8. current gate
 
-唯一 secondary diagnostic：
-
-\[
-r80_R(field)=r80_R(G0)\pm1\%.
-\]
-
-只允许一个 family-specific scale parameter。若预注册范围内无唯一稳定解，报告 `NO R80 MATCH`，不得扩大参数范围救结果。
-
-`H0` 始终报告，但不是匹配条件。
-
-## 9. out-of-scope mechanisms
-
-- Airy path diversity：discussion/architecture only；
-- partial coherence：discussion/mature joint-optimization control only；
-- vector/mode diversity：out of current direct-detection single-aperture scope。
-
-## 10. parameter provenance rule
-
-所有数值必须标记为以下之一：
-
-- `LITERATURE_MEASURED`；
-- `LITERATURE_SIMULATION`；
-- `LITERATURE_DERIVED_RANGE`；
-- `PROJECT_REPRESENTATIVE_FREEZE`；
-- `PROJECT_SENSITIVITY_RANGE`；
-- `DERIVED_FROM_FROZEN_SCENE`。
-
-当前 `chi_B=10`、`omega_OPB=0.35`、flat-top `N=4`、primary geometry 均属于 `PROJECT_REPRESENTATIVE_FREEZE`，不是文献证明的 optimum。
+本矩阵只定义 field / resource mapping。代码仍由 `docs/SCIENTIFIC_CONTRACT_DRAFT.md` 的 v0.3.1 gate 控制：短审通过前不授权 Gaussian 或 structured-beam implementation。
