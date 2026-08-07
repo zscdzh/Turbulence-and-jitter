@@ -62,10 +62,10 @@ Round 1 机制筛选详见：`docs/literature/PAPER1_MECHANISM_SCREEN_ROUND1.md`
 
 关键锚点：
 
-- Zhang et al., *APL Photonics* 2019, DOI `10.1063/1.5095996`：**ANCHOR_TO_READ / HIGH PRIORITY**。OPB 原始核心文献，理论 + 室内 + outdoor turbulence，直接与 Gaussian intensity stability 比较。
+- Zhang et al., *APL Photonics* 2019, DOI `10.1063/1.5095996`：**READ / MECHANISM + EXPERIMENTAL ANCHOR**。OPB 通过 radially assembled Airy-like fragments、opposite transverse-wavevector pairing 和 inward energy flow 形成 autofocusing pin；论文给出 532 nm、约 2 W、约 5 cm phase mask、约 90% modulation efficiency，并展示 >1 km real-atmosphere propagation，但 Gaussian baseline 未针对相同 receiver objective 优化，且作者明确承认没有 rigorous Kolmogorov-turbulence modeling。详见 `docs/literature/ZHANG_2019_OPB_MECHANISM_ANCHOR.md`。
 - Nardo et al., 2025, arXiv:2504.01704：**SCREENED / RECENT PERFORMANCE BACKGROUND**。100 km air-to-air simulation、link budget、beam wander 与 transmitter-aperture resource scaling；预印本，不能作为最高等级证据。
 
-当前 jitter 工作假设：self-focusing / narrow high-intensity pin 在 turbulence-only 下可能很强，但可能对 independent tilt 很敏感，是 Paper 1 最值得证伪的机制之一。
+当前 Paper-1 机制假设：OPB 的内部 opposite-wavevector cancellation 可维持其相对结构，但一个施加给整个 source field 的 common-mode mechanical tilt 不会被 ±wavevector pairing 自动消除；OPB 可能仍围绕 tilted axis 形成 pin，却整体偏离固定 receiver。该判断是本项目根据原文机制提出的待证伪理论先验，不是 2019 论文已证明结论。
 
 ### D. partial coherence / incoherent averaging
 
@@ -196,7 +196,7 @@ DOI: `10.1364/OE.533250`
 ### 第一批：决定 Paper 1 机制结构
 
 1. ~~Eyyuboğlu et al. 2013 — Bessel / resource fairness~~ **READ**；
-2. Zhang et al. 2019 — OPB / self-focusing；
+2. ~~Zhang et al. 2019 — OPB / self-focusing~~ **READ**；
 3. Gu & Gbur 2010 — Airy array / path diversity；
 4. Borah & Voelz 2010 + Liu et al. 2014 — partial coherence；
 5. Alavinejad et al. 2008 — flat-top turbulence origin；
