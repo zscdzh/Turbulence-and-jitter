@@ -1,48 +1,46 @@
 # Review Entry Point
 
-Stage-A broad review 已结束。v0.3.1 最新短复核结论为：
+Stage-A broad review 与 Scientific Contract code-gate review 已完成。
 
-> **REVISE — KEEP CODE GATE CLOSED**
+最新正式结论：
 
-OPB finite-aperture feasibility 与 G1 lower-tail optimization 已 PASS；当前只剩一个确定 blocker：phase-spectrum / Fourier `2pi` normalization。
+> **PASS — AUTHORIZE GAUSSIAN-ONLY IMPLEMENTATION**
+
+该 PASS 仅打开 Gaussian numerical qualification，不授权 structured-field production comparison。
 
 ## 当前最短阅读路径
 
-1. `SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md` —— 最新短复核与唯一 remaining blocker；
-2. `../SCIENTIFIC_CONTRACT_DRAFT.md` —— v0.3.2 candidate；
-3. `../literature/MODIFIED_VON_KARMAN_PSD_CONVENTION_ANCHOR.md` —— 唯一 spectrum/Fourier normalization anchor；
-4. `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_CHECKLIST.md` —— final ultra-short normalization review。
+1. `SCIENTIFIC_CONTRACT_V032_FINAL_REVIEW_DECISION.md` —— 最新 PASS decision；
+2. `../SCIENTIFIC_CONTRACT_DRAFT.md` —— authoritative v0.3.2 contract；
+3. `../RESEARCH_STAGE_BOUNDARY.md` —— 当前阶段与 code authorization 边界；
+4. `../../PROJECT_STATE.md` —— 当前项目状态。
 
-背景材料按需读取：
+历史审查链：
 
-- `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md`；
 - `EXTERNAL_REVIEW_DECISION_2026-08-07.md`；
-- `../RESEARCH_STAGE_BOUNDARY.md`。
+- `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_DECISION.md`；
+- `SCIENTIFIC_CONTRACT_V031_SHORT_REVIEW_DECISION.md`；
+- `SCIENTIFIC_CONTRACT_V03_SHORT_REVIEW_CHECKLIST.md`。
 
-## v0.3.2 本轮只检查
-
-1. `Phi_n^(atm)` / `Phi_phi^(atm)` / `Phi_phi^(math)` 的 `(2pi)` conversion；
-2. mathematical Fourier measure `d^2kappa/(2pi)^2` 是否与 phase PSD 完全匹配；
-3. Kolmogorov limit 是否恢复 `D_phi=6.88(rho/r0_screen)^(5/3)`；
-4. V4/V5 是否能发现 absolute normalization 错误。
-
-不要重新审查已经 PASS 的：
-
-- OPB `omega_OPB=0.55` finite-aperture feasibility；
-- G1 CRN staged `Q5%` optimization；
-- primary scene；
-- mechanism set / novelty route。
+这些历史文件保留用于追踪决策，不再代表当前待回答问题。
 
 ## 当前状态
 
 - Stage A broad literature expansion: `CLOSED`；
-- Paper 1 scope: coherent deterministic single-aperture direct-detection；
-- core set: Gaussian + Bessel + OPB + flat-top；
-- latest decision: `REVISE — KEEP CODE GATE CLOSED`；
-- scientific contract: `v0.3.2 CANDIDATE / FINAL ULTRA-SHORT REVIEW`；
-- scientific code: none；
-- formal numerical results: none。
+- Scientific Contract: `v0.3.2 PASS`；
+- Gaussian-only implementation gate: `OPEN`；
+- structured-field implementation gate: `CLOSED`；
+- formal structured-beam numerical results: `NONE`。
 
-若 v0.3.2 极短复核通过，只打开 **Gaussian-only implementation gate**。structured fields 仍需等待 Gaussian V0–V12 全部通过。
+## 当前授权任务
 
-旧 review package / questions 仅保留为审查历史。
+只允许：
+
+1. Gaussian free-space propagation；
+2. finite-aperture displacement / capture；
+3. analytic jitter benchmark；
+4. Gaussian phase-screen / multi-screen validation V0–V12。
+
+只有 Gaussian chain 全部通过 V0–V12 后，才允许重新审查并打开 Bessel / OPB / flat-top implementation gate。
+
+无需继续进行新的 code-gate 文献审查，也不要重新开启 broad literature search。
