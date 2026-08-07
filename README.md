@@ -35,7 +35,7 @@
 - 是否包含 beam wander 或 independent pointing jitter；
 - 对整体 lateral displacement 的潜在敏感性。
 
-文献按机制组织，而不是按模式名称堆积。当前计划先初筛约 30–40 篇，精读约 15–20 篇关键锚点，达到证据饱和后再冻结 Paper 1 的代表机制集合。
+文献按机制组织，而不是按模式名称堆积。当前计划先初筛约 30–40 篇，精读约 15–20 篇关键锚点，达到证据饱和后再冻结 Paper 1 的代表机制集合。当前入口见 `docs/KEY_LITERATURE_MAP.md`。
 
 ### Paper 1 / Stage B：代表性抗湍流机制统一评价
 
@@ -91,6 +91,7 @@ Paper 2 才允许定义 joint objective、优化少量结构参数，并研究 t
 - `PROJECT_STATE.md`：当前权威项目状态；
 - `AI_RESEARCH_GOVERNANCE.md`：ChatGPT/Codex 协作与结果说明要求；
 - `docs/RESEARCH_STAGE_BOUNDARY.md`：Paper 1 与 Paper 2 的权威边界；
+- `docs/KEY_LITERATURE_MAP.md`：当前 Paper 1 Stage A 文献机制地图；
 - `docs/SCIENTIFIC_CONTRACT_DRAFT.md`：当前 Draft 科学契约；
 - `docs/SCIENTIFIC_CONTRACT_EVIDENCE_DELTAS.md`：逐篇文献接受后的证据增量；
 - `docs/LITERATURE_AND_ROUTE_SYNTHESIS.md`：文献结构与路线综合；
