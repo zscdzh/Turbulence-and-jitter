@@ -1,0 +1,31 @@
+{
+  "status": "DIAGNOSTIC ONLY — NOT FORMAL QUALIFICATION",
+  "purpose": "reproducible entry for the historical same-seed post-failure 512->1024 Kolmogorov continuation",
+  "historical_formal_source_commit": "66163ed3dc98ce2d8b1150a0cb777ef03ae6ba51",
+  "reproduction_runner_commit": "a36c75e764e2ec7fd0d4aaee819237d092d91ccb",
+  "source_blob_shas": {
+    "scripts/run_gate_b_postfailure_1024_diagnostic.py": "70a40ac24ea4778c6417673e22849187975e80ac",
+    "scripts/run_gate_b_formal_v021.py": "65bb6aa7734f461bf553da83f89dc2a59cb0f80f",
+    "src/turbulence_jitter/gate_b.py": "c8c38c3cb14f92f324547d58202211be49188d32",
+    "src/turbulence_jitter/gate_a.py": "0406894642b18e0e9c434f40748419483fe31983"
+  },
+  "environment_from_diagnostic_execution_context": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "scipy": "1.17.0",
+    "platform": "Linux-6.18.35-x86_64-with-glibc2.41"
+  },
+  "P_star": 9,
+  "screen_seed": 2026080832,
+  "bootstrap_seed": 2026080841,
+  "screens": 1024,
+  "prefixes": [512, 640, 768, 896, 1024],
+  "bootstrap_resamples": 2000,
+  "bootstrap_unit": "screen_id",
+  "bootstrap_rule": "one shared screen-ID resample-count matrix across x/y/45 directions",
+  "percentile_method": "numpy linear",
+  "sequence_rule": "retain the failed formal first 512 screens and continue the same RNG sequence to 1024 cumulative screens",
+  "formal_v022_evidence": false,
+  "fresh_seed": false,
+  "reproduction_check": "shared-weight recalculation from preserved 1024 per-screen observables reproduces the committed postfailure_1024_bootstrap2000.json values to floating-point precision"
+}
