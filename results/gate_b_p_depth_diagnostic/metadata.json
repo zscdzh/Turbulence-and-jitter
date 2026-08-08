@@ -1,0 +1,15 @@
+{
+  "source_branch_sha": "ab6040ad6d2ebfd88830bdae9b2ff31da22816f9",
+  "diagnostic_only": true,
+  "purpose": "post-failure remediation evidence only; not formal qualification",
+  "P_values": [8, 9, 12],
+  "screen_seeds": {"8": 2026080821, "9": 2026080823, "12": 2026080825},
+  "bootstrap_seeds": {"8": 2026080822, "9": 2026080824, "12": 2026080826},
+  "screens_per_P": 512,
+  "bootstrap_resamples": 1000,
+  "bootstrap_unit": "screen_id",
+  "bootstrap_rule": "one precomputed resample-count matrix per P, shared across x/y/45",
+  "percentile_method": "numpy linear",
+  "raw_phase_screens_saved": false,
+  "generator_contract": "docs/NUMERICAL_IMPLEMENTATION_CONTRACT_V02.md at source branch SHA"
+}

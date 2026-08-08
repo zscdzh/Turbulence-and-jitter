@@ -1,0 +1,58 @@
+{
+  "status": "DIAGNOSTIC ONLY — NOT FORMAL QUALIFICATION",
+  "P_star": 9,
+  "screen_seed": 2026080832,
+  "bootstrap_seed": 2026080841,
+  "prefix_point_estimates": {
+    "512": {
+      "x": {"implementation": 0.03537356453278709, "amplitude": 0.0892686851107748, "slope": 1.6341352392771},
+      "y": {"implementation": 0.0050510125823058655, "amplitude": 0.05110680520883368, "slope": 1.6500922258249746},
+      "45": {"implementation": 0.020817288723014936, "amplitude": 0.07575762319607987, "slope": 1.6398810312291636}
+    },
+    "640": {
+      "x": {"implementation": 0.031049168949426012, "amplitude": 0.08518620735127586, "slope": 1.6356543490069375},
+      "y": {"implementation": 0.008981198207569586, "amplitude": 0.04739658469144831, "slope": 1.651299112643123},
+      "45": {"implementation": 0.0193798525748369, "amplitude": 0.07440089631708464, "slope": 1.640147549244405}
+    },
+    "768": {
+      "x": {"implementation": 0.020797893035708163, "amplitude": 0.07550864575553944, "slope": 1.6392032559790937},
+      "y": {"implementation": 0.0036990395325109914, "amplitude": 0.05238309773521099, "slope": 1.649477707541504},
+      "45": {"implementation": 0.01053771310785594, "amplitude": 0.0660557355936854, "slope": 1.642962671405843}
+    },
+    "896": {
+      "x": {"implementation": 0.013638179960659188, "amplitude": 0.06874977297859122, "slope": 1.6423348410001823},
+      "y": {"implementation": 0.0003925358110003869, "amplitude": 0.056256697664121794, "slope": 1.6484315420015276},
+      "45": {"implementation": 0.007011819577867609, "amplitude": 0.06272815498482626, "slope": 1.6447447510675803}
+    },
+    "1024": {
+      "x": {"implementation": 0.010841476060340038, "amplitude": 0.06610961327441421, "slope": 1.6434526038028845},
+      "y": {"implementation": 0.0004893847937538831, "amplitude": 0.056400902754002724, "slope": 1.6479858870534465},
+      "45": {"implementation": 0.003712883612960709, "amplitude": 0.05961463785930479, "slope": 1.6456685103104105}
+    }
+  },
+  "bootstrap_1024": {
+    "x": {
+      "implementation_point": 0.010841476060340038,
+      "implementation_95ub": 0.02915457723791841,
+      "amplitude_point": 0.06610961327441421,
+      "amplitude_95ub": 0.08339756013914972,
+      "slope_ci95": [1.6344137878806764, 1.6523961276111587]
+    },
+    "y": {
+      "implementation_point": 0.0004893847937538831,
+      "implementation_95ub": 0.024431538413735965,
+      "amplitude_point": 0.056400902754002724,
+      "amplitude_95ub": 0.07522639658518637,
+      "slope_ci95": [1.6383897648776116, 1.6568009173384732]
+    },
+    "45": {
+      "implementation_point": 0.003712883612960709,
+      "implementation_95ub": 0.02397350567641438,
+      "amplitude_point": 0.05961463785930479,
+      "amplitude_95ub": 0.07730967679603937,
+      "slope_ci95": [1.6369723592379928, 1.6544517625721222]
+    }
+  },
+  "decision_effect": "none; historical 512-screen formal FAIL remains binding",
+  "may_retroactively_qualify_v021": false
+}
