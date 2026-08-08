@@ -1,0 +1,13 @@
+{
+  "diagnostic_only": true,
+  "purpose": "post-formal-failure convergence check; cannot retroactively qualify v0.2.1",
+  "P": 9,
+  "kolmogorov_screen_seed": 2026080832,
+  "sequence_rule": "continue the same RNG sequence from the formal first 512 screens to 1024 cumulative screens",
+  "bootstrap_seed": 2026080841,
+  "screens": 1024,
+  "bootstrap_resamples": 2000,
+  "x": {"implementation_point": 0.010841476060340038, "implementation_95ub": 0.02915457723791841, "amplitude_point": 0.06610961327441421, "amplitude_95ub": 0.08339756013914972, "slope_ci95": [1.6344137878806764, 1.6523961276111587]},
+  "y": {"implementation_point": 0.0004893847937538831, "implementation_95ub": 0.024431538413735965, "amplitude_point": 0.056400902754002724, "amplitude_95ub": 0.07522639658518637, "slope_ci95": [1.6383897648776116, 1.6568009173384732]},
+  "45": {"implementation_point": 0.003712883612960709, "implementation_95ub": 0.02397350567641438, "amplitude_point": 0.05961463785930479, "amplitude_95ub": 0.07730967679603937, "slope_ci95": [1.6369723592379928, 1.6544517625721222]}
+}
