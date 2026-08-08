@@ -473,6 +473,25 @@ def markdown_report(
             lines.append(
                 f"| {case} | {name} | {pct(impl['point_estimate'])} | {pct(impl['bootstrap_95pct_upper_bound'])} | {pct(amplitude['point_estimate'])} | {pct(amplitude['bootstrap_95pct_upper_bound'])} | {slope['point_estimate']:.5f} | [{slope_low:.5f}, {slope_high:.5f}] | {'PASS' if row_pass else 'FAIL'} |"
             )
+    if not all_pass:
+        failed_amplitude = []
+        for name in ("x", "y", "45"):
+            amplitude = bootstrap["kolmogorov"][name]["continuous_amplitude"]
+            if amplitude["bootstrap_95pct_upper_bound"] > 0.10:
+                failed_amplitude.append(
+                    f"{name}: point {pct(amplitude['point_estimate'])}, "
+                    f"95% UB {pct(amplitude['bootstrap_95pct_upper_bound'])}"
+                )
+        lines.extend(
+            [
+                "",
+                "#### Formal failure classification",
+                "",
+                "Kolmogorov continuous-amplitude failures: "
+                + "; ".join(failed_amplitude)
+                + ". Implementation recovery remains below its 5% bound, so this is category C: discrete representation versus continuous physics retains systematic bias and/or formal uncertainty, rather than an empirical generator-recovery failure.",
+            ]
+        )
     lines.extend(
         [
             "",
@@ -488,8 +507,16 @@ def markdown_report(
             "",
             "## 6. 结论边界",
             "",
-            "- 已支持：V4 base-FFT PSD absolute level/slope；deterministic low-frequency depth；V5 empirical implementation recovery；finite-scale 与 Kolmogorov screen-level structure-function amplitude；Kolmogorov slope。",
-            "- 部分支持：仅在冻结的 512×512 qualification slab、冻结 separation points 和本次预注册 ensembles 上支持。",
+            (
+                "- 已支持：V4 base-FFT PSD absolute level/slope；deterministic low-frequency depth；V5 empirical implementation recovery；finite-scale 与 Kolmogorov screen-level structure-function amplitude；Kolmogorov slope。"
+                if all_pass
+                else "- 已支持：V4 base-FFT PSD absolute level/slope；deterministic low-frequency depth；V5 empirical implementation recovery；finite-scale amplitude；Kolmogorov slope。"
+            ),
+            (
+                "- 部分支持：仅在冻结的 512×512 qualification slab、冻结 separation points 和本次预注册 ensembles 上支持。"
+                if all_pass
+                else "- 部分支持：Kolmogorov amplitude 点估计接近 deterministic expectation，但 y/45° formal 95% UB 未通过 10% gate；不得升级为 V5 amplitude PASS。"
+            ),
             "- 仍开放：V6–V12 propagation-level beam wander、long-term radius、scintillation、screen-number、production grid 与 split-step validation。",
             "- 禁止宣称：完整 turbulence simulation 已正确、production multi-screen 已收敛、structured fields 已实现或任何 beam family 已获得性能优势。",
             "",

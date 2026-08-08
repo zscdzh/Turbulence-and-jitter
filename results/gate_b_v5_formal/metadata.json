@@ -1,0 +1,190 @@
+{
+  "contract": "Numerical Implementation Contract v0.2 / Gate B",
+  "run_state": "completed",
+  "registered_utc": "2026-08-08T00:23:36.770163+00:00",
+  "git_sha_at_run_start": "650064f7e0390cb4028f8ab6c4387096c890f0c2",
+  "seeds": {
+    "v4_screen_seed": 2026080801,
+    "finite_formal_screen_seed": 2026080811,
+    "kolmogorov_formal_screen_seed": 2026080812,
+    "finite_bootstrap_seed": 2026080813,
+    "kolmogorov_bootstrap_seed": 2026080814
+  },
+  "formal_ensemble": 512,
+  "diagnostic_prefixes": [
+    128,
+    256,
+    512
+  ],
+  "bootstrap_resamples": 2000,
+  "bootstrap_unit": "screen_id",
+  "percentile_method": "numpy linear",
+  "qualification_slab": {
+    "wavelength_m": 1.55e-06,
+    "Cn2_m_minus_2_over_3": 1e-14,
+    "delta_z_m": 125.0,
+    "L0_m": 10.0,
+    "l0_m": 0.005,
+    "r0_screen_m": 0.2732951770210571,
+    "N": 512,
+    "dx_m": 0.001015625,
+    "window_m": 0.52,
+    "df_cycles_per_m": 1.923076923076923
+  },
+  "directions": {
+    "x": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        0
+      ],
+      [
+        7,
+        0
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        11,
+        0
+      ],
+      [
+        14,
+        0
+      ],
+      [
+        18,
+        0
+      ],
+      [
+        23,
+        0
+      ],
+      [
+        30,
+        0
+      ],
+      [
+        39,
+        0
+      ],
+      [
+        50,
+        0
+      ],
+      [
+        64,
+        0
+      ]
+    ],
+    "y": [
+      [
+        0,
+        4
+      ],
+      [
+        0,
+        5
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        0,
+        9
+      ],
+      [
+        0,
+        11
+      ],
+      [
+        0,
+        14
+      ],
+      [
+        0,
+        18
+      ],
+      [
+        0,
+        23
+      ],
+      [
+        0,
+        30
+      ],
+      [
+        0,
+        39
+      ],
+      [
+        0,
+        50
+      ],
+      [
+        0,
+        64
+      ]
+    ],
+    "45": [
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        5,
+        5
+      ],
+      [
+        6,
+        6
+      ],
+      [
+        8,
+        8
+      ],
+      [
+        10,
+        10
+      ],
+      [
+        13,
+        13
+      ],
+      [
+        16,
+        16
+      ],
+      [
+        21,
+        21
+      ],
+      [
+        28,
+        28
+      ],
+      [
+        35,
+        35
+      ],
+      [
+        45,
+        45
+      ]
+    ]
+  },
+  "raw_phase_screens_saved": false,
+  "completed_utc": "2026-08-08T00:28:18.864882+00:00",
+  "P_star": 6,
+  "decision": "REVISE — PHASE-SCREEN IMPLEMENTATION"
+}
