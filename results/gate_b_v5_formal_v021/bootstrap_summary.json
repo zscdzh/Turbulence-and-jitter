@@ -1,0 +1,19 @@
+{
+  "P_star": 9,
+  "formal_ensemble": 512,
+  "bootstrap_resamples": 2000,
+  "formal_bootstrap": {
+    "finite": {
+      "x": {"implementation_point": 0.011487191939573559, "implementation_95ub": 0.029740491716589244, "amplitude_point": 0.03934020849307908, "amplitude_95ub": 0.05693081413600405, "slope_point": 1.6113564263717097, "slope_ci95": [1.6019703315062033, 1.6206238843973753]},
+      "y": {"implementation_point": 0.011740027015187678, "implementation_95ub": 0.030763807229825177, "amplitude_point": 0.016769026726602194, "amplitude_95ub": 0.034557983866509975, "slope_point": 1.622586664860921, "slope_ci95": [1.6130819721289058, 1.631721738167907]},
+      "45": {"implementation_point": 0.0001594851251917013, "implementation_95ub": 0.020198841378261126, "amplitude_point": 0.028296295893919642, "amplitude_95ub": 0.043471762021678954, "slope_point": 1.6145743434871704, "slope_ci95": [1.6062905220403683, 1.623221668373093]}
+    },
+    "kolmogorov": {
+      "x": {"implementation_point": 0.03537356453278709, "implementation_95ub": 0.057776008792483104, "amplitude_point": 0.0892686851107748, "amplitude_95ub": 0.11041723362390529, "slope_point": 1.6341352392771, "slope_ci95": [1.6231120322446242, 1.6447508459559437], "result": "FAIL"},
+      "y": {"implementation_point": 0.0050510125823058655, "implementation_95ub": 0.03875530431716113, "amplitude_point": 0.05110680520883368, "amplitude_95ub": 0.07952429976571165, "slope_point": 1.6500922258249746, "slope_ci95": [1.6363397367905603, 1.6639114040242495], "result": "PASS"},
+      "45": {"implementation_point": 0.020817288723014936, "implementation_95ub": 0.04507846047206304, "amplitude_point": 0.07575762319607987, "amplitude_95ub": 0.09865503238445271, "slope_point": 1.6398810312291636, "slope_ci95": [1.6283069760896784, 1.6515913386827392], "result": "PASS"}
+    }
+  },
+  "decision": "REVISE — GATE B NOT YET QUALIFIED",
+  "v6_authorized": false
+}
