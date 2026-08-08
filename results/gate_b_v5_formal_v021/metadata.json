@@ -1,0 +1,18 @@
+{
+  "source_branch_sha": "66163ed3dc98ce2d8b1150a0cb777ef03ae6ba51",
+  "contract": "v0.2.1",
+  "run_state": "formal_v021_completed",
+  "seeds": {
+    "v4_screen_seed": 2026080830,
+    "finite_formal_screen_seed": 2026080831,
+    "kolmogorov_formal_screen_seed": 2026080832,
+    "finite_bootstrap_seed": 2026080833,
+    "kolmogorov_bootstrap_seed": 2026080834
+  },
+  "P_star": 9,
+  "formal_ensemble": 512,
+  "bootstrap_resamples": 2000,
+  "historical_v02_results_preserved": true,
+  "decision": "REVISE — GATE B NOT YET QUALIFIED",
+  "v6_authorized": false
+}
