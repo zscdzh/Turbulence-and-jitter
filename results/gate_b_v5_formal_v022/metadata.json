@@ -1,0 +1,26 @@
+{
+  "contract": "Numerical Implementation Contract v0.2.2 / Gate B",
+  "formal_ensemble": 1024,
+  "bootstrap_resamples": 2000,
+  "bootstrap_unit": "screen_id",
+  "bootstrap_rule": "shared resample-count weights across directions per case",
+  "seeds": {
+    "v4_screen_seed": 2026080860,
+    "finite_formal_screen_seed": 2026080861,
+    "kolmogorov_formal_screen_seed": 2026080862,
+    "finite_bootstrap_seed": 2026080863,
+    "kolmogorov_bootstrap_seed": 2026080864
+  },
+  "P_star": 9,
+  "runner_repository_path": "scripts/run_gate_b_formal_v022.py",
+  "runner_blob_sha": "d1ff27c347e37a68a9ca0d9bb111433aa3136d65",
+  "seed_replacement_after_result_forbidden": true,
+  "ensemble_escalation_after_failure_forbidden": true,
+  "historical_v02_p6_failure_preserved": true,
+  "historical_v021_512_failure_preserved": true,
+  "historical_v021_postfailure_1024_diagnostic_preserved": true,
+  "raw_phase_screens_saved": false,
+  "formal_decision": "PASS — GATE B V4–V5 QUALIFIED",
+  "v6_authorized": false,
+  "execution_note": "Fresh v0.2.2 seed family and frozen equations/order were executed without seed, threshold, P-selection, or ensemble changes. A tool command timeout interrupted an initial partial finite generation before any formal result existed; the full run was then restarted from screen 1 with the identical preregistered seed family."
+}
