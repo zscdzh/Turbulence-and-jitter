@@ -1,0 +1,20 @@
+{
+  "P_star": 9,
+  "policy": "minimum-depth deterministic bias-headroom",
+  "guards": {"median_relative_error": 0.06, "pointwise_max_relative_error": 0.10, "kolmogorov_slope_error": 0.08},
+  "key_rows": {
+    "8": {
+      "kolmogorov_x": {"median_relative_error": 0.06065574475401311, "max_relative_error": 0.09679445711290767, "slope": 1.646084132051797, "slope_error": 0.020582534614869807},
+      "result": "FAIL — median guard"
+    },
+    "9": {
+      "kolmogorov_x": {"median_relative_error": 0.05587513721057284, "max_relative_error": 0.08919244835733682, "slope": 1.6479459646310122, "slope_error": 0.01872070203565457},
+      "result": "PASS — first passing depth"
+    },
+    "10": {
+      "kolmogorov_x": {"median_relative_error": 0.0525604567442699, "max_relative_error": 0.08392150987894986, "slope": 1.649224810953452, "slope_error": 0.01744185571321477},
+      "result": "PASS — deeper than minimum"
+    }
+  },
+  "note": "v0.2.2 does not change the v0.2.1 deterministic P-selection policy; P*=9 is again computed, not hard-coded."
+}
