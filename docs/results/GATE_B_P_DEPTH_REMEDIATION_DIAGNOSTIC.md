@@ -3,11 +3,39 @@
 **日期：2026-08-08**  
 **状态：DIAGNOSTIC ONLY — NOT FORMAL QUALIFICATION**
 
-本文件记录 Gate-B P=6 formal failure 后，为选择 v0.2.1 remediation policy 所做的独立诊断。所有数值仅用于修订 implementation contract，不替代 formal `N_ens=512, B_boot=2000` qualification。
+本文件记录原 `P*=6` formal failure 后，为 Gate-B v0.2.1 remediation policy 所做的独立诊断。所有数值只用于修订 implementation contract，不替代 formal `N_ens=512, B_boot=2000` qualification。
 
-## 1. Deterministic extension
+本版根据外部审计补齐唯一 diagnostic runner，并修正此前与 formal runner 不完全同构的 bootstrap RNG 使用方式。
 
-将原 ladder 从 P<=7 扩展到 P<=14，用完全相同的 `D_disc,P` 定义比较连续 Kolmogorov reference。
+## 1. Reproducibility
+
+唯一 runner：
+
+- `scripts/run_gate_b_p_depth_diagnostic.py`
+
+机器结果：
+
+- `results/gate_b_p_depth_diagnostic/metadata.json`
+- `results/gate_b_p_depth_diagnostic/diagnostic_summary.json`
+- per-screen P=8/9/12 `D_phi(rho)` observables（由 runner 生成；不保存 raw phase screens）
+
+固定 diagnostic-only seeds：
+
+| P | screen seed | bootstrap seed |
+|---:|---:|---:|
+| 8 | 2026080821 | 2026080822 |
+| 9 | 2026080823 | 2026080824 |
+| 12 | 2026080825 | 2026080826 |
+
+每个 P 使用 512 screens、1000 次 screen-ID bootstrap。
+
+bootstrap 与 formal runner 保持同一唯一算法：对每个 P 先生成一套 `1000 x 512` screen-ID resample-count weights，随后 x/y/45° 三方向共用同一套 weights。此前 Markdown 中部分 P=12 UB 使用了方向分别推进 RNG 的临时诊断实现，已在本版纠正。
+
+---
+
+## 2. Deterministic extension
+
+将原 ladder 扩展后：
 
 | P | K median x/y | K median 45° | K max x/y | K max 45° | K slope x/y | K slope 45° |
 |---:|---:|---:|---:|---:|---:|---:|
@@ -18,71 +46,65 @@
 | 8 | 6.066% | 6.092% | 9.679% | 9.546% | 1.64608 | 1.64603 |
 | 9 | 5.588% | 5.611% | 8.919% | 8.787% | 1.64795 | 1.64791 |
 | 10 | 5.256% | 5.278% | 8.392% | 8.261% | 1.64922 | 1.64920 |
-| 11 | 5.026% | 5.047% | 8.027% | 7.896% | 1.65010 approx | 1.65008 approx |
-| 12 | 4.867% | 4.887% | 7.773% | 7.643% | 1.6507 approx | 1.6507 approx |
+| 11 | 5.026% | 5.047% | 8.027% | 7.896% | 1.65010 | 1.65008 |
+| 12 | 4.867% | 4.887% | 7.773% | 7.643% | 1.65072 | 1.65070 |
 
 finite-scale pointwise maximum error 在 P>=4 后约保持：
 
-- x/y ≈ 5.123%；
-- 45° ≈ 4.953%。
+- x/y ≈ 5.12%；
+- 45° ≈ 4.95%。
 
-因此当前 remediation 的决定因素仍是 pure-Kolmogorov low-frequency representation。
+因此 remediation 的主要决定因素是 pure-Kolmogorov low-frequency representation。
 
-## 2. P=8 diagnostic-only empirical check
+---
 
-Diagnostic screen seed：`2026080821`。  
-Diagnostic bootstrap seed：`2026080822`。  
-Screens：512。  
-Bootstrap：1000，仅用于风险估计。
+## 3. P=8 diagnostic
 
-| direction | impl point | K amplitude point | slope | endpoint signed bias | impl diagnostic 95% UB | K amplitude diagnostic 95% UB |
-|:---:|---:|---:|---:|---:|---:|---:|
-| x | 1.843% | 7.796% | 1.64056 | -12.076% | 4.423% | 10.220% |
-| y | 2.188% | 8.121% | 1.63787 | -12.993% | 4.554% | 10.342% |
-| 45° | 0.204% | 5.900% | 1.64692 | -9.264% | 3.409% | 8.524% |
+| direction | impl point | impl 95% UB | K amp point | K amp 95% UB | slope point | slope 95% CI |
+|:---:|---:|---:|---:|---:|---:|---|
+| x | 1.843% | 4.423% | 7.796% | 10.220% | 1.64056 | [1.62843, 1.65295] |
+| y | 2.188% | 4.789% | 8.121% | 10.564% | 1.63787 | [1.62517, 1.64970] |
+| 45° | 0.204% | 3.199% | 5.900% | 8.304% | 1.64692 | [1.63512, 1.65903] |
 
-结论：P=8 deterministic pointwise error 已低于 10%，但在一组独立 512-screen diagnostic 中 x/y amplitude upper bound 仍处于 formal 10% gate 边缘之外。因此仅增加 `max deterministic error <=10%` 不足以形成稳健 remediation policy。
+P=8 已满足 deterministic pointwise `<10%`，但 x/y diagnostic amplitude UB 仍在 formal 10% gate 附近/之外。因此“仅增加 pointwise <=10%”不足以构成稳健 remediation policy。
 
-## 3. P=9 diagnostic-only empirical check
+---
 
-Diagnostic screen seed：`2026080823`。  
-Diagnostic bootstrap seed：`2026080824`。  
-Screens：512。  
-Bootstrap：1000，仅用于风险估计。
+## 4. P=9 diagnostic
 
-| direction | impl point | K amplitude point | slope | endpoint signed bias | impl diagnostic 95% UB | K amplitude diagnostic 95% UB |
-|:---:|---:|---:|---:|---:|---:|---:|
-| x | 0.704% | 6.277% | 1.64696 | -9.552% | 3.410% | 8.676% |
-| y | 0.483% | 6.047% | 1.64683 | -9.374% | 3.162% | 8.484% |
-| 45° | 0.706% | 6.309% | 1.64705 | -9.418% | 3.631% | 8.927% |
+| direction | impl point | impl 95% UB | K amp point | K amp 95% UB | slope point | slope 95% CI |
+|:---:|---:|---:|---:|---:|---:|---|
+| x | 0.704% | 3.410% | 6.277% | 8.676% | 1.64696 | [1.63493, 1.65934] |
+| y | 0.483% | 3.224% | 6.047% | 8.444% | 1.64683 | [1.63504, 1.65885] |
+| 45° | 0.706% | 3.496% | 6.309% | 8.816% | 1.64705 | [1.63514, 1.65877] |
 
-所有 diagnostic slope intervals 均位于 `5/3 ± 0.10` 内。
+该单组 diagnostic 显示 P=9 在当前 512-screen sample 下具有合理余量，但它不证明 P=9 是一般意义上的 variance optimum，也不能作为直接写死 P=9 的依据。
 
-P=9 在该独立 sample 中同时表现出较低 representation bias 与合理的 finite-ensemble variance，但该结果不能作为预先指定 P=9 的理由。
+---
 
-## 4. P=12 diagnostic-only empirical check
+## 5. P=12 diagnostic
 
-Diagnostic screen seed：`2026080825`。  
-Diagnostic bootstrap seed：`2026080826`。  
-Screens：512。  
-Bootstrap：1000，仅用于风险估计。
+| direction | impl point | impl 95% UB | K amp point | K amp 95% UB | slope point | slope 95% CI |
+|:---:|---:|---:|---:|---:|---:|---|
+| x | 0.638% | 3.478% | 4.260% | 6.801% | 1.65454 | [1.64221, 1.66575] |
+| y | 2.271% | **5.317%** | 2.706% | 5.636% | 1.65766 | [1.64403, 1.67038] |
+| 45° | 0.126% | 3.313% | 5.028% | 7.746% | 1.65093 | [1.63787, 1.66243] |
 
-| direction | impl point | K amplitude point | slope | endpoint signed bias | impl diagnostic 95% UB | K amplitude diagnostic 95% UB |
-|:---:|---:|---:|---:|---:|---:|---:|
-| x | 0.638% | 4.260% | 1.65454 | -6.464% | 3.478% | 6.801% |
-| y | 2.271% | 2.706% | 1.65766 | -4.632% | 5.010% | 5.404% |
-| 45° | 0.126% | 5.028% | 1.65093 | -7.740% | 3.127% | 7.363% |
+外部审计独立复跑指出此前文档中的 y implementation UB `~5.01%` 无法逐位追溯。使用本版唯一 diagnostic runner、formal-runner-identical shared bootstrap weights 后得到 `5.317%`，与外部独立复跑 `~5.32%` 一致。
 
-P=12 deterministic bias 更低，但 y-direction implementation-recovery diagnostic 95% UB 已约 5.01%，说明更深超低频层会提高 realization variance；固定 512-screen formal sample 下不能简单采用“越深越好”的 selection rule。
+这一结果只说明该 P=12 diagnostic sample 没有显示出比满足偏差预算的更浅深度更可靠的 finite-sample qualification；不能推导“P 越大，variance 必然单调增大”。
 
-## 5. Diagnostic interpretation
+---
 
-这些结果共同支持：
+## 6. Interpretation
 
-1. P=6 failure 是 representation-margin failure，不是 generator normalization failure；
-2. low-frequency depth 增加降低 deterministic bias；
-3. 但很深的 subharmonics 会增加 finite-ensemble sampling variance；
-4. selection policy 应同时考虑 systematic representation bias 与 formal 512-screen uncertainty margin；
-5. 当前最值得外审的是 `docs/review/GATE_B_V021_REMEDIATION_PROPOSAL.md` 中提出的 median-headroom + pointwise-tail guard，而不是直接指定任一 P。
+当前证据支持：
 
-所有 diagnostic seed family 与原 formal P=6 seeds 不同；未来若 v0.2.1 获批准，正式 rerun 必须再次使用全新的 formal seeds，不得复用本文件的 diagnostic seeds。
+1. 原 P=6 failure 是 representation-margin failure，不是 generator normalization failure；
+2. 增加 subharmonic depth 会降低当前 frozen interval 上的 deterministic low-frequency bias；
+3. P=8 的 deterministic tail 虽已低于10%，但 single diagnostic sample 的 formal-style UB 仍缺乏余量；
+4. P=12 的 single diagnostic sample 出现 y implementation UB >5%，因此没有证据要求为了更低 deterministic bias 无限制增加低频层；
+5. 不同 P 使用不同 seeds，不能据此建立一般性的 variance-vs-P 单调关系；
+6. 因而 v0.2.1 采用 **minimum-depth deterministic bias-headroom policy**：定义 median + pointwise bias budget，选择满足条件的最小 P。
+
+未来正式 v0.2.1 rerun 必须使用新的 formal seed family，不得复用本文件任何 diagnostic seeds。
