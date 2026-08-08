@@ -1,0 +1,9 @@
+{
+  "seed": 2026080830,
+  "median_level_relative_error": 0.004763281028602906,
+  "slope_numerical": -3.8875287398496075,
+  "slope_target": -3.8880929304018865,
+  "slope_difference": 0.0005641905522790758,
+  "annulus_counts": [44, 56, 104, 188, 312, 540, 928, 1576, 2716, 4672, 8008, 13748],
+  "result": "PASS"
+}
