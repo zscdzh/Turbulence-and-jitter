@@ -1,0 +1,52 @@
+{
+  "source_branch_sha": "ab6040ad6d2ebfd88830bdae9b2ff31da22816f9",
+  "diagnostic_only": true,
+  "screens_per_P": 512,
+  "bootstrap_resamples": 1000,
+  "bootstrap_unit": "screen_id",
+  "bootstrap_algorithm": "formal-runner-identical shared resample weights across directions",
+  "P": {
+    "8": {
+      "screen_seed": 2026080821,
+      "bootstrap_seed": 2026080822,
+      "deterministic": {
+        "x": {"median_relative_error": 0.06065574475401329, "max_relative_error": 0.0967944571129075, "slope": 1.6460841320517974},
+        "y": {"median_relative_error": 0.0606557447540132, "max_relative_error": 0.0967944571129075, "slope": 1.6460841320517974},
+        "45": {"median_relative_error": 0.06091661529185821, "max_relative_error": 0.09545820468094081, "slope": 1.646030445198229}
+      },
+      "bootstrap": {
+        "x": {"implementation_point": 0.018428386498435492, "implementation_95ub": 0.044231802617594664, "amplitude_point": 0.07796462090449019, "amplitude_95ub": 0.1022001335129066, "slope_point": 1.6405577028357292, "slope_ci95": [1.6284275184690187, 1.652954178980292]},
+        "y": {"implementation_point": 0.021881192482247413, "implementation_95ub": 0.04788948012918988, "amplitude_point": 0.08120741383074134, "amplitude_95ub": 0.10563517683857057, "slope_point": 1.637872338895375, "slope_ci95": [1.6251701308371298, 1.6497001552011639]},
+        "45": {"implementation_point": 0.0020385238807103037, "implementation_95ub": 0.03199425972953885, "amplitude_point": 0.05900258889727816, "amplitude_95ub": 0.08303976456315665, "slope_point": 1.6469215661747607, "slope_ci95": [1.6351243093473815, 1.659034496298779]}
+      }
+    },
+    "9": {
+      "screen_seed": 2026080823,
+      "bootstrap_seed": 2026080824,
+      "deterministic": {
+        "x": {"median_relative_error": 0.05587513721057293, "max_relative_error": 0.089192448357337, "slope": 1.647945964631012},
+        "y": {"median_relative_error": 0.05587513721057284, "max_relative_error": 0.089192448357337, "slope": 1.647945964631012},
+        "45": {"median_relative_error": 0.05611067030941273, "max_relative_error": 0.08787049236521038, "slope": 1.6479096010184167}
+      },
+      "bootstrap": {
+        "x": {"implementation_point": 0.007043279202809022, "implementation_95ub": 0.03409844710405625, "amplitude_point": 0.06276966346235324, "amplitude_95ub": 0.08675554275588775, "slope_point": 1.6469646520219001, "slope_ci95": [1.6349347463032489, 1.6593448591799231]},
+        "y": {"implementation_point": 0.0048344155693408036, "implementation_95ub": 0.03223733439987605, "amplitude_point": 0.06047444220971872, "amplitude_95ub": 0.0844395739363962, "slope_point": 1.6468347861497987, "slope_ci95": [1.6350380455927547, 1.6588475781574195]},
+        "45": {"implementation_point": 0.007058445775923799, "implementation_95ub": 0.03496487607183159, "amplitude_point": 0.06309216910814941, "amplitude_95ub": 0.08815537273584506, "slope_point": 1.6470524283926604, "slope_ci95": [1.6351384777148295, 1.6587672222132503]}
+      }
+    },
+    "12": {
+      "screen_seed": 2026080825,
+      "bootstrap_seed": 2026080826,
+      "deterministic": {
+        "x": {"median_relative_error": 0.04866815164107999, "max_relative_error": 0.07773291512372017, "slope": 1.650715009191268},
+        "y": {"median_relative_error": 0.04866815164107989, "max_relative_error": 0.07773291512372017, "slope": 1.650715009191268},
+        "45": {"median_relative_error": 0.0488659973764431, "max_relative_error": 0.07643238196312063, "slope": 1.6507022707977133}
+      },
+      "bootstrap": {
+        "x": {"implementation_point": 0.00638034881993675, "implementation_95ub": 0.0347760343263895, "amplitude_point": 0.04259921463527282, "amplitude_95ub": 0.06801491095076138, "slope_point": 1.6545429307449828, "slope_ci95": [1.642214020708744, 1.6657534604131576]},
+        "y": {"implementation_point": 0.022711288007694078, "implementation_95ub": 0.053171990754708555, "amplitude_point": 0.027064011394542745, "amplitude_95ub": 0.05636345867857078, "slope_point": 1.6576620502878159, "slope_ci95": [1.644027572291127, 1.6703758650466416]},
+        "45": {"implementation_point": 0.0012611447489529973, "implementation_95ub": 0.033132099228398396, "amplitude_point": 0.05028305956729551, "amplitude_95ub": 0.07745513451546879, "slope_point": 1.6509333371110126, "slope_ci95": [1.6378697064644745, 1.662433757040412]}
+      }
+    }
+  }
+}
